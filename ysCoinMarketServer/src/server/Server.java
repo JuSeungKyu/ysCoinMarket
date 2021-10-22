@@ -21,6 +21,8 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import db.JDBC;
+import db.query.OrderQuery;
+import db.query.UpdateHistoryQuery;
 import db.query.UtilQuery;
 import formet.message.CheckMessage;
 import formet.message.LoginRequest;
@@ -41,6 +43,8 @@ public class Server {
 			@Override
 			public void run() {
 				UtilQuery query = new UtilQuery();
+				UpdateHistoryQuery q1 = new UpdateHistoryQuery();
+				q1.CoinHistoryUpdate("양디코인", 500);
 				// 서버 소켓 설정
 				while (true) {
 					try {
