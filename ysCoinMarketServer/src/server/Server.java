@@ -21,7 +21,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import db.JDBC;
-import db.Query;
+import db.query.UtilQuery;
 import formet.message.CheckMessage;
 import formet.message.LoginRequest;
 import javafx.embed.swing.SwingFXUtils;
@@ -32,7 +32,7 @@ public class Server {
 	public static HashMap<String, Client> clientMap;
 
 	public static void main(String[] args) throws IOException {
-		new JDBC("localhost", "dbname", "user", "pw");
+		new JDBC("localhost", "yscoin", "root", "");
 		
 		clientMap = new HashMap<String, Client>();
 		ServerSocket serverSocket = new ServerSocket(2657);
@@ -40,7 +40,7 @@ public class Server {
 		Thread server = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				Query query = new Query();
+				UtilQuery query = new UtilQuery();
 				// 서버 소켓 설정
 				while (true) {
 					try {

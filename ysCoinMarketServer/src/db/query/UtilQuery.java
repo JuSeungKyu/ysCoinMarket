@@ -1,11 +1,13 @@
-package db;
+package db.query;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Query {
-	public Query() {}
+import db.JDBC;
+
+public class UtilQuery {
+	public UtilQuery() {}
 	
 	public void justUpdate(String sql) {
 		try {
