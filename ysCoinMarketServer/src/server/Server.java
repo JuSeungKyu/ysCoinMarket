@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -25,29 +26,28 @@ import db.query.OrderQuery;
 import db.query.UpdateHistoryQuery;
 import db.query.UtilQuery;
 import formet.message.CheckMessage;
+import formet.message.History;
 import formet.message.LoginRequest;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import util.Util;
 
 public class Server {
 	public static HashMap<String, Client> clientMap;
+	public static ArrayList<String> clinetIdList;
 
 	public static void main(String[] args) throws IOException {
 		new JDBC("localhost", "yscoin", "root", "");
 		
 		clientMap = new HashMap<String, Client>();
+		clinetIdList = new ArrayList<String>();
 		ServerSocket serverSocket = new ServerSocket(2657);
 		
-		Thread server = new Thread(new Runnable() {
+		Thread Server = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				UtilQuery query = new UtilQuery();
-				UpdateHistoryQuery q1 = new UpdateHistoryQuery();
-				q1.CoinHistoryUpdate("양디코인", 300);
-				q1.CoinHistoryUpdate("양디코인", 500);
-				q1.CoinHistoryUpdate("양디코인", 100);
-				q1.CoinHistoryUpdate("양디코인", 400);
 				// 서버 소켓 설정
 				while (true) {
 					try {
@@ -75,6 +75,7 @@ public class Server {
 						}
 						
 						// 클라이언트 저장
+						clinetIdList.add(LoginMsg.id);
 						clientMap.put(LoginMsg.id, new Client(LoginMsg.id, clientSocket, ois, oos));
 					} catch (Exception e) {
 						System.out.println(e.toString());
@@ -83,14 +84,41 @@ public class Server {
 			}
 		});
 
-		server.start();
-		System.out.println("Server start - (서버를 종료하려면 '종료' 입력)");
 
+		Thread infomationSendThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Util util = new Util();
+				Random r = new Random();
+				UpdateHistoryQuery q1 = new UpdateHistoryQuery();
+				while(true) {
+					//테스트
+					int randInt = r.nextInt(900)+100;
+					System.out.println(randInt);
+					q1.CoinHistoryUpdate("양디코인", randInt);
+					//테스트
+					
+//					History h = new History();
+//					for(int i = 0; i < clinetIdList.size(); i++) {
+//						Client clinet = clientMap.get(clinetIdList.get(i));
+//						if(clinet != null) {
+//							clinet.getOOS().writeObject();
+//						}
+//					}
+					util.sleep(1000);
+				}
+			}
+		});
+		Server.start();
+		System.out.println("TcpServer Start - (서버를 종료하려면 '종료' 입력)");
+		infomationSendThread.start();
+		
 		while (true) {
 			BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 			if(bf.readLine().equals("종료")) {
 				serverSocket.close();
-				server.interrupt();
+				infomationSendThread.interrupt();
+				Server.interrupt();
 			}
 		}
 	}
