@@ -10,8 +10,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import db.JDBC;
+import formet.PriceInfo;
+import formet.message.History;
 
-public class UpdateHistoryQuery {
+public class HistoryQuery {
 	public void CoinHistoryUpdate(String coinName, int price) {
 		updateCoinLastPrice(coinName, price);
 		try {
@@ -32,8 +34,8 @@ public class UpdateHistoryQuery {
 					insertMarketPrice("history_minute", coinName, price, currentTime);
 				}
 			}
-			
-			if(!isRun) {
+
+			if (!isRun) {
 				insertMarketPrice("history_minute", coinName, price, currentTime);
 			}
 
@@ -100,8 +102,10 @@ public class UpdateHistoryQuery {
 			pstmt.setInt(5, price);
 			pstmt.setTime(6, time);
 			pstmt.executeUpdate();
-			
-			sql = "DELETE FROM "+tableName+" WHERE coin_id=? AND time = IF((SELECT count(coin_id) as count FROM "+tableName+" WHERE coin_id = ?) > 30, (SELECT time FROM "+tableName+" WHERE coin_id=? ORDER BY time LIMIT 1), NULL)";
+
+			sql = "DELETE FROM " + tableName + " WHERE coin_id=? AND time = IF((SELECT count(coin_id) as count FROM "
+					+ tableName + " WHERE coin_id = ?) > 30, (SELECT time FROM " + tableName
+					+ " WHERE coin_id=? ORDER BY time LIMIT 1), NULL)";
 			pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			pstmt.setString(2, coinName);
@@ -114,5 +118,25 @@ public class UpdateHistoryQuery {
 
 	public Time getCurrentTime() {
 		return new Time(System.currentTimeMillis());
+	}
+
+	public History getHistory(String tableName, String coinName) {
+		PriceInfo[] infoList = new PriceInfo[30];
+		try {
+			String sql = "SELECT start, close_or_mp, high, low, time FROM " + tableName
+					+ " WHERE coin_id = ? ORDER BY time DESC";
+
+			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
+			pstmt.setString(1, coinName);
+			ResultSet rs = pstmt.executeQuery();
+
+			for(byte i = 0; rs.next(); i++) {
+				infoList[i] = new PriceInfo(rs.getInt("start"), rs.getInt("close_or_mp"), rs.getInt("high"), rs.getInt("low"), rs.getTime("time"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return new History(infoList, coinName);
 	}
 }

@@ -59,8 +59,14 @@ public class Client extends Thread {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				
+
 				Server.clientMap.remove(id);
+				for(int i = 0; i < Server.clientIdList.size(); i++) {
+					if(Server.clientIdList.get(i).equals(this.id)) {
+						Server.clientIdList.remove(i);
+						break;
+					}
+				}
 				socket.close();
 			}
 		} catch (IOException e) {
