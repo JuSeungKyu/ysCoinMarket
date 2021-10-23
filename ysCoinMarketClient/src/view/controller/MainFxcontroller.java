@@ -28,7 +28,6 @@ public class MainFxcontroller extends Application{
 
 	    public void addMouseScrolling(Node node) {
 	        node.setOnScroll((ScrollEvent event) -> {
-	            // Adjust the zoom factor as per your requirement
 	            double zoomFactor = 1.05;
 	            double deltaY = event.getDeltaY();
 	            if (deltaY < 0){
