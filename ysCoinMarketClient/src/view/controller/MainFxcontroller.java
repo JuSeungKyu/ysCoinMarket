@@ -1,40 +1,46 @@
 package view.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 
-public class MainFxcontroller extends Application{
+public class MainFxcontroller implements Initializable{
+	@FXML
+    private AnchorPane root;
+	@FXML
+    private AnchorPane pane1;
+	@FXML
+    private AnchorPane pane2;
 	
-	  @Override
-	    public void start(Stage primaryStage) {
-	        Group root = new Group();
-	        Scene scene = new Scene(root, 350, 300);
-	        primaryStage.setTitle("Dots");
-	        primaryStage.setScene(scene);
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		loadPage();
+	}
 
-	        Circle circle = new Circle(175, 150, 10, Color.BLUE);
-	        addMouseScrolling(circle);
-	        root.getChildren().add(circle);
-
-	        primaryStage.show();
-	    }
-
-	    public void addMouseScrolling(Node node) {
-	        node.setOnScroll((ScrollEvent event) -> {
-	            double zoomFactor = 1.05;
-	            double deltaY = event.getDeltaY();
-	            if (deltaY < 0){
-	                zoomFactor = 2.0 - zoomFactor;
-	            }
-	            node.setScaleX(node.getScaleX() * zoomFactor);
-	            node.setScaleY(node.getScaleY() * zoomFactor);
-	        });
-	    }
+    public void loadPage() {
+        try {
+        	pane2.getChildren().add(FXMLLoader.load(getClass().getResource("../fxml/Graph.fxml")));
+        	pane1.getChildren().add(FXMLLoader.load(getClass().getResource("../fxml/CoinTypeList.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

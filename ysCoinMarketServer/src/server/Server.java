@@ -104,13 +104,6 @@ public class Server {
 						sendHistory(history);
 					}
 					
-//					History h = new History();
-//					for(int i = 0; i < clientIdList.size(); i++) {
-//						Client client = clientMap.get(clientIdList.get(i));
-//						if(client != null) {
-//							client.getOOS().writeObject();
-//						}
-//					}
 					util.sleep(1000);
 				}
 			}
