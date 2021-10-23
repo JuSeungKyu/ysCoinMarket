@@ -44,7 +44,10 @@ public class Server {
 			public void run() {
 				UtilQuery query = new UtilQuery();
 				UpdateHistoryQuery q1 = new UpdateHistoryQuery();
+				q1.CoinHistoryUpdate("양디코인", 300);
 				q1.CoinHistoryUpdate("양디코인", 500);
+				q1.CoinHistoryUpdate("양디코인", 100);
+				q1.CoinHistoryUpdate("양디코인", 400);
 				// 서버 소켓 설정
 				while (true) {
 					try {

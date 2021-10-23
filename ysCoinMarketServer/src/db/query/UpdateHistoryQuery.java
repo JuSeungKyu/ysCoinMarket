@@ -5,43 +5,42 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import db.JDBC;
 
 public class UpdateHistoryQuery {
 	public void CoinHistoryUpdate(String coinName, int price) {
 		updateCoinLastPrice(coinName, price);
-		
 		try {
-			String sql = "SELECT coin_id, close_or_mp, high, low, time "
-					+ "FROM `history_second` "
+			String sql = "SELECT coin_id, close_or_mp, high, low, time " + "FROM `history_minute` "
 					+ "WHERE coin_id = ? ORDER BY time DESC LIMIT 1";
-			
+
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			ResultSet rs = pstmt.executeQuery();
-			
-			Time currentTime = getCurrentSecond();
+
+			Time currentTime = getCurrentTime();
 			while (rs.next()) {
-				if(currentTime.equals(rs.getTime("time"))) {
-					
+				if (currentTime.getMinutes() == rs.getTime("time").getMinutes()) {
+					updateMarketPrice("history_minute", coinName, price, rs.getInt("high"), rs.getInt("low"));
 				} else {
-					insertMarketPrice("history_second", coinName, price, currentTime);
+					insertMarketPrice("history_minute", coinName, price, currentTime);
 				}
 			}
-			
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		updateMarketPrice("history_second", coinName, price);
+
 	}
-	
+
 	public void updateCoinLastPrice(String coinName, int price) {
 		try {
 			String sql = "UPDATE `coin_type` SET `last_price`=? WHERE id=?";
-			
+
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setInt(1, price);
 			pstmt.setString(2, coinName);
@@ -50,25 +49,40 @@ public class UpdateHistoryQuery {
 			e.printStackTrace();
 		}
 	}
-	
-	public void updateMarketPrice(String tableName, String coinName, int price) {
+
+	public void updateMarketPrice(String tableName, String coinName, int price, int high, int low) {
 		try {
-			String sql = "UPDATE "+tableName+" SET close_or_mp=? WHERE coin_id = ? ORDER BY time DESC LIMIT 1";
+			PreparedStatement pstmt = null;
+			if(high < price) {
+				String sql = "UPDATE " + tableName + " SET close_or_mp=?, high=? WHERE coin_id = ? ORDER BY time DESC LIMIT 1";
+				pstmt = JDBC.con.prepareStatement(sql);
+				pstmt.setInt(1, price);
+				pstmt.setInt(2, price);
+				pstmt.setString(3, coinName);
+			} else if(low > price) {
+				String sql = "UPDATE " + tableName + " SET close_or_mp=?, low=? WHERE coin_id = ? ORDER BY time DESC LIMIT 1";
+				pstmt = JDBC.con.prepareStatement(sql);
+				pstmt.setInt(1, price);
+				pstmt.setInt(2, price);
+				pstmt.setString(3, coinName);
+			} else {
+				String sql = "UPDATE " + tableName + " SET close_or_mp=? WHERE coin_id = ? ORDER BY time DESC LIMIT 1";
+				pstmt = JDBC.con.prepareStatement(sql);
+				pstmt.setInt(1, price);
+				pstmt.setString(2, coinName);
+			}
 			
-			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
-			pstmt.setInt(1, price);
-			pstmt.setString(2, coinName);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void insertMarketPrice(String tableName, String coinName, int price, Time time) {
 		try {
-			String sql = "INSERT INTO "+tableName+"(`coin_id`, `start`, `close_or_mp`, `high`, `low`, `time`) "
+			String sql = "INSERT INTO " + tableName + "(`coin_id`, `start`, `close_or_mp`, `high`, `low`, `time`) "
 					+ "VALUES (?,?,?,?,?,?)";
-			
+
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			pstmt.setInt(2, price);
@@ -81,8 +95,8 @@ public class UpdateHistoryQuery {
 			e.printStackTrace();
 		}
 	}
-	
-	public Time getCurrentSecond() {
-        return new Time(System.currentTimeMillis());
+
+	public Time getCurrentTime() {
+		return new Time(System.currentTimeMillis());
 	}
 }
