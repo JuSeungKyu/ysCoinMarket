@@ -12,14 +12,14 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/view/fxml/Main.fxml"));
+			loader.setLocation(getClass().getResource("/view/fxml/Login.fxml"));
 			AnchorPane ap = (AnchorPane)loader.load();
-			Scene scene = new Scene(ap,1042,567);
+			Scene scene = new Scene(ap);
 			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			primaryStage.setTitle("hi");
+			primaryStage.setTitle("login form");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
