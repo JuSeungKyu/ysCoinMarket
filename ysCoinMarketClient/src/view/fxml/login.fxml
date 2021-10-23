@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.LoginController">
    <children>
       <Label layoutX="420.0" layoutY="40.0" prefHeight="112.0" prefWidth="203.0" text="로그인 " textAlignment="CENTER">
          <font>
@@ -16,7 +16,7 @@
       </Label>
       <Pane layoutX="186.0" layoutY="175.0" prefHeight="429.0" prefWidth="670.0">
          <children>
-            <TextField layoutX="236.0" layoutY="116.0" prefHeight="50.0" prefWidth="290.0" />
+            <TextField fx:id="idTxt" layoutX="236.0" layoutY="116.0" prefHeight="50.0" prefWidth="290.0" />
             <PasswordField layoutX="236.0" layoutY="232.0" prefHeight="50.0" prefWidth="290.0" />
             <Label layoutX="144.0" layoutY="132.0" text="아이디 ">
                <font>
