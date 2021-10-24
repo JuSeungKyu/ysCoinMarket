@@ -4,7 +4,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class ToggleSwitch extends HBox {
 
@@ -37,7 +39,7 @@ public class ToggleSwitch extends HBox {
 	private void setStyle() {
 		// Default Width
 		setWidth(300);
-		setHeight(30);
+		setHeight(45);
 		label1.setAlignment(Pos.CENTER);
 		label2.setAlignment(Pos.CENTER);
 		label1.setStyle(style2);
