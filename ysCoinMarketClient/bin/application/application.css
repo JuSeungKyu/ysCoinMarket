@@ -30,10 +30,11 @@
 
 .btn1:hover{
 	-fx-border-width: 2px;
+	-fx-border-color: #2c00ad;
 }
 
 .btn1:pressed{
-	-fx-border-color: #6735fbaa;
+	-fx-border-color: #2c00ad;
 	-fx-border-style: solid;
 	-fx-border-width: 3px 2px 1px 2px;
 }
