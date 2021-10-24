@@ -1,8 +1,9 @@
 package formet;
 
+import java.io.Serializable;
 import java.sql.Time;
 
-public class PriceInfo {
+public class PriceInfo implements Serializable{
 	int closePrice = 0;
 	int startPrice = 0;
 	int highPrice = 0;

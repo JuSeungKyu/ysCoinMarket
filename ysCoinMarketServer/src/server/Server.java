@@ -62,9 +62,8 @@ public class Server {
 						LoginRequest LoginMsg = (LoginRequest) ois.readObject();
 
 						// 존재하는 아이디인지 확인
-						int idCount = (int) ((long) utilQuery
-								.justGetObject("SELECT count(id) FROM users WHERE id = '" + LoginMsg.id
-										+ "'AND pw = '" + LoginMsg.pw + "'"));
+						int idCount = (int) ((long) utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
+								+ LoginMsg.id + "'AND pw = '" + LoginMsg.pw + "'"));
 
 						if (LoginMsg.isLogin && idCount != 0) {
 							oos.writeObject(new CheckMessage("로그인 되었습니다.", true));
@@ -95,27 +94,23 @@ public class Server {
 				Random r = new Random();
 				HistoryQuery q1 = new HistoryQuery();
 				while (true) {
-					//----- 테스트용-----
+					// ----- 테스트용-----
 					int randInt = r.nextInt(900) + 100;
 					q1.CoinHistoryUpdate("양디코인", randInt);
-					//----- 테스트용-----
+					// ----- 테스트용-----
 
-//					for(int i = 0; i < coinTypelist.size(); i++) {
-//						History history = q1.getHistory("history_minute", coinTypelist.get(i));
-//						sendHistory(history);
-//					}
-					
+					for (int i = 0; i < coinTypelist.size(); i++) {
+						History history = q1.getHistory("history_minute", coinTypelist.get(i));
+						sendHistory(history);
+					}
+
 					util.sleep(1000);
 				}
 			}
-			
+
 			private void sendHistory(History history) {
-				for (int j = 0; j < clientIdList.size(); j++) {
-					try {
-						clientMap.get(clientIdList.get(j)).getOOS().writeObject(history);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				for (int i = 0; i < clientIdList.size(); i++) {
+					clientMap.get(clientIdList.get(i)).sendObject(history);
 				}
 			}
 		});

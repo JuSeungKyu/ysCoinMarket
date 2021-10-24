@@ -32,6 +32,7 @@ public class LoginController implements Initializable {
 	Button submit;
 	
 	private Util util;
+	private Client client;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -65,6 +66,13 @@ public class LoginController implements Initializable {
 			util.alert("경고", "잘못된 입력", "너무 긴 비밀번호 입니다. (최대 50글자)");
 			return;
 		}
-		new Client(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
+
+		this.client = new Client();
+		this.client.setRoot(root);
+		this.client.SendObject(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
+	}
+	
+	public Client getClient() {
+		return this.client;
 	}
 }

@@ -67,15 +67,35 @@ public class Client extends Thread {
 						break;
 					}
 				}
-				socket.close();
+				removeClient();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public ObjectOutputStream getOOS() {
-		return this.oos;
+	public void removeClient() {
+		Server.clientMap.remove(id);
+		for(int i = 0; i < Server.clientIdList.size(); i++) {
+			if(Server.clientIdList.get(i).equals(this.id)) {
+				Server.clientIdList.remove(i);
+				break;
+			}
+		}
+		try {
+			this.socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendObject(Object object) {
+		try {
+			this.oos.writeObject(object);
+			this.oos.flush();
+		} catch (IOException e) {
+			removeClient();
+		}
 	}
 	
 	public boolean isReady() {
