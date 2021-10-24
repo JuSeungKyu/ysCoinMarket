@@ -3,6 +3,7 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import formet.message.History;
 import formet.message.LoginRequest;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ import network.Client;
 import util.Util;
 import view.userFxmlTag.ToggleSwitch;
 
-public class LoginController implements Initializable {
+public class LoginController extends Controller{
 	@FXML
 	AnchorPane root;
 	@FXML
@@ -33,6 +34,11 @@ public class LoginController implements Initializable {
 	
 	private Util util;
 	private Client client;
+	
+	@Override
+	public void initData(Object data) {
+		
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

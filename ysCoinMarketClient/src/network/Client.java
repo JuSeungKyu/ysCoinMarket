@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import application.Main;
 import formet.MessageObject;
 import formet.MessageTypeConstantNumbers;
 import formet.message.CheckMessage;
@@ -27,12 +28,14 @@ public class Client {
 			this.oos = new ObjectOutputStream(socket.getOutputStream());
 			this.ois = new ObjectInputStream(socket.getInputStream());
 			
-			new Thread(new Runnable() {
+			Thread readObjectThread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					readData();
 				}
-			}).start();
+			});
+			Main.ThreadList.add(readObjectThread);
+			readObjectThread.start();
 			
 		} catch (UnknownHostException e) {
 			System.out.println("서버에 연결할 수 없습니다");
@@ -64,8 +67,8 @@ public class Client {
 				
 				if(objectMsg.type == MessageTypeConstantNumbers.CHECK_MSG) {
 					if(((CheckMessage) objectMsg).check) {
+						util.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
 						util.alert("안내", "성공", ((CheckMessage) objectMsg).msg);
-						util.newStage("/view/fxml/Main.fxml", this.currentRoot);
 					} else {
 						util.alert("안내", "실패", ((CheckMessage) objectMsg).msg);
 						break;
@@ -77,11 +80,15 @@ public class Client {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			util.sleep(100);
+			
+			if(!util.sleep(100)) {
+				return;
+			}
 		}
 	}
 	
 	public History getHistory() {
+		System.out.println(lastHistoryData.toString());
 		return this.lastHistoryData;
 	}
 	

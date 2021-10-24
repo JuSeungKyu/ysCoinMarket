@@ -20,9 +20,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import network.Client;
 
 
-public class MainFxcontroller implements Initializable{
+public class MainFxcontroller extends Controller{
 	@FXML
     private AnchorPane root;
 	@FXML
@@ -30,14 +31,21 @@ public class MainFxcontroller implements Initializable{
 	@FXML
     private AnchorPane pane2;
 	
+	private Client client;
+	public void initData(Object client) {
+		this.client = (Client)client;
+    }
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println(11);
 		loadPage();
 	}
 
     public void loadPage() {
         try {
-        	pane2.getChildren().add(FXMLLoader.load(getClass().getResource("../fxml/Graph.fxml")));
+        	AnchorPane graph = FXMLLoader.load(getClass().getResource("../fxml/Graph.fxml"));
+        	pane2.getChildren().add(graph);
         	pane1.getChildren().add(FXMLLoader.load(getClass().getResource("../fxml/CoinTypeList.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
