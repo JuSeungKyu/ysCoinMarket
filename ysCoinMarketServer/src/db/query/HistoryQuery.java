@@ -1,12 +1,13 @@
 package db.query;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import db.JDBC;
@@ -14,23 +15,26 @@ import formet.PriceInfo;
 import formet.message.History;
 
 public class HistoryQuery {
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	public void CoinHistoryUpdate(String coinName, int price) {
 		updateCoinLastPrice(coinName, price);
 		try {
-			String sql = "SELECT coin_id, close_or_mp, high, low, time " + "FROM `history_minute` "
+			String sql = "SELECT coin_id, close_or_mp, high, low, time FROM `history_minute` "
 					+ "WHERE coin_id = ? ORDER BY time DESC LIMIT 1";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			ResultSet rs = pstmt.executeQuery();
 
-			Time currentTime = getCurrentTime();
+			Date currentTime = getCurrentTime();
 			boolean isRun = false;
 			while (rs.next()) {
 				isRun = true;
-				if (currentTime.getMinutes() == rs.getTime("time").getMinutes()) {
+				if (format.format(currentTime).equals(rs.getString("time"))) {
 					updateMarketPrice("history_minute", coinName, price, rs.getInt("high"), rs.getInt("low"));
 				} else {
+					System.out.println(format.format(currentTime).equals(rs.getString("time")));
 					insertMarketPrice("history_minute", coinName, price, currentTime);
 				}
 			}
@@ -88,19 +92,18 @@ public class HistoryQuery {
 		}
 	}
 
-	public void insertMarketPrice(String tableName, String coinName, int price, Time time) {
+	public void insertMarketPrice(String tableName, String coinName, int price, Date time) {
 		try {
-			System.out.println(time);
 			String sql = "INSERT INTO " + tableName + " (`coin_id`, `start`, `close_or_mp`, `high`, `low`, `time`) "
 					+ "VALUES (?,?,?,?,?,?);";
-
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			pstmt.setInt(2, price);
 			pstmt.setInt(3, price);
 			pstmt.setInt(4, price);
 			pstmt.setInt(5, price);
-			pstmt.setTime(6, time);
+			pstmt.setString(6, format.format(time));
+			
 			pstmt.executeUpdate();
 
 			sql = "DELETE FROM " + tableName + " WHERE coin_id=? AND time = IF((SELECT count(coin_id) as count FROM "
@@ -116,8 +119,8 @@ public class HistoryQuery {
 		}
 	}
 
-	public Time getCurrentTime() {
-		return new Time(System.currentTimeMillis());
+	public Date getCurrentTime() {
+		return new Date( (long) (Math.floor(System.currentTimeMillis()/60000)*60000) );
 	}
 
 	public History getHistory(String tableName, String coinName) {

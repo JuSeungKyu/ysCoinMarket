@@ -62,9 +62,9 @@ public class Server {
 						LoginRequest LoginMsg = (LoginRequest) ois.readObject();
 
 						// 존재하는 아이디인지 확인
-						int idCount = (int) utilQuery
-								.justGetObject("SELECT count(users_id) FROM users WHERE users_id = '" + LoginMsg.id
-										+ "' users_pw = '" + LoginMsg.pw + "'");
+						int idCount = (int) ((long) utilQuery
+								.justGetObject("SELECT count(id) FROM users WHERE id = '" + LoginMsg.id
+										+ "'AND pw = '" + LoginMsg.pw + "'"));
 
 						if (LoginMsg.isLogin && idCount != 0) {
 							oos.writeObject(new CheckMessage("로그인 되었습니다.", true));
@@ -73,6 +73,7 @@ public class Server {
 									+ LoginMsg.pw + "')");
 							oos.writeObject(new CheckMessage("회원가입 되었습니다.", true));
 						} else {
+							System.out.println("로그인 불가");
 							oos.writeObject(new CheckMessage("로그인이나 회원가입을 할 수 없습니다.", false));
 							continue;
 						}
@@ -99,10 +100,10 @@ public class Server {
 					q1.CoinHistoryUpdate("양디코인", randInt);
 					//----- 테스트용-----
 
-					for(int i = 0; i < coinTypelist.size(); i++) {
-						History history = q1.getHistory("history_minute", coinTypelist.get(i));
-						sendHistory(history);
-					}
+//					for(int i = 0; i < coinTypelist.size(); i++) {
+//						History history = q1.getHistory("history_minute", coinTypelist.get(i));
+//						sendHistory(history);
+//					}
 					
 					util.sleep(1000);
 				}

@@ -3,6 +3,7 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import formet.message.LoginRequest;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import network.Client;
+import util.Util;
 import view.userFxmlTag.ToggleSwitch;
 
 public class LoginController implements Initializable {
@@ -27,6 +30,8 @@ public class LoginController implements Initializable {
 	TextField pw;
 	@FXML
 	Button submit;
+	
+	private Util util;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -40,11 +45,26 @@ public class LoginController implements Initializable {
 		});
         
         switchPane.getChildren().add(btn);
+        util = new Util();
 	}
 	
 	public void joinOrLogin() {
 		String id = this.id.getText();
 		String pw = this.pw.getText();
-		
+
+		if(id.equals(null) || pw.equals(null) || id.length()==0 || pw.length()==0) {
+			util.alert("경고", "잘못된 입력", "모든 필드를 채웠는지 확인해주십시오");
+			return;
+		}
+
+		if(id.length() > 20) {
+			util.alert("경고", "잘못된 입력", "너무 긴 아이디 입니다. (최대 20글자)");
+			return;
+		}
+		if(pw.length() > 50) {
+			util.alert("경고", "잘못된 입력", "너무 긴 비밀번호 입니다. (최대 50글자)");
+			return;
+		}
+		new Client(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
 	}
 }

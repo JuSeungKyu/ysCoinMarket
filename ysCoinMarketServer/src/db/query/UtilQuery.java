@@ -23,7 +23,7 @@ public class UtilQuery {
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				return rs.getObject(0);
+				return rs.getObject(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
