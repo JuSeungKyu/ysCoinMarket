@@ -12,15 +12,16 @@ public class GraphController extends Controller{
 
 	protected History history;
 	public void initData(Object history) {
-		this.history = (History) history;
+//		this.history = (History) history;
+		System.out.println("전달받음");
     }
 	
 	private void getHistory() {
-		if(this.history != null) {
-			System.out.println(this.history.toString());
-		} else {
-			System.out.println("null");
+		if(this.history == null) {
+			return;
 		}
+		
+		System.out.println(this.history.toString());
 	}
 	
 	@Override
@@ -29,7 +30,11 @@ public class GraphController extends Controller{
 		Thread graphDrawThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				getHistory();
+				Util util = new Util();
+				while(true) {
+					util.sleep(10);
+					getHistory();
+				}
 			}
 		});
 		Main.ThreadList.add(graphDrawThread);

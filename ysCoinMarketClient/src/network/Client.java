@@ -13,12 +13,14 @@ import formet.message.CheckMessage;
 import formet.message.History;
 import formet.message.LoginRequest;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import util.StageControll;
 import util.Util;
 
 public class Client {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
-	private History lastHistoryData;
+	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
 	
 	public Client() {
@@ -55,6 +57,7 @@ public class Client {
 	
 	public void readData() {
 		Util util = new Util();
+		StageControll sc = new StageControll();
 		MessageObject objectMsg = null;
 		while(true) {
 			try {
@@ -67,7 +70,7 @@ public class Client {
 				
 				if(objectMsg.type == MessageTypeConstantNumbers.CHECK_MSG) {
 					if(((CheckMessage) objectMsg).check) {
-						util.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
+						sc.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
 						util.alert("안내", "성공", ((CheckMessage) objectMsg).msg);
 					} else {
 						util.alert("안내", "실패", ((CheckMessage) objectMsg).msg);
@@ -88,7 +91,6 @@ public class Client {
 	}
 	
 	public History getHistory() {
-		System.out.println(lastHistoryData.toString());
 		return this.lastHistoryData;
 	}
 	

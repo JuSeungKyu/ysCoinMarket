@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import util.StageControll;
 import util.Util;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -23,7 +24,7 @@ public class Main extends Application {
 			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
-			new Util().setCloseEventHandler(primaryStage);
+			new StageControll().setCloseEventHandler(primaryStage);
 			primaryStage.show();
 			primaryStage.setTitle("login form");
 			
