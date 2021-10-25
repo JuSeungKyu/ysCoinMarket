@@ -110,7 +110,10 @@ public class Server {
 
 			private void sendHistory(History history) {
 				for (int i = 0; i < clientIdList.size(); i++) {
-					clientMap.get(clientIdList.get(i)).sendObject(history);
+					try {
+						clientMap.get(clientIdList.get(i)).sendObject(history);
+					} catch (Exception e) {
+					}
 				}
 			}
 		});

@@ -38,11 +38,13 @@ public class MainFxcontroller extends Controller {
 		new UIUpdateThread() {
 			@Override
 			public void update() {
-				while(client == null) {
-					System.out.println(client);
+				while (true) {
 					util.sleep(100);
+					if(client != null) {
+						sc.addFxmlChildren(pane2, "/view/fxml/Graph.fxml", client);
+						break;
+					}
 				}
-				sc.addFxmlChildren(pane2, "/view/fxml/Graph.fxml", client.getHistory());
 			}
 		}.start();
 	}
