@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 21-10-22 17:27
+-- 생성 시간: 21-10-25 09:44
 -- 서버 버전: 10.3.16-MariaDB
 -- PHP 버전: 7.3.7
 
@@ -30,15 +30,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `coin_type` (
   `id` varchar(50) NOT NULL,
-  `last_contract` int(11) NOT NULL
+  `last_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 테이블의 덤프 데이터 `coin_type`
 --
 
-INSERT INTO `coin_type` (`id`, `last_contract`) VALUES
-('양디코인', 100);
+INSERT INTO `coin_type` (`id`, `last_price`) VALUES
+('양디코인', 735);
 
 -- --------------------------------------------------------
 
@@ -63,8 +63,17 @@ CREATE TABLE `history_minute` (
   `close_or_mp` int(11) NOT NULL,
   `high` int(11) NOT NULL,
   `low` int(11) NOT NULL,
-  `time` int(11) NOT NULL
+  `time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 테이블의 덤프 데이터 `history_minute`
+--
+
+INSERT INTO `history_minute` (`coin_id`, `start`, `close_or_mp`, `high`, `low`, `time`) VALUES
+('양디코인', 836, 559, 989, 180, '2021-10-25 16:42:00'),
+('양디코인', 656, 349, 996, 109, '2021-10-25 16:43:00'),
+('양디코인', 184, 735, 994, 103, '2021-10-25 16:44:00');
 
 -- --------------------------------------------------------
 
