@@ -4,13 +4,13 @@ import formet.MessageObject;
 import formet.MessageTypeConstantNumbers;
 
 public class BuyRequest extends MessageObject{
-	public String id;
+	public String coinname;
 	public int price;
 	public int count;
 	
-	public BuyRequest(String id, int price, int count) {
+	public BuyRequest(String id, String coinname, int price, int count) {
 		super(MessageTypeConstantNumbers.BUY_REQEUST);
-		this.id = id;
+		this.coinname = coinname;
 		this.price= price; 
 		this.count= count; 
 	}

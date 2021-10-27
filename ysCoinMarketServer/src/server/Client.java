@@ -10,7 +10,13 @@ import java.util.ArrayList;
 
 import javax.xml.ws.handler.MessageContext;
 
+import db.query.OrderQuery;
+import db.query.UserHashControlQuery;
+import db.query.UtilQuery;
 import formet.MessageObject;
+import formet.message.BuyRequest;
+import formet.message.CheckMessage;
+import formet.message.SellRequest;
 import formet.MessageTypeConstantNumbers;
 
 public class Client extends Thread {
@@ -27,15 +33,6 @@ public class Client extends Thread {
 		this.oos = oos;
 	}
 
-	public void sendMessage(MessageObject obj) {
-		try {
-			oos.writeObject(obj);
-			oos.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public void run() {
 		super.run();
@@ -49,28 +46,44 @@ public class Client extends Thread {
 					}
 					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
-						
+						buyRequest((BuyRequest)msg);
+						continue;
 					}
 					
 					if (msg.type == MessageTypeConstantNumbers.SELL_REQEUST) {
-						
+						sellRequest((SellRequest)msg);
+						continue;
 					}
-
+					
+					break;
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-
-				Server.clientMap.remove(id);
-				for(int i = 0; i < Server.clientIdList.size(); i++) {
-					if(Server.clientIdList.get(i).equals(this.id)) {
-						Server.clientIdList.remove(i);
-						break;
-					}
-				}
-				removeClient();
 			}
+			
+			removeClient();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void sellRequest(SellRequest msg) {
+		UserHashControlQuery uhcq = new UserHashControlQuery();
+		if(uhcq.getUserHashCount(this.id, msg.coinname) > msg.count - uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
+			sendCheckMessage("매도 주문 실패", false);
+		} else {
+			new OrderQuery().sellRequest(this.id, msg.coinname, msg.price, msg.count);
+			sendCheckMessage("매도 주문 성공", true);
+		}
+	}
+	
+	public void buyRequest(BuyRequest msg) {
+		int money = (int) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
+		if(msg.count * msg.price > money) {
+			sendCheckMessage("매수 주문 실패", false);
+		} else{
+			new OrderQuery().buyRequest(this.id, msg.coinname, msg.price, msg.count);
+			sendCheckMessage("매수 주문 성공", true);
 		}
 	}
 	
@@ -87,6 +100,10 @@ public class Client extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void sendCheckMessage(String msg, boolean result) {
+		sendObject(new CheckMessage(msg, result));
 	}
 	
 	public void sendObject(Object object) {
