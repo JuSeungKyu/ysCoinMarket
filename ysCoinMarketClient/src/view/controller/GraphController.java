@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
-import formet.PriceInfo;
-import formet.message.History;
+import format.PriceInfo;
+import format.message.History;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,7 +40,7 @@ public class GraphController extends Controller {
 		int high = pi[0].highPrice;
 		int low = pi[0].lowPrice;
 		short count = 1;
-		for (; pi[count] != null; count++) {
+		for (; count < pi.length && pi[count] != null; count++) {
 			if (high < pi[count].highPrice) {
 				high = pi[count].highPrice;
 			}

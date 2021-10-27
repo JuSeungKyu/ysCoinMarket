@@ -3,8 +3,8 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import formet.message.History;
-import formet.message.LoginRequest;
+import format.message.History;
+import format.message.LoginRequest;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

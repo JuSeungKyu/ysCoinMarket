@@ -15,9 +15,9 @@ import java.util.Random;
 import db.JDBC;
 import db.query.HistoryQuery;
 import db.query.UtilQuery;
-import formet.message.CheckMessage;
-import formet.message.History;
-import formet.message.LoginRequest;
+import format.message.CheckMessage;
+import format.message.History;
+import format.message.LoginRequest;
 import util.Util;
 
 public class Server {
