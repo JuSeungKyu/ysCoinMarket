@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 21-10-25 15:56
--- 서버 버전: 10.3.16-MariaDB
--- PHP 버전: 7.3.7
+-- 생성 시간: 21-10-27 11:14
+-- 서버 버전: 10.4.21-MariaDB
+-- PHP 버전: 7.4.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -48,7 +47,8 @@ INSERT INTO `coin_type` (`id`, `last_price`) VALUES
 
 CREATE TABLE `hash` (
   `hash` varchar(32) NOT NULL,
-  `user_id` varchar(20) NOT NULL
+  `user_id` varchar(20) NOT NULL,
+  `coin_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -124,11 +124,13 @@ INSERT INTO `history_minute` (`coin_id`, `start`, `close_or_mp`, `high`, `low`, 
 --
 
 CREATE TABLE `order_info` (
-  `user_id` varchar(20) NOT NULL,
-  `count` int(11) NOT NULL,
-  `order_time` timestamp NOT NULL DEFAULT current_timestamp(),
   `id` int(11) NOT NULL,
-  `order_type` enum('구매','판매') NOT NULL
+  `user_id` varchar(20) NOT NULL,
+  `price` int(11) NOT NULL DEFAULT 0,
+  `count` int(11) NOT NULL,
+  `order_type` enum('구매','판매') NOT NULL,
+  `coin_id` varchar(50) NOT NULL,
+  `order_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -139,37 +141,38 @@ CREATE TABLE `order_info` (
 
 CREATE TABLE `users` (
   `id` varchar(20) NOT NULL,
-  `pw` varchar(50) NOT NULL
+  `pw` varchar(50) NOT NULL,
+  `money` bigint(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 테이블의 덤프 데이터 `users`
 --
 
-INSERT INTO `users` (`id`, `pw`) VALUES
-('-909', '999'),
-('123', '123'),
-('123121', '123123'),
-('123123213', '123123'),
-('1234', '1234'),
-('213213', '123213'),
-('23423', '234'),
-('234234', '234234'),
-('23432435', '35325325'),
-('234324353', '35325325'),
-('3535', '35354'),
-('3673546', '34234'),
-('4534', '3443'),
-('56756', '567'),
-('655', '8787'),
-('6575', '567'),
-('657568', '56856'),
-('8798', '789987'),
-('bngfmgkm', ',jhyy'),
-('ff', 'g'),
-('hgfh', 'q'),
-('sdfbkmi;', '12ed'),
-('sdfsdf', 'sdfsdf');
+INSERT INTO `users` (`id`, `pw`, `money`) VALUES
+('-909', '999', 0),
+('123', '123', 0),
+('123121', '123123', 0),
+('123123213', '123123', 0),
+('1234', '1234', 0),
+('213213', '123213', 0),
+('23423', '234', 0),
+('234234', '234234', 0),
+('23432435', '35325325', 0),
+('234324353', '35325325', 0),
+('3535', '35354', 0),
+('3673546', '34234', 0),
+('4534', '3443', 0),
+('56756', '567', 0),
+('655', '8787', 0),
+('6575', '567', 0),
+('657568', '56856', 0),
+('8798', '789987', 0),
+('bngfmgkm', ',jhyy', 0),
+('ff', 'g', 0),
+('hgfh', 'q', 0),
+('sdfbkmi;', '12ed', 0),
+('sdfsdf', 'sdfsdf', 0);
 
 --
 -- 덤프된 테이블의 인덱스
