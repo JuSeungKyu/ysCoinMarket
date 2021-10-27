@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import application.Main;
-import formet.MessageObject;
-import formet.MessageTypeConstantNumbers;
-import formet.message.CheckMessage;
-import formet.message.History;
-import formet.message.LoginRequest;
+import format.MessageObject;
+import format.MessageTypeConstantNumbers;
+import format.message.CheckMessage;
+import format.message.History;
+import format.message.LoginRequest;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import util.StageControll;

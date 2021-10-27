@@ -15,9 +15,9 @@ import java.util.Random;
 import db.JDBC;
 import db.query.HistoryQuery;
 import db.query.UtilQuery;
-import formet.message.CheckMessage;
-import formet.message.History;
-import formet.message.LoginRequest;
+import format.message.CheckMessage;
+import format.message.History;
+import format.message.LoginRequest;
 import util.Util;
 
 public class Server {
@@ -97,9 +97,11 @@ public class Server {
 				Util util = new Util();
 				Random r = new Random();
 				HistoryQuery q1 = new HistoryQuery();
+				int randInt2 = r.nextInt(1000) - 500;
 				while (true) {
 					// ----- 테스트용-----
-					int randInt = r.nextInt(900) + 100;
+					int randInt = r.nextInt(200) + 8000+randInt2;
+					randInt2 += r.nextInt(1000) - 490;
 					q1.CoinHistoryUpdate("양디코인", randInt);
 					// ----- 테스트용-----
 

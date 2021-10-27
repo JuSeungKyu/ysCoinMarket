@@ -11,8 +11,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import db.JDBC;
-import formet.PriceInfo;
-import formet.message.History;
+import format.PriceInfo;
+import format.message.History;
 
 public class HistoryQuery {
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
