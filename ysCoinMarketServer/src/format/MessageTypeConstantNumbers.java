@@ -6,4 +6,5 @@ public interface MessageTypeConstantNumbers {
 	public byte SELL_REQEUST = 2;
 	public byte HISTORY_LIST = 3;
 	public byte CHECK_MSG = 4;
+	public byte TYPE_CHANGE = 5;
 }
