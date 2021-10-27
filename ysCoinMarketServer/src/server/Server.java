@@ -62,21 +62,25 @@ public class Server {
 						LoginRequest LoginMsg = (LoginRequest) ois.readObject();
 
 						// 존재하는 아이디인지 확인
-						int idCount = (int) ((long) utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
-								+ LoginMsg.id + "'AND pw = '" + LoginMsg.pw + "'"));
-
-						if (LoginMsg.isLogin && idCount != 0) {
-							oos.writeObject(new CheckMessage("로그인 되었습니다.", true));
-						} else if (!LoginMsg.isLogin && idCount == 0) {
-							utilQuery.justUpdate("INSERT INTO users(`id`, `pw`) VALUES ('" + LoginMsg.id + "','"
-									+ LoginMsg.pw + "')");
-							oos.writeObject(new CheckMessage("회원가입 되었습니다.", true));
+						if(LoginMsg.isLogin) {
+							int idCount = (int) ((long) utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
+									+ LoginMsg.id + "'AND pw = '" + LoginMsg.pw + "'"));
+							if(idCount != 0) {
+								oos.writeObject(new CheckMessage("로그인 되었습니다.", true));
+							} else {
+								oos.writeObject(new CheckMessage("로그인 실패", false));
+							}
 						} else {
-							System.out.println("로그인 불가");
-							oos.writeObject(new CheckMessage("로그인이나 회원가입을 할 수 없습니다.", false));
-							continue;
+							int idCount = (int) ((long) utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
+									+ LoginMsg.id + "'"));
+							if(idCount != 0) {
+								utilQuery.justUpdate("INSERT INTO users(`id`, `pw`) VALUES ('" + LoginMsg.id + "','"
+									+ LoginMsg.pw + "')");
+								oos.writeObject(new CheckMessage("회원가입 되었습니다.", true));
+							} else {
+								oos.writeObject(new CheckMessage("회원가입 실패", false));
+							}
 						}
-
 						// 클라이언트 저장
 						clientIdList.add(LoginMsg.id);
 						clientMap.put(LoginMsg.id, new Client(LoginMsg.id, clientSocket, ois, oos));
