@@ -7,4 +7,5 @@ public interface MessageTypeConstantNumbers {
 	public byte HISTORY_LIST = 3;
 	public byte CHECK_MSG = 4;
 	public byte TYPE_CHANGE = 5;
+	public byte LOGIN_CHECK_MSG = 6;
 }

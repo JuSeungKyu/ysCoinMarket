@@ -23,7 +23,7 @@ public class OrderQuery {
 	
 	public void addRequest(String userId, int price, int count, String type, String coinId) {
 		try {
-			String sql = "INSERT `order_info`(user_id, price, count, order_type, coin_id) VALwUE(?, ?, ?, ?, ?)";
+			String sql = "INSERT `order_info`(user_id, price, count, order_type, coin_id) VALUES(?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, price);

@@ -11,6 +11,7 @@ import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.message.CheckMessage;
 import format.message.History;
+import format.message.LoginCheckMessage;
 import format.message.LoginRequest;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -69,11 +70,16 @@ public class Client {
 				}
 				
 				if(objectMsg.type == MessageTypeConstantNumbers.CHECK_MSG) {
-					if(((CheckMessage) objectMsg).check) {
+					util.alert("안내", ((CheckMessage) objectMsg).check ? "성공" : "실패", ((CheckMessage) objectMsg).msg);
+					continue;
+				}
+				
+				if(objectMsg.type == MessageTypeConstantNumbers.LOGIN_CHECK_MSG) {
+					if(((LoginCheckMessage) objectMsg).check) {
 						sc.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
-						util.alert("안내", "성공", ((CheckMessage) objectMsg).msg);
+						util.alert("안내", "성공", ((LoginCheckMessage) objectMsg).msg);
 					} else {
-						util.alert("안내", "실패", ((CheckMessage) objectMsg).msg);
+						util.alert("안내", "실패", ((LoginCheckMessage) objectMsg).msg);
 						break;
 					}
 					continue;

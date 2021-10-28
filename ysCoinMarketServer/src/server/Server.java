@@ -17,6 +17,7 @@ import db.query.HistoryQuery;
 import db.query.UtilQuery;
 import format.message.CheckMessage;
 import format.message.History;
+import format.message.LoginCheckMessage;
 import format.message.LoginRequest;
 import util.Util;
 
@@ -66,9 +67,9 @@ public class Server {
 							int idCount = (int) ((long) utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
 									+ LoginMsg.id + "'AND pw = '" + LoginMsg.pw + "'"));
 							if(idCount != 0) {
-								oos.writeObject(new CheckMessage("로그인 되었습니다.", true));
+								oos.writeObject(new LoginCheckMessage("로그인 되었습니다.", true));
 							} else {
-								oos.writeObject(new CheckMessage("로그인 실패", false));
+								oos.writeObject(new LoginCheckMessage("로그인 실패", false));
 							}
 						} else {
 							int idCount = (int) ((long) utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
@@ -76,9 +77,9 @@ public class Server {
 							if(idCount != 0) {
 								utilQuery.justUpdate("INSERT INTO users(`id`, `pw`) VALUES ('" + LoginMsg.id + "','"
 									+ LoginMsg.pw + "')");
-								oos.writeObject(new CheckMessage("회원가입 되었습니다.", true));
+								oos.writeObject(new LoginCheckMessage("회원가입 되었습니다.", true));
 							} else {
-								oos.writeObject(new CheckMessage("회원가입 실패", false));
+								oos.writeObject(new LoginCheckMessage("회원가입 실패", false));
 							}
 						}
 						// 클라이언트 저장
