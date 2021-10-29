@@ -23,6 +23,9 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
+
+	private String currentCoinId = "양디코인";
+	private String historyBlock = "minute";
 	
 	public Client() {
 		try {
@@ -47,16 +50,7 @@ public class Client {
 		}
 	}
 	
-	public void SendObject(Object obj) {
-		try {
-			this.oos.writeObject(obj);
-			this.oos.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void readData() {
+	private void readData() {
 		Util util = new Util();
 		StageControll sc = new StageControll();
 		MessageObject objectMsg = null;
@@ -93,6 +87,23 @@ public class Client {
 			if(!util.sleep(100)) {
 				return;
 			}
+		}
+	}
+	
+	public void changeHistoryBlock() {
+		
+	}
+	
+	public void changeCoinType() {
+		
+	}
+	
+	public void SendObject(Object obj) {
+		try {
+			this.oos.writeObject(obj);
+			this.oos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

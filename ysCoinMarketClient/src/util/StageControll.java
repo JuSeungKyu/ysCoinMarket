@@ -32,7 +32,6 @@ public class StageControll {
 					Scene sc = new Scene(main);
 					newStage.setTitle("YS Coin Market");
 					newStage.setScene(sc);
-					setCloseEventHandler(newStage);
 
 					Controller newController = loader.getController();
 					newController.initData(sendData);
@@ -40,6 +39,7 @@ public class StageControll {
 					newStage.show();
 
 					if (close) {
+						setCloseEventHandler(newStage);
 						stage.close();
 					}
 				} catch (IOException e) {
@@ -61,7 +61,7 @@ public class StageControll {
 		});
 	}
 
-	public boolean addFxmlChildren(Pane pane, String src, Object sendData) {
+	public Controller addFxmlChildren(Pane pane, String src, Object sendData) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource(src));
@@ -69,10 +69,10 @@ public class StageControll {
 
 			Controller newController = loader.getController();
 			newController.initData(sendData);
-			return true;
+			return newController;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 }

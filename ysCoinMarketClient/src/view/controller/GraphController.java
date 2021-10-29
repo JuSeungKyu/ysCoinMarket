@@ -7,9 +7,14 @@ import java.util.ResourceBundle;
 import application.Main;
 import format.PriceInfo;
 import format.message.History;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -21,6 +26,12 @@ import view.userFxmlTag.ToggleSwitch;
 public class GraphController extends Controller {
 	@FXML
 	Pane switchPane;
+	@FXML
+	RadioButton date;
+	@FXML
+	RadioButton hour;
+	@FXML
+	RadioButton minute;
 	
 	@FXML
 	Canvas graph;
@@ -30,7 +41,33 @@ public class GraphController extends Controller {
 	private Client client;
 	
 	private boolean graphType = false;
+	private byte graphBlockType = 0;
 
+	ToggleGroup toggleGroup = new ToggleGroup();
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println("graphStart");
+		gc = graph.getGraphicsContext2D();
+		btnSet();
+		blockGroupSet();
+
+		Thread graphDrawThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Util util = new Util();
+				while (true) {
+					if (!util.sleep(100)) {
+						break;
+					}
+					getHistory();
+				}
+			}
+		});
+		Main.ThreadList.add(graphDrawThread);
+		graphDrawThread.start();
+	}
+	
 	public void initData(Object client) {
 		this.client = (Client) client;
 		System.out.println("전달받음");
@@ -94,7 +131,7 @@ public class GraphController extends Controller {
 		}
 	}
 	
-	public void drawCurvedLineGraph(short count, PriceInfo[] pi, int w, int h, int priceScale, int low) {
+	private void drawCurvedLineGraph(short count, PriceInfo[] pi, int w, int h, int priceScale, int low) {
 		int oneblockScale = (int) w/count;
 		for(short i = 0; i < count-1; i++) {
 //			그래프 그림 그리기
@@ -116,7 +153,7 @@ public class GraphController extends Controller {
 		gc.fillOval(w-(oneblockScale*(count-1)+oneblockScale/2)-4, h-(pi[count-1].closePrice-low)/priceScale-4, 8, 8);
 	}
 	
-	public void drawCandleGraph(short count, PriceInfo[] pi, int w, int h, int priceScale, int high, int low) {
+	private void drawCandleGraph(short count, PriceInfo[] pi, int w, int h, int priceScale, int high, int low) {
 		int rectScale = (int) w/count;
 		
 		for(short i = 0; i < count; i++) {
@@ -143,14 +180,14 @@ public class GraphController extends Controller {
 		}
 	}
 
-	public void canvasDrawLine(int x1, int y1, int x2, int y2) {
+	private void canvasDrawLine(int x1, int y1, int x2, int y2) {
 		gc.beginPath();
 		gc.moveTo(x1, y1);
         gc.lineTo(x2, y2);
 		gc.stroke();
 	}
 	
-	public void btnSet() {
+	private void btnSet() {
 		ToggleSwitch btn = new ToggleSwitch("촛불 그래프", "꺾은선 그래프", 
         		"-fx-background-color: #ffffff; -fx-text-fill:#c8c8c8; -fx-border-color:#c8c8c8;",
         		"-fx-background-color: #e6e6ff; -fx-text-fill:#6735fb; -fx-border-color:#6735fb;"
@@ -163,25 +200,13 @@ public class GraphController extends Controller {
         switchPane.getChildren().add(btn);
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("graphStart");
-		gc = graph.getGraphicsContext2D();
-		btnSet();
-
-		Thread graphDrawThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Util util = new Util();
-				while (true) {
-					if (!util.sleep(100)) {
-						break;
-					}
-					getHistory();
-				}
-			}
-		});
-		Main.ThreadList.add(graphDrawThread);
-		graphDrawThread.start();
+	private void blockGroupSet() {
+		date.setToggleGroup(toggleGroup);
+		hour.setToggleGroup(toggleGroup);
+		minute.setToggleGroup(toggleGroup);
+	}
+	
+	public void blockUpdate() {
+		
 	}
 }

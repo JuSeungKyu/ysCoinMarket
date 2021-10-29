@@ -17,7 +17,7 @@ public class MainFxcontroller extends Controller {
 	@FXML
 	private AnchorPane pane1;
 	@FXML
-	private AnchorPane pane2;
+	private AnchorPane pane2; // 그래프
 
 	private Client client;
 

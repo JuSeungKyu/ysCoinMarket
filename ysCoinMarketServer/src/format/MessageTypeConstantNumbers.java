@@ -8,4 +8,5 @@ public interface MessageTypeConstantNumbers {
 	public byte CHECK_MSG = 4;
 	public byte TYPE_CHANGE = 5;
 	public byte LOGIN_CHECK_MSG = 6;
+	public byte CHAGNE_COIN_TYPE = 7;
 }
