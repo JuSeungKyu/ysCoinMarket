@@ -99,17 +99,9 @@ public class Server {
 			public void run() {
 				Util util = new Util();
 				Random r = new Random();
-<<<<<<< Updated upstream
-				HistoryQuery q1 = new HistoryQuery();
-<<<<<<< HEAD
 				int randInt2 = r.nextInt(1000) - 500;
-=======
-=======
 				q1 = new HistoryQuery();
 				
-				int randInt2 = r.nextInt(1000) - 500;
->>>>>>> Stashed changes
->>>>>>> backup
 				while (true) {
 					// ----- 테스트용-----
 					int randInt = r.nextInt(200) + 8000+randInt2;
@@ -118,38 +110,14 @@ public class Server {
 					// ----- 테스트용-----
 
 					for (int i = 0; i < coinTypelist.size(); i++) {
-<<<<<<< Updated upstream
 						History history = q1.getHistory("history_minute", coinTypelist.get(i));
-<<<<<<< HEAD
-						sendHistory(history, coinTypelist.get(i));
-=======
-						sendHistory(history);
-=======
 						sendHistory(coinTypelist.get(i));
->>>>>>> Stashed changes
->>>>>>> backup
 					}
 
 					util.sleep(1000);
 				}
 			}
 
-<<<<<<< HEAD
-			private void sendHistory(History history, String coinId) {
-				for (int i = 0; i < clientIdList.size(); i++) {
-					try {
-						Client c = clientMap.get(clientIdList.get(i));
-						if(c.getCoinType().equals(coinId)) {
-							c.sendObject(history);
-						}
-							
-=======
-<<<<<<< Updated upstream
-			private void sendHistory(History history) {
-				for (int i = 0; i < clientIdList.size(); i++) {
-					try {
-						clientMap.get(clientIdList.get(i)).sendObject(history);
-=======
 			private void sendHistory(String coinId) {
 				History minuteHistory = q1.getHistory("history_minute", coinId);
 				History hourHistory = q1.getHistory("history_minute", coinId);
@@ -166,11 +134,7 @@ public class Server {
 								c.sendObject(dateHistory);
 							}
 						}
-							
->>>>>>> Stashed changes
->>>>>>> backup
-					} catch (Exception e) {
-					}
+					} catch (Exception e) {}
 				}
 			}
 		});

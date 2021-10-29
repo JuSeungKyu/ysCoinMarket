@@ -1,30 +1,17 @@
 package db.query;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-import db.JDBC;
-
-<<<<<<< HEAD
-
-=======
->>>>>>> backup
 public class UserHashControlQuery {
 	public int getUserHashCount(String userId, String coinname) {
 		return (int) new UtilQuery().justGetObject(
-				"SELECT count(hash) FROM hash WHERE coin_id='"+coinname+"' AND user_id='"+userId+"'"
-		);
+				"SELECT count(hash) FROM hash WHERE coin_id='" + coinname + "' AND user_id='" + userId + "'");
 	}
 
 	public int getUserOrderedHashCount(String userId, String coinname) {
-		return (int) new UtilQuery().justGetObject(
-				"SELECT sum(count) FROM order_info WHERE coin_id='"+coinname+"' AND user_id='"+userId+"' AND order_type='구매'"
-		);
+		return (int) new UtilQuery().justGetObject("SELECT sum(count) FROM order_info WHERE coin_id='" + coinname
+				+ "' AND user_id='" + userId + "' AND order_type='구매'");
 	}
-<<<<<<< HEAD
 
 	public void hashOwnerTransfer(String coin_id, String userId, int price, int count, String type) {
 		if (type.equals("구매")) {
@@ -47,22 +34,7 @@ public class UserHashControlQuery {
 				}
 
 				count -= rs.getInt(count);
-=======
-	
-	public void hashOwnerTransfer(String coinId, String userId, int price, int count, String type){
-		ResultSet rs = new UtilQuery().justGetResultSet("SELECT user_id, count FROM order_info WHERE price="+price+" AND order_type='"+type+"' ORDER BY order_time DESC");
-		try {
-			while(rs.next() && count > 0) {
-				if(rs.getInt("count") <= count) {
-					count -= rs.getInt("count");
-					new UtilQuery().justUpdate("UPDATE hash SET user_id='"+userId+"' WHERE coin_id='"+coinId+"' AND user_id = '"+rs.getString("user_id")+"'");
-				} else {
-					
-				}
->>>>>>> backup
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 	}
 }

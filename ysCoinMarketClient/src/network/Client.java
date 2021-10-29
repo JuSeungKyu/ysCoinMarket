@@ -7,21 +7,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import application.Main;
-<<<<<<< HEAD
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
 import format.message.LoginRequest;
-=======
-<<<<<<< Updated upstream
-import formet.MessageObject;
-import formet.MessageTypeConstantNumbers;
-import formet.message.CheckMessage;
-import formet.message.History;
-import formet.message.LoginRequest;
-=======
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.message.CheckMessage;
@@ -29,8 +20,6 @@ import format.message.CoinTypeChange;
 import format.message.History;
 import format.message.LoginCheckMessage;
 import format.message.LoginRequest;
->>>>>>> Stashed changes
->>>>>>> backup
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import util.StageControll;
@@ -41,18 +30,9 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
-<<<<<<< HEAD
-
-	private String currentCoinId = "양디코인";
-	private String historyBlock = "minute";
-=======
-<<<<<<< Updated upstream
-=======
-
+	
 	private String currentCoinId = "양디코인";
 	private String currentHistoryBlockType = "minute";
->>>>>>> Stashed changes
->>>>>>> backup
 	
 	public Client() {
 		try {
@@ -116,33 +96,17 @@ public class Client {
 			}
 		}
 	}
+	
 	public String get_typedbname() {
 		return null;
 		
-	}public String get_typedbnum() {
+	}
+	
+	public String get_typedbnum() {
 		return null;
 		
 	}
 	
-	public void changeHistoryBlock() {
-		
-	}
-	
-	public void changeCoinType() {
-		
-	}
-	
-	public void SendObject(Object obj) {
-		try {
-			this.oos.writeObject(obj);
-			this.oos.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-<<<<<<< Updated upstream
-=======
 	public void changeHistoryBlock(String blockType) {
 		this.currentHistoryBlockType = blockType;
 		System.out.println(currentHistoryBlockType);
@@ -159,7 +123,6 @@ public class Client {
 	}
 	
 	public void SendObject(Object obj) {
-		System.out.println(((MessageObject) obj).type);
 		try {
 			this.oos.writeObject(obj);
 			this.oos.flush();
@@ -168,7 +131,6 @@ public class Client {
 		}
 	}
 	
->>>>>>> Stashed changes
 	public History getHistory() {
 		return this.lastHistoryData;
 	}

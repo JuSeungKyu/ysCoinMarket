@@ -7,7 +7,6 @@
    <children>
       <Line endX="193.0" endY="678.0" startX="193.0" />
       <AnchorPane fx:id="pane1" prefHeight="678.0" prefWidth="191.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane fx:id="pane2" prefHeight="450.0" prefWidth="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      </AnchorPane>
+      <AnchorPane fx:id="pane2" prefHeight="450.0" prefWidth="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

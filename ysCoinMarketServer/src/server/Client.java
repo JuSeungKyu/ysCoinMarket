@@ -1,39 +1,20 @@
 package server;
 
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-
-import javax.xml.ws.handler.MessageContext;
 
 import db.query.OrderQuery;
 import db.query.UserHashControlQuery;
 import db.query.UtilQuery;
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-import formet.MessageObject;
-import formet.message.BuyRequest;
-import formet.message.CheckMessage;
-import formet.message.SellRequest;
-import formet.MessageTypeConstantNumbers;
-=======
->>>>>>> backup
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.message.BuyRequest;
 import format.message.CheckMessage;
-<<<<<<< HEAD
 import format.message.SellRequest;
-=======
 import format.message.CoinTypeChange;
-import format.message.SellRequest;
->>>>>>> Stashed changes
->>>>>>> backup
+
 
 public class Client extends Thread {
 	private ObjectOutputStream oos;
@@ -41,23 +22,17 @@ public class Client extends Thread {
 	private String id;
 	private Socket socket;
 	private boolean isReady; 
-<<<<<<< HEAD
 	
 	private String coinType = "양디코인";
-=======
-<<<<<<< Updated upstream
-=======
-
-	private String coinType = "양디코인";
 	private String historyBlockType = "minute";
->>>>>>> Stashed changes
->>>>>>> backup
 
 	public Client(String id, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
 		this.id = id;
 		this.socket = socket;
 		this.ois = ois;
 		this.oos = oos;
+		
+		this.start();
 	}
 
 	@Override
@@ -70,9 +45,10 @@ public class Client extends Thread {
 					
 					System.out.println(msg.type);
 					
-					if (msg == null) {
+					if (msg == null)
 						break;
-					}
+					
+					System.out.println(msg.type);
 					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest)msg);
@@ -154,25 +130,16 @@ public class Client extends Thread {
 	public boolean isReady() {
 		return this.isReady;
 	}
-<<<<<<< HEAD
 	
 	public void setCoinType(String coinId) {
 		this.coinType = coinId;
 	}
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> backup
 	
 	public String getCoinType() {
 		return this.coinType;
 	}
-<<<<<<< HEAD
-=======
 	
 	public String getHistoryBlockType() {
 		return this.historyBlockType;
 	}
->>>>>>> Stashed changes
->>>>>>> backup
 }
