@@ -25,6 +25,8 @@ public class Client extends Thread {
 	private String id;
 	private Socket socket;
 	private boolean isReady; 
+	
+	private String coinType = "양디코인";
 
 	public Client(String id, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
 		this.id = id;
@@ -117,5 +119,13 @@ public class Client extends Thread {
 	
 	public boolean isReady() {
 		return this.isReady;
+	}
+	
+	public void setCoinType(String coinId) {
+		this.coinType = coinId;
+	}
+	
+	public String getCoinType() {
+		return this.coinType;
 	}
 }

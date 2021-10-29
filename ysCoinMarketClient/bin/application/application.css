@@ -25,7 +25,7 @@
 	-fx-background-color: rgba(0,0,0,0);
 	-fx-text-fill:#6735fb;
 	-fx-border-color:#6735fb;
-	-fx-border-radius: 20px;
+	-fx-border-width: 1px 0px 1px 1px;
 }
 
 .btn1:hover{
@@ -36,7 +36,7 @@
 .btn1:pressed{
 	-fx-border-color: #2c00ad;
 	-fx-border-style: solid;
-	-fx-border-width: 3px 2px 1px 2px;
+	-fx-border-width: 3px 0px 1px 2px;
 }
 
 

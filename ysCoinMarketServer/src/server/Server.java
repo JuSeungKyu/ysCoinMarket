@@ -108,17 +108,21 @@ public class Server {
 
 					for (int i = 0; i < coinTypelist.size(); i++) {
 						History history = q1.getHistory("history_minute", coinTypelist.get(i));
-						sendHistory(history);
+						sendHistory(history, coinTypelist.get(i));
 					}
 
 					util.sleep(1000);
 				}
 			}
 
-			private void sendHistory(History history) {
+			private void sendHistory(History history, String coinId) {
 				for (int i = 0; i < clientIdList.size(); i++) {
 					try {
-						clientMap.get(clientIdList.get(i)).sendObject(history);
+						Client c = clientMap.get(clientIdList.get(i));
+						if(c.getCoinType().equals(coinId)) {
+							c.sendObject(history);
+						}
+							
 					} catch (Exception e) {
 					}
 				}
