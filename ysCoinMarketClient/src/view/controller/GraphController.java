@@ -193,6 +193,7 @@ public class GraphController extends Controller {
         		"-fx-background-color: #e6e6ff; -fx-text-fill:#6735fb; -fx-border-color:#6735fb;"
         );
 
+<<<<<<< HEAD
         btn.switchOnProperty().addListener((obser, oldV, newV) -> {
         	graphType = btn.switchOnProperty().get();
 		});
@@ -201,12 +202,42 @@ public class GraphController extends Controller {
 	}
 
 	private void blockGroupSet() {
+=======
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println("graphStart");
+		gc = graph.getGraphicsContext2D();
+
+<<<<<<< Updated upstream
+		Thread graphDrawThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Util util = new Util();
+				while (true) {
+					if (!util.sleep(100)) {
+						break;
+					}
+					getHistory();
+				}
+			}
+		});
+		Main.ThreadList.add(graphDrawThread);
+		graphDrawThread.start();
+=======
+	private void blockGroupSet() {
+		minute.setSelected(true);
+>>>>>>> backup
 		date.setToggleGroup(toggleGroup);
 		hour.setToggleGroup(toggleGroup);
 		minute.setToggleGroup(toggleGroup);
 	}
 	
 	public void blockUpdate() {
+<<<<<<< HEAD
 		
+=======
+		client.changeHistoryBlock(((Node) toggleGroup.getSelectedToggle()).getId());
+>>>>>>> Stashed changes
+>>>>>>> backup
 	}
 }

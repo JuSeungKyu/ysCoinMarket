@@ -8,7 +8,10 @@ import java.sql.Statement;
 
 import db.JDBC;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> backup
 public class UserHashControlQuery {
 	public int getUserHashCount(String userId, String coinname) {
 		return (int) new UtilQuery().justGetObject(
@@ -21,6 +24,7 @@ public class UserHashControlQuery {
 				"SELECT sum(count) FROM order_info WHERE coin_id='"+coinname+"' AND user_id='"+userId+"' AND order_type='구매'"
 		);
 	}
+<<<<<<< HEAD
 
 	public void hashOwnerTransfer(String coin_id, String userId, int price, int count, String type) {
 		if (type.equals("구매")) {
@@ -43,6 +47,19 @@ public class UserHashControlQuery {
 				}
 
 				count -= rs.getInt(count);
+=======
+	
+	public void hashOwnerTransfer(String coinId, String userId, int price, int count, String type){
+		ResultSet rs = new UtilQuery().justGetResultSet("SELECT user_id, count FROM order_info WHERE price="+price+" AND order_type='"+type+"' ORDER BY order_time DESC");
+		try {
+			while(rs.next() && count > 0) {
+				if(rs.getInt("count") <= count) {
+					count -= rs.getInt("count");
+					new UtilQuery().justUpdate("UPDATE hash SET user_id='"+userId+"' WHERE coin_id='"+coinId+"' AND user_id = '"+rs.getString("user_id")+"'");
+				} else {
+					
+				}
+>>>>>>> backup
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
