@@ -92,11 +92,19 @@ public class Server {
 		});
 
 		Thread infomationSendThread = new Thread(new Runnable() {
+			HistoryQuery q1;
+			
 			@Override
 			public void run() {
 				Util util = new Util();
 				Random r = new Random();
+<<<<<<< Updated upstream
 				HistoryQuery q1 = new HistoryQuery();
+=======
+				q1 = new HistoryQuery();
+				
+				int randInt2 = r.nextInt(1000) - 500;
+>>>>>>> Stashed changes
 				while (true) {
 					// ----- 테스트용-----
 					int randInt = r.nextInt(900) + 100;
@@ -104,18 +112,42 @@ public class Server {
 					// ----- 테스트용-----
 
 					for (int i = 0; i < coinTypelist.size(); i++) {
+<<<<<<< Updated upstream
 						History history = q1.getHistory("history_minute", coinTypelist.get(i));
 						sendHistory(history);
+=======
+						sendHistory(coinTypelist.get(i));
+>>>>>>> Stashed changes
 					}
 
 					util.sleep(1000);
 				}
 			}
 
+<<<<<<< Updated upstream
 			private void sendHistory(History history) {
 				for (int i = 0; i < clientIdList.size(); i++) {
 					try {
 						clientMap.get(clientIdList.get(i)).sendObject(history);
+=======
+			private void sendHistory(String coinId) {
+				History minuteHistory = q1.getHistory("history_minute", coinId);
+				History hourHistory = q1.getHistory("history_minute", coinId);
+				History dateHistory = q1.getHistory("history_minute", coinId);
+				for (int i = 0; i < clientIdList.size(); i++) {
+					try {
+						Client c = clientMap.get(clientIdList.get(i));
+						if(c.getCoinType().equals(coinId)) {
+							if(c.getHistoryBlockType().equals("minute")) {
+								c.sendObject(minuteHistory);
+							} else if(c.getHistoryBlockType().equals("hour")) {
+								c.sendObject(hourHistory);
+							} else if(c.getHistoryBlockType().equals("date")) {
+								c.sendObject(dateHistory);
+							}
+						}
+							
+>>>>>>> Stashed changes
 					} catch (Exception e) {
 					}
 				}

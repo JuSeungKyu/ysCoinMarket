@@ -24,7 +24,7 @@ public class Util {
 			Thread.sleep(time);
 			return true;
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("스레드 종료");
 			return false;
 		}
 	}

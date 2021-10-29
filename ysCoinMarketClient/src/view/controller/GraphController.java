@@ -90,6 +90,7 @@ public class GraphController extends Controller {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
 
+<<<<<<< Updated upstream
 		Thread graphDrawThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -104,5 +105,16 @@ public class GraphController extends Controller {
 		});
 		Main.ThreadList.add(graphDrawThread);
 		graphDrawThread.start();
+=======
+	private void blockGroupSet() {
+		minute.setSelected(true);
+		date.setToggleGroup(toggleGroup);
+		hour.setToggleGroup(toggleGroup);
+		minute.setToggleGroup(toggleGroup);
+	}
+	
+	public void blockUpdate() {
+		client.changeHistoryBlock(((Node) toggleGroup.getSelectedToggle()).getId());
+>>>>>>> Stashed changes
 	}
 }

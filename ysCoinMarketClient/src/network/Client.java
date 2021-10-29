@@ -7,11 +7,21 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import application.Main;
+<<<<<<< Updated upstream
 import formet.MessageObject;
 import formet.MessageTypeConstantNumbers;
 import formet.message.CheckMessage;
 import formet.message.History;
 import formet.message.LoginRequest;
+=======
+import format.MessageObject;
+import format.MessageTypeConstantNumbers;
+import format.message.CheckMessage;
+import format.message.CoinTypeChange;
+import format.message.History;
+import format.message.LoginCheckMessage;
+import format.message.LoginRequest;
+>>>>>>> Stashed changes
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import util.StageControll;
@@ -22,6 +32,12 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
+<<<<<<< Updated upstream
+=======
+
+	private String currentCoinId = "양디코인";
+	private String currentHistoryBlockType = "minute";
+>>>>>>> Stashed changes
 	
 	public Client() {
 		try {
@@ -90,6 +106,34 @@ public class Client {
 		}
 	}
 	
+<<<<<<< Updated upstream
+=======
+	public void changeHistoryBlock(String blockType) {
+		this.currentHistoryBlockType = blockType;
+		System.out.println(currentHistoryBlockType);
+		CoinTypeChange();
+	}
+	
+	public void changeCoinType(String coinId) {
+		this.currentCoinId = coinId;
+		CoinTypeChange();
+	}
+	
+	private void CoinTypeChange() {
+		SendObject(new CoinTypeChange(this.currentCoinId, this.currentHistoryBlockType));
+	}
+	
+	public void SendObject(Object obj) {
+		System.out.println(((MessageObject) obj).type);
+		try {
+			this.oos.writeObject(obj);
+			this.oos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+>>>>>>> Stashed changes
 	public History getHistory() {
 		return this.lastHistoryData;
 	}
