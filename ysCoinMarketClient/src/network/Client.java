@@ -95,6 +95,13 @@ public class Client {
 			}
 		}
 	}
+	public String get_typedbname() {
+		return null;
+		
+	}public String get_typedbnum() {
+		return null;
+		
+	}
 	
 	public History getHistory() {
 		return this.lastHistoryData;

@@ -42,6 +42,7 @@ public class MainFxcontroller extends Controller {
 					util.sleep(100);
 					if(client != null) {
 						sc.addFxmlChildren(pane2, "/view/fxml/Graph.fxml", client);
+						sc.addFxmlChildren(pane1, "/view/fxml/CoinTypeList.fxml", client);
 						break;
 					}
 				}
