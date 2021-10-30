@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -107,7 +108,7 @@ public class HistoryQuery {
 			pstmt.executeUpdate();
 
 			sql = "DELETE FROM " + tableName + " WHERE coin_id=? AND time = IF((SELECT count(coin_id) as count FROM "
-					+ tableName + " WHERE coin_id = ?) > 30, (SELECT time FROM " + tableName
+					+ tableName + " WHERE coin_id = ?) > 300, (SELECT time FROM " + tableName
 					+ " WHERE coin_id=? ORDER BY time LIMIT 1), NULL)";
 			pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
@@ -123,8 +124,8 @@ public class HistoryQuery {
 		return new Date( (long) (Math.floor(System.currentTimeMillis()/60000)*60000) );
 	}
 
-	public History getHistory(String tableName, String coinName) {
-		PriceInfo[] infoList = new PriceInfo[30];
+	public ArrayList<PriceInfo> getHistory(String tableName, String coinName) {
+		ArrayList<PriceInfo> infoList = new ArrayList<PriceInfo>();
 		try {
 			String sql = "SELECT start, close_or_mp, high, low, time FROM " + tableName
 					+ " WHERE coin_id = ? ORDER BY time DESC";
@@ -134,12 +135,12 @@ public class HistoryQuery {
 			ResultSet rs = pstmt.executeQuery();
 
 			for(byte i = 0; rs.next(); i++) {
-				infoList[i] = new PriceInfo(rs.getInt("start"), rs.getInt("close_or_mp"), rs.getInt("high"), rs.getInt("low"), rs.getTime("time"));
+				infoList.add(new PriceInfo(rs.getInt("start"), rs.getInt("close_or_mp"), rs.getInt("high"), rs.getInt("low"), rs.getTime("time")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return new History(infoList, coinName);
+		return infoList;
 	}
 }
