@@ -44,7 +44,7 @@ public class InfomationSendThread implements Runnable{
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
 				if(c.getCoinType().equals(coinId)) {
 					if(c.getHistoryBlockType().equals("minute")) {
-						c.sendObject(new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
+						c.sendObject(new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), (short) Math.min(minuteHistory.size(), c.getGraphRangeEnd()) )));
 					} else if(c.getHistoryBlockType().equals("hour")) {
 						c.sendObject(minuteHistory);
 					} else if(c.getHistoryBlockType().equals("date")) {
@@ -57,7 +57,7 @@ public class InfomationSendThread implements Runnable{
 	
 	private PriceInfo[] splitPriceInfoArrayList(ArrayList<PriceInfo> arr, short start, short end) {
 		PriceInfo[] output = new PriceInfo[end-start];
-		for(short i = start; i < arr.size() && i < end; i++) {
+		for(short i = start; i < end; i++) {
 			output[i] = arr.get(i);
 		}
 		

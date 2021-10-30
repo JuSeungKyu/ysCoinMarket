@@ -106,10 +106,12 @@ public class HistoryQuery {
 			pstmt.setString(6, format.format(time));
 			
 			pstmt.executeUpdate();
-
-			sql = "DELETE FROM " + tableName + " WHERE coin_id=? AND time = IF((SELECT count(coin_id) as count FROM "
-					+ tableName + " WHERE coin_id = ?) > 300, (SELECT time FROM " + tableName
-					+ " WHERE coin_id=? ORDER BY time LIMIT 1), NULL)";
+			
+			//DELETE 문에서 서브쿼리 사용이 안되므로 임시 테이블 1개를 만들어 1번 더 감쌈
+			
+			sql = "DELETE FROM "+ tableName + " WHERE coin_id=? "
+					+ "AND time = IF((SELECT count FROM "
+					+ "(SELECT count(coin_id) as count FROM " + tableName + " WHERE coin_id=?) as a) > 300, (SELECT time FROM (SELECT time FROM " + tableName + " WHERE coin_id=? ORDER BY time LIMIT 1) as b), NULL)";
 			pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			pstmt.setString(2, coinName);

@@ -45,7 +45,7 @@ public class UserLoginManager implements Runnable{
 				} else {
 					int idCount = (int) ((long) this.utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
 							+ LoginMsg.id + "'"));
-					if(idCount != 0) {
+					if(idCount == 0) {
 						this.utilQuery.justUpdate("INSERT INTO users(`id`, `pw`) VALUES ('" + LoginMsg.id + "','"
 							+ LoginMsg.pw + "')");
 						oos.writeObject(new LoginCheckMessage("회원가입 되었습니다.", true));

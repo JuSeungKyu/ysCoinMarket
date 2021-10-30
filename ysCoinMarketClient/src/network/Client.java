@@ -13,6 +13,7 @@ import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
 import format.message.LoginRequest;
+import format.message.UpdateGraphRange;
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.message.CheckMessage;
@@ -116,6 +117,10 @@ public class Client {
 	public void changeCoinType(String coinId) {
 		this.currentCoinId = coinId;
 		CoinTypeChange();
+	}
+	
+	public void changeGraphRange(short[] range) {
+		SendObject(new UpdateGraphRange(range));
 	}
 	
 	private void CoinTypeChange() {

@@ -13,6 +13,7 @@ import format.MessageTypeConstantNumbers;
 import format.message.BuyRequest;
 import format.message.CheckMessage;
 import format.message.SellRequest;
+import format.message.UpdateGraphRange;
 import format.message.CoinTypeChange;
 
 
@@ -25,7 +26,7 @@ public class ClientManager extends Thread {
 	
 	private String coinType = "양디코인";
 	private String historyBlockType = "minute";
-	private short[] graphRange = {0, 30};
+	private short[] graphRange = {0, 100};
 
 	public ClientManager(String id, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
 		this.id = id;
@@ -44,8 +45,6 @@ public class ClientManager extends Thread {
 				try {
 					MessageObject msg = (MessageObject) ois.readObject();
 					
-					System.out.println(msg.type);
-					
 					if (msg == null)
 						break;
 					
@@ -62,13 +61,16 @@ public class ClientManager extends Thread {
 					}
 					
 					if (msg.type == MessageTypeConstantNumbers.CHAGNE_COIN_TYPE) {
-						System.out.println(11);
 						this.coinType = ((CoinTypeChange) msg).coinId;
 						this.historyBlockType = ((CoinTypeChange) msg).historyBlock;
 						continue;
 					}
 					
-					break;
+					if(msg.type == MessageTypeConstantNumbers.UPDATE_GRAPH_RANGE) {
+						this.graphRange  = ((UpdateGraphRange) msg).range;
+						continue;
+					}
+					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}

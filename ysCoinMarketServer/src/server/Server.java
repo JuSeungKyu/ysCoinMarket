@@ -28,7 +28,7 @@ public class Server {
 	public static ArrayList<String> coinTypelist;
 
 	public static void main(String[] args) throws IOException {
-		new JDBC("localhost", "yscoin", "root", "");
+		new JDBC("112.153.122.10", "skills03", "skills03", "123456");
 
 		clientMap = new HashMap<String, ClientManager>();
 		clientIdList = new ArrayList<String>();
