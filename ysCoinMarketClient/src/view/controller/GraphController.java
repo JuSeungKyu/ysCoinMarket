@@ -1,7 +1,5 @@
 package view.controller;
 
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
@@ -9,14 +7,14 @@ import java.util.ResourceBundle;
 import application.Main;
 import format.PriceInfo;
 import format.message.History;
-import javafx.event.Event;
+import format.message.UpdateGraphRange;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -37,7 +35,9 @@ public class GraphController extends Controller {
 
 	@FXML
 	Canvas graph;
-	
+
+	Canvas bufCanvas;
+
 	private GraphicsContext gc;
 	private SimpleDateFormat minuteFormat = new SimpleDateFormat("HH:mm:ss");
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,16 +53,22 @@ public class GraphController extends Controller {
 		gc = graph.getGraphicsContext2D();
 		btnSet();
 		blockGroupSet();
+		setEvent();
 
 		Thread graphDrawThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				Util util = new Util();
+				bufCanvas = new Canvas();
 				while (true) {
 					if (!util.sleep(100)) {
 						break;
 					}
-					getHistory();
+					try {
+						getHistory();
+					} catch (Exception e) {
+						bufCanvas = new Canvas();
+					}
 				}
 			}
 		});
@@ -76,14 +82,20 @@ public class GraphController extends Controller {
 	}
 
 	private void setEvent() {
-//		this.graph.addMouseWheelListener(new MouseWheelListener(){
-//            @Override
-//            public void mouseWheelMoved(MouseWheelEvent e) {
-//                System.out.println(e.getWheelRotation());
-//            }
-//        });
+		// 마우스 휠 이벤트
+		this.graph.setOnScroll((ScrollEvent event) -> {
+			short[] arr = { 0, 0 };
+			if (event.getDeltaY() > 0) {
+				arr[1] = 1;
+			} else {
+				arr[1] = -1;
+			}
+			this.client.SendObject(new UpdateGraphRange(arr));
+		});
+
+		// 마우스 그래그 이벤트
 	}
-	
+
 	private void getHistory() {
 		History history = this.client.getHistory();
 		if (history == null) {
@@ -95,50 +107,50 @@ public class GraphController extends Controller {
 		int[] temp = getHighPriceAndLowPrice(pi);
 		int high = temp[0];
 		int low = temp[1];
-		
+
 //		텍스트 그릴 영역을 뺸 너비와 높이
-		int w = (int) graph.getWidth()-80;
-		int h = (int) graph.getHeight()-40;
-		
-		if(h <= 0 || w <= 0) {
+		int w = (int) graph.getWidth() - 80;
+		int h = (int) graph.getHeight() - 40;
+
+		if (h <= 0 || w <= 0) {
 			return;
 		}
-		
+
 		int priceScale = (int) (high - low) / h;
-		
-		if(priceScale == 0) {
+
+		if (priceScale == 0) {
 			return;
 		}
-		
+
 //		테두리 그리기, 그래프 초기화
 		gc.clearRect(0, 0, graph.getWidth(), graph.getHeight());
 		canvasDrawLine(0, h, w, h);
 		canvasDrawLine(w, 0, w, h);
 		gc.setTextAlign(TextAlignment.CENTER);
-		
+
 //		그래프 그리기
-		if(this.graphType) {
+		if (this.graphType) {
 			drawCurvedLineGraph(pi, w, h, priceScale, low);
 		} else {
 			drawCandleGraph(pi, w, h, priceScale, high, low);
 		}
-		
+
 //		그래프 가격 그리기
 		drawPrice(high, low, h, w);
 	}
-	
+
 	private void drawPrice(int high, int low, int h, int w) {
 		gc.setFill(Color.BLACK);
 		gc.setTextAlign(TextAlignment.LEFT);
-		for(byte i=0; i<8; i++) {
-			int y = Math.round((h - h /8 * i));
-			canvasDrawLine(w, y, w+10, y);
-			gc.fillText(Integer.toString(low + (high - low)/8*i), w+15, y);
+		for (byte i = 0; i < 8; i++) {
+			int y = Math.round((h - h / 8 * i));
+			canvasDrawLine(w, y, w + 10, y);
+			gc.fillText(Integer.toString(low + (high - low) / 8 * i), w + 15, y);
 		}
 	}
-	
+
 	private int[] getHighPriceAndLowPrice(PriceInfo[] pi) {
-		int[] output = {pi[0].highPrice, pi[0].lowPrice};
+		int[] output = { pi[0].highPrice, pi[0].lowPrice };
 		for (short i = 0; i < pi.length; i++) {
 			if (output[0] < pi[i].highPrice) {
 				output[0] = pi[i].highPrice;

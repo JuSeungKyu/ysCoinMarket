@@ -26,7 +26,7 @@ public class ClientManager extends Thread {
 	
 	private String coinType = "양디코인";
 	private String historyBlockType = "minute";
-	private short[] graphRange = {0, 100};
+	private short[] graphRange = {0, 30};
 
 	public ClientManager(String id, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
 		this.id = id;
@@ -67,7 +67,7 @@ public class ClientManager extends Thread {
 					}
 					
 					if(msg.type == MessageTypeConstantNumbers.UPDATE_GRAPH_RANGE) {
-						this.graphRange  = ((UpdateGraphRange) msg).range;
+						setGraphRange(((UpdateGraphRange) msg).range);
 						continue;
 					}
 					
@@ -83,7 +83,15 @@ public class ClientManager extends Thread {
 	}
 	
 	private void setGraphRange(short[] graphRange) {
-		this.graphRange = graphRange;
+		this.graphRange[0] += graphRange[0];
+		this.graphRange[1] += graphRange[1];
+		checkGraphRange();
+	}
+	
+	public void checkGraphRange() {
+		if(this.graphRange[0] >= this.graphRange[1]) {
+			graphRange[0] = (short) (this.graphRange[1] - 1);
+		}
 	}
 	
 	private void sellRequest(SellRequest msg) {
@@ -156,5 +164,9 @@ public class ClientManager extends Thread {
 	
 	public short getGraphRangeEnd() {
 		return this.graphRange[1];
+	}
+
+	public void setGraphRangeEnd(short size) {
+		this.graphRange[1] = size;
 	}
 }

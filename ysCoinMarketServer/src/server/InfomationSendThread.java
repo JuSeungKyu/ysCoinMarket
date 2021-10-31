@@ -32,7 +32,7 @@ public class InfomationSendThread implements Runnable{
 			}
 			//---- 가격 역사 보내기 ----
 
-			util.sleep(100);
+			util.sleep(50);
 		}
 	}
 
@@ -42,9 +42,15 @@ public class InfomationSendThread implements Runnable{
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
 			try {
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
+				
+				if(minuteHistory.size() < c.getGraphRangeEnd()) {
+					c.setGraphRangeEnd((short) minuteHistory.size());
+					c.checkGraphRange();
+				}
+				
 				if(c.getCoinType().equals(coinId)) {
 					if(c.getHistoryBlockType().equals("minute")) {
-						c.sendObject(new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), (short) Math.min(minuteHistory.size(), c.getGraphRangeEnd()) )));
+						c.sendObject(new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 					} else if(c.getHistoryBlockType().equals("hour")) {
 						c.sendObject(minuteHistory);
 					} else if(c.getHistoryBlockType().equals("date")) {
