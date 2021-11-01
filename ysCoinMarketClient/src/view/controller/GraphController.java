@@ -14,6 +14,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -53,7 +54,6 @@ public class GraphController extends Controller {
 		gc = graph.getGraphicsContext2D();
 		btnSet();
 		blockGroupSet();
-		setEvent();
 
 		Thread graphDrawThread = new Thread(new Runnable() {
 			@Override
@@ -61,19 +61,21 @@ public class GraphController extends Controller {
 				Util util = new Util();
 				bufCanvas = new Canvas();
 				while (true) {
-					if (!util.sleep(100)) {
-						break;
-					}
 					try {
 						getHistory();
 					} catch (Exception e) {
 						bufCanvas = new Canvas();
+					}
+					sendGraphRangeUpdateRequst();
+					if (!util.sleep(50)) {
+						break;
 					}
 				}
 			}
 		});
 		Main.ThreadList.add(graphDrawThread);
 		graphDrawThread.start();
+		setEvent();
 	}
 
 	public void initData(Object client) {
@@ -81,6 +83,10 @@ public class GraphController extends Controller {
 		System.out.println("전달받음");
 	}
 
+	protected short beforeMousePointX = 0;
+	protected short historyLength = 0;
+	protected float movementX = 0;
+	
 	private void setEvent() {
 		// 마우스 휠 이벤트
 		this.graph.setOnScroll((ScrollEvent event) -> {
@@ -94,6 +100,24 @@ public class GraphController extends Controller {
 		});
 
 		// 마우스 그래그 이벤트
+		this.graph.setOnMousePressed((MouseEvent event)->{
+			System.out.println("start");
+			this.beforeMousePointX = (short) event.getX();
+		});
+		
+		this.graph.setOnMouseDragged((MouseEvent event)->{
+			this.movementX += (event.getX() - beforeMousePointX) / (this.graph.getWidth() / this.historyLength);
+			this.beforeMousePointX = (short) event.getX();
+		});
+	}
+	
+	private void sendGraphRangeUpdateRequst() {
+		if(Math.abs(this.movementX) > 1) {
+			this.client.SendObject(new UpdateGraphRange( 
+					(short) Math.round(movementX)
+			));
+			this.movementX = 0;
+		}
 	}
 
 	private void getHistory() {
@@ -103,6 +127,7 @@ public class GraphController extends Controller {
 		}
 
 		PriceInfo[] pi = history.info;
+		this.historyLength = (short) pi.length;
 
 		int[] temp = getHighPriceAndLowPrice(pi);
 		int high = temp[0];

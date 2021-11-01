@@ -48,8 +48,6 @@ public class ClientManager extends Thread {
 					if (msg == null)
 						break;
 					
-					System.out.println(msg.type);
-					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest)msg);
 						continue;
@@ -85,6 +83,15 @@ public class ClientManager extends Thread {
 	private void setGraphRange(short[] graphRange) {
 		this.graphRange[0] += graphRange[0];
 		this.graphRange[1] += graphRange[1];
+		
+		if(this.graphRange[0] != 0) {
+			for(byte i = 0; i < this.graphRange.length; i++) {
+				if(this.graphRange[i] < 0) {
+					this.graphRange[i] = 0;
+				}
+			}
+		}
+		
 		checkGraphRange();
 	}
 	

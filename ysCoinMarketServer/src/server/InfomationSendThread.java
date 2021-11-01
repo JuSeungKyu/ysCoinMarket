@@ -57,14 +57,16 @@ public class InfomationSendThread implements Runnable{
 						c.sendObject(minuteHistory);
 					}
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	private PriceInfo[] splitPriceInfoArrayList(ArrayList<PriceInfo> arr, short start, short end) {
 		PriceInfo[] output = new PriceInfo[end-start];
-		for(short i = start; i < end; i++) {
-			output[i] = arr.get(i);
+		for(short i = 0; i < end - start; i++) {
+			output[i] = arr.get(i+start);
 		}
 		
 		return output;
