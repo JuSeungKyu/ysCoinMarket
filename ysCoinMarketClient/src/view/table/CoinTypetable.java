@@ -1,12 +1,12 @@
-package view.date;
+package view.table;
 
 import javafx.beans.property.StringProperty;
 
-public class CoinTypeDate {
+public class CoinTypetable {
 	private StringProperty name;
 	private StringProperty change;
 
-	public CoinTypeDate(StringProperty name, StringProperty change) {
+	public CoinTypetable(StringProperty name, StringProperty change) {
 		this.name = name;
 		this.change = change;
 	}

@@ -9,15 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import network.Client;
-import view.date.CoinTypeDate;
+import view.table.CoinTypetable;
 
 public class CoinTypeListController extends Controller {
 	@FXML
-	public TableView<CoinTypeDate> viewMain ;
+	public TableView<CoinTypetable> viewMain ;
 	@FXML
-	public TableColumn<CoinTypeDate, String> nameColumn;
+	public TableColumn<CoinTypetable, String> nameColumn;
 	@FXML
-	public TableColumn<CoinTypeDate, String> changeColumn;
+	public TableColumn<CoinTypetable, String> changeColumn;
 	private Client client;
 	@Override
 	public void initData(Object data) {
@@ -25,19 +25,25 @@ public class CoinTypeListController extends Controller {
 		System.out.println("C전달받음");
 	}
 	public void getname() {
-
+		client.get_typedbname();
 		
 		
 	}public void getchangelist() {
 		
+		String snum = client.get_typedbnum();//DB coin_type  last_price 추출 부탁
+		String syestercoin = client.get_yesterdaycoin();
+		int coin = Integer.parseInt(snum);
+		int yestercoin = Integer.parseInt(syestercoin);//String변경
+		System.out.println("coin : "+coin+"\r\n"+"yesterday"+yestercoin);//확인
+		double eve = coin / yestercoin;
+		
+		double changenum = eve /yestercoin* 100;//changenum = 값
+	
+		
+		
 		
 		
 	}
-	
-	
-	
-	
-	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

@@ -99,13 +99,16 @@ public class Client {
 	}
 	
 	public String get_typedbname() {
-		return null;
+		return null;//코인이름
 		
 	}
 	
 	public String get_typedbnum() {
-		return null;
+		return null;//코인값
 		
+	}
+	public String get_yesterdaycoin() {
+		return null;//전날코인값
 	}
 	
 	public void changeHistoryBlock(String blockType) {
