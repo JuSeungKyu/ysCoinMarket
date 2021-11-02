@@ -2,11 +2,11 @@ package view.userFxmlTag;
 
 import javafx.beans.property.StringProperty;
 
-public class CoinTypetable {
+public class CoinTypeTable {
 	private StringProperty name;
 	private StringProperty change;
 
-	public CoinTypetable(StringProperty name, StringProperty change) {
+	public CoinTypeTable(StringProperty name, StringProperty change) {
 		this.name = name;
 		this.change = change;
 	}
