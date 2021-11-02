@@ -35,6 +35,10 @@ public class InfomationSendThread implements Runnable{
 			util.sleep(50);
 		}
 	}
+	
+	public static void sendHistoryForOneUser(String coinId, ClientManager client) {
+		
+	}
 
 	private void sendHistory(String coinId) {
 		ArrayList<PriceInfo> minuteHistory = q1.getHistory("history_minute", coinId);

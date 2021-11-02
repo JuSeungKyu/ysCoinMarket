@@ -8,6 +8,9 @@ import application.Main;
 import format.PriceInfo;
 import format.message.History;
 import format.message.UpdateGraphRange;
+import javafx.animation.AnimationTimer;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -52,29 +55,23 @@ public class GraphController extends Controller {
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
+		
 		btnSet();
 		blockGroupSet();
-
-		Thread graphDrawThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Util util = new Util();
-				bufCanvas = new Canvas();
-				while (true) {
-					try {
-						getHistory();
-					} catch (Exception e) {
-						bufCanvas = new Canvas();
-					}
-					sendGraphRangeUpdateRequst();
-					if (!util.sleep(50)) {
-						break;
-					}
+		
+		LongProperty lastUpdateTime = new SimpleLongProperty(0);
+		AnimationTimer timer = new AnimationTimer() {
+		    @Override
+		    public void handle(long timestamp) {
+	        	try {
+					getHistory();
+				} catch (Exception e) {
+					bufCanvas = new Canvas();
 				}
-			}
-		});
-		Main.ThreadList.add(graphDrawThread);
-		graphDrawThread.start();
+				sendGraphRangeUpdateRequst();
+		    }
+		};
+		timer.start();
 		setEvent();
 	}
 
@@ -101,7 +98,6 @@ public class GraphController extends Controller {
 
 		// 마우스 그래그 이벤트
 		this.graph.setOnMousePressed((MouseEvent event)->{
-			System.out.println("start");
 			this.beforeMousePointX = (short) event.getX();
 		});
 		
