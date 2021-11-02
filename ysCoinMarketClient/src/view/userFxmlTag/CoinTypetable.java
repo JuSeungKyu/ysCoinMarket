@@ -1,4 +1,4 @@
-package view.table;
+package view.userFxmlTag;
 
 import javafx.beans.property.StringProperty;
 

@@ -1,15 +1,13 @@
 package view.controller;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import network.Client;
-import view.table.CoinTypetable;
+import view.userFxmlTag.CoinTypetable;
 
 public class CoinTypeListController extends Controller {
 	@FXML
@@ -34,13 +32,10 @@ public class CoinTypeListController extends Controller {
 		String syestercoin = client.get_yesterdaycoin();
 		int coin = Integer.parseInt(snum);
 		int yestercoin = Integer.parseInt(syestercoin);//String변경
-		System.out.println("coin : "+coin+"\r\n"+"yesterday"+yestercoin);//확인
+		System.out.println("coin :"+coin+"\r\n"+"yesterday coin:"+yestercoin);//확인  지워야 할것 
 		double eve = coin / yestercoin;
 		
 		double changenum = eve /yestercoin* 100;//changenum = 값
-	
-		
-		
 		
 		
 	}
@@ -50,10 +45,5 @@ public class CoinTypeListController extends Controller {
 		client.get_typedbname();
 		client.get_typedbnum();
 	}
-
-	
-	
-	
-	
 	
 }
