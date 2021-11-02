@@ -26,7 +26,6 @@ public class CoinTypeListController extends Controller {
 
 	public void getName() {
 		client.getTypeDBName();
-
 	}
 
 	public void getChangeList() {
