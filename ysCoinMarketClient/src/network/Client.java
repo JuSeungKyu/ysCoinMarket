@@ -98,16 +98,16 @@ public class Client {
 		}
 	}
 	
-	public String get_typedbname() {
+	public String getTypeDBName() {
 		return null;//코인이름
 		
 	}
 	
-	public String get_typedbnum() {
+	public String getTypeDBNum() {
 		return null;//코인값
 		
 	}
-	public String get_yesterdaycoin() {
+	public String getYesterdayCoin() {
 		return null;//전날코인값
 	}
 	
