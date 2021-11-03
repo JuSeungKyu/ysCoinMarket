@@ -22,7 +22,7 @@ public class JDBC {
 			e.printStackTrace();
 		}
 			
-		this.con = con;
+		JDBC.con = con;
 	}
 
 }

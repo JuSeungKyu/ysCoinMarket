@@ -14,15 +14,18 @@ public class UserHashControlQuery {
 	}
 
 	public void hashOwnerTransfer(String coin_id, String userId, int price, int count, String type) {
+		UtilQuery uq = new UtilQuery();
+		ResultSet rs = null;
 		if (type.equals("구매")) {
 			type = "판매";
+			rs = uq.justGetResultSet("SELECT user_id, count FROM order_info WHERE price<=" + price
+					+ " AND order_type='" + type + "' ORDER BY price order_time DESC");
 		} else {
 			type = "구매";
+			rs = uq.justGetResultSet("SELECT user_id, count FROM order_info WHERE price>=" + price
+					+ " AND order_type='" + type + "' ORDER BY price order_time DESC");
 		}
-
-		UtilQuery uq = new UtilQuery();
-		ResultSet rs = uq.justGetResultSet("SELECT user_id, count FROM order_info WHERE price=" + price
-				+ " AND order_type='" + type + "' ORDER BY order_time DESC");
+		
 		try {
 			while (rs.next() && count > 0) {
 				if (rs.getInt(count) > count) {
