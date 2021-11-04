@@ -102,7 +102,7 @@ public class ClientManager extends Thread {
 		if(uhcq.getUserHashCount(this.id, msg.coinname) > msg.count - uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
 			sendCheckMessage("매도 주문 실패", false);
 		} else {
-			new OrderQuery().buyAndRequest(this.id, msg.coinname, msg.price, msg.count, "판매");
+			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "판매");
 			sendCheckMessage("매도 주문 성공", true);
 		}
 	}
@@ -112,7 +112,7 @@ public class ClientManager extends Thread {
 		if(msg.count * msg.price > money) {
 			sendCheckMessage("매수 주문 실패", false);
 		} else{
-			new OrderQuery().buyAndRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
+			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
 			sendCheckMessage("매수 주문 성공", true);
 		}
 	}

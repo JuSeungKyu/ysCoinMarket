@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import db.JDBC;
 
 public class OrderQuery {
-	public void buyAndRequest(String userId, String coinname, int price, int count, String type) {
-		int sellOrderCount = (int) new UtilQuery().justGetObject("SELECT sum(count) FROM ordre_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
+	public void buyAndSellRequest(String userId, String coinname, int price, int count, String type) {
+		int sellOrderCount = (int) new UtilQuery().justGetObject("SELECT sum(count) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
 				+"' AND coin_id = '" + coinname + "'");
 
 		UserHashControlQuery uhcq = new UserHashControlQuery();

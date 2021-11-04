@@ -31,9 +31,11 @@ public class UserHashControlQuery {
 				if (rs.getInt(count) > count) {
 					uq.justUpdate("UPDATE hash SET user_id='" + userId + "' WHERE user_id='" + rs.getString("user_id")
 							+ "' AND coin_id='" + coin_id + " LIMIT " + count);
+					uq.justUpdate("UPDATE order_info SET count=count-"+count+" WHERE user_id='" + rs.getString("user_id")+"' price="+price + " ORDER BY order_time LIMIT 1");
 				} else {
 					uq.justUpdate("UPDATE hash SET user_id='" + userId + "' WHERE user_id='" + rs.getString("user_id")
 							+ "' AND coin_id='" + coin_id + " LIMIT " + rs.getInt(count));
+					uq.justUpdate("DELETE FROM order_info WHERE user_id='" + rs.getString("user_id")+"' price="+price + " ORDER BY order_time LIMIT 1");
 				}
 
 				count -= rs.getInt(count);
