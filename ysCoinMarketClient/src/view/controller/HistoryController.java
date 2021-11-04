@@ -3,36 +3,44 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import format.message.History;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import network.Client;
+import view.userFxmlTag.HistoryTable;
 
 public class HistoryController extends Controller{
-	private Client client = new Client();
 	
 	@FXML
 	private Button backBtn;
 
 	@FXML
-	private TableView<?> tvHistoryView;
+	private TableView<HistoryTable> tvHistoryView;
 	
 	@FXML
-	private TableColumn<?, ?> tcEvent;
+	private TableColumn<HistoryTable, String> tcName;
 	
 	@FXML
-	private TableColumn<?, ?> tcType;
+	private TableColumn<HistoryTable, String> tcType;
 	
 	@FXML
-	private TableColumn<?, ?> tcPrice;
+	private TableColumn<HistoryTable, String> tcPrice;
 	
 	@FXML
-	private TableColumn<?, ?> tcTime;
+	private TableColumn<HistoryTable, String> tcTime;
+	
+	private ObservableList<HistoryTable> items;
+
+	private Client client;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		items = FXCollections.observableArrayList();
+		tvHistoryView.setItems(items);
+		//?
 		System.out.println("거래내역 스타트");
 		
 	}
@@ -43,7 +51,7 @@ public class HistoryController extends Controller{
 		System.out.println("전달 완료");
 	}
 	
-	private void getHistory() {
+	private void get() {
 		
 	}
 
