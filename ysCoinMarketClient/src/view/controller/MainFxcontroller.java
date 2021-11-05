@@ -34,7 +34,6 @@ public class MainFxcontroller extends Controller {
 	}
 
 	public void CoinMining() {
-		System.out.println(client.getCurrentCoinId());
 		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, client.getCurrentCoinId(), false);
 	}
 
