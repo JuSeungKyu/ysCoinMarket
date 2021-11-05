@@ -1,51 +1,61 @@
 package view.userFxmlTag;
 
-import javafx.beans.property.StringProperty;
+import java.sql.Time;
 
 public class HistoryTable {
-	private StringProperty name;
-	private StringProperty type;
-	private StringProperty price;
-	private StringProperty time;
+	private String name;
+	private String type;
+	private int price;
+	private Time time;
+	private int whether; //된건지 안된건지
 	
-	public HistoryTable(StringProperty name, StringProperty type, StringProperty price, StringProperty time) {
+	public HistoryTable(String name, String type, int price, Time time, int whether) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.price = price;
 		this.time = time;
+		this.whether = whether;
 	}
 
-	public StringProperty getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(StringProperty name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public StringProperty getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(StringProperty type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
-	public StringProperty getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(StringProperty price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
-	public StringProperty getTime() {
+	public Time getTime() {
 		return time;
 	}
 
-	public void setTime(StringProperty time) {
+	public void setTime(Time time) {
 		this.time = time;
+	}
+
+	public int getAa() {
+		return whether;
+	}
+
+	public void setAa(int whether) {
+		this.whether = whether;
 	}
 	
 }

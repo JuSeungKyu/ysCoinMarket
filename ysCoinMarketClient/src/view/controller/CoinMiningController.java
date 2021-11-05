@@ -1,15 +1,15 @@
 package view.controller;
 
 import java.net.URL;
+import java.util.ResourceBundle;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ResourceBundle;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import util.Util;
-import util.uiUpdate.UIUpdateThread;
 
 public class CoinMiningController extends Controller {
 	
@@ -55,6 +55,5 @@ public class CoinMiningController extends Controller {
 	public void initData(Object data) {
 		currentCoin = (String)data;
 	}
-
 	
 }

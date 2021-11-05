@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import application.Main;
+import format.HistoryInfo;
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.TypeInfo;
@@ -24,6 +25,7 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
+	private HistoryInfo HistoryData = null;
 
 	private String currentCoinId = "양디코인";
 	private String currentHistoryBlockType = "minute";
@@ -95,7 +97,7 @@ public class Client {
 		
 		return null;
 	}
-
+	
 	public void changeHistoryBlock(String blockType) {
 		this.currentHistoryBlockType = blockType;
 		System.out.println(currentHistoryBlockType);
@@ -123,13 +125,17 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public History getHistory() {
 		return this.lastHistoryData;
 	}
 
 	public void setRoot(AnchorPane root) {
 		this.currentRoot = root;
+	}
+
+	public HistoryInfo getHistoryInfo() {
+		return HistoryData;
 	}
 
 	public ObjectOutputStream getOos() {
@@ -179,6 +185,4 @@ public class Client {
 	public void setCurrentHistoryBlockType(String currentHistoryBlockType) {
 		this.currentHistoryBlockType = currentHistoryBlockType;
 	}
-	
-	
 }

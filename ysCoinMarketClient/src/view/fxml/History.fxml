@@ -8,12 +8,13 @@
 <AnchorPane prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
    <children>
       <Button fx:id="backBtn" layoutX="62.0" layoutY="598.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="110.0" text="뒤로가기" />
-      <TableView fx:id="tvHistoryView" layoutX="62.0" layoutY="67.0" prefHeight="505.0" prefWidth="918.0">
+      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="67.0" prefHeight="505.0" prefWidth="918.0">
         <columns>
-          <TableColumn fx:id="tcEvent" prefWidth="155.0" text="종목" />
-          <TableColumn fx:id="tcType" minWidth="0.0" prefWidth="169.0" text="거래종류" />
-            <TableColumn fx:id="tcPrice" prefWidth="407.0" text="거래가격 " />
-            <TableColumn fx:id="tcTime" prefWidth="186.0" text="거래시간" />
+          <TableColumn fx:id="tbName" prefWidth="155.0" text="종목" />
+          <TableColumn fx:id="tbType" minWidth="0.0" prefWidth="169.0" text="거래종류" />
+            <TableColumn fx:id="tbPrice" prefWidth="278.0" text="거래가격 " />
+            <TableColumn fx:id="tbTime" minWidth="0.0" prefWidth="188.0" text="거래시간" />
+            <TableColumn fx:id="tbWhether" prefWidth="127.0" text="여부" />
         </columns>
       </TableView>
    </children>
