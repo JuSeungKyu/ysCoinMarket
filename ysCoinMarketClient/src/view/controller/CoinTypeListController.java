@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import network.Client;
 import db.JDBC;
 import view.userFxmlTag.CoinTypeTable;
@@ -32,43 +33,30 @@ public class CoinTypeListController extends Controller {
 		System.out.println("C전달받음");
 	}
 
-	public void getTable() {
-		
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
+		
+		
+		changeColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
+		System.out.println("종목별 리스트 출력");
 		items = FXCollections.observableArrayList();
 		viewMain.setItems(items);
-		listUp();
 		
 	}
-
-	public void listUp() {
-		nameColumn.setCellValueFactory(cellData -> cellData.getValue().getName());
-		changeColumn.setCellValueFactory(cellData -> cellData.getValue().getChange());
-
-		JDBC db = new JDBC("localhost", "yscoin", "root", "");
-		Connection con = db.con;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		String sql = "SELECT * FROM `coin_type` ORDER BY 1 ASC";
-		try {
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(sql);
-
-			while (rs.next()) {
-				String name = rs.getString("name");
-				String change = rs.getString("change");
-
-				CoinTypeTable gs = new CoinTypeTable(name, change);
-				((List<CoinTypeTable>) viewMain).add(gs);
-			}
-		} catch (Exception e) {
-			System.out.println("오류");
-		}
+public void getTable() {
+	TypeInfo[] typeInfo = this.client.getTypeInfo();
+	if(typeInfo == null) {
+		return;
+		
 	}
-
-
+	
+	items = FXCollections.observableArrayList();
+	viewMain.setItems(items);
+	
+	
+	
+	}
 }
