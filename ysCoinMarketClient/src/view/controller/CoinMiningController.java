@@ -45,8 +45,6 @@ public class CoinMiningController extends Controller {
 		    public void handle(long timestamp) {
 		    	ts.setTime(System.currentTimeMillis() - startTime);
 		    	time.setText("경과 시간 : " + sdf.format(ts));
-		    	
-		    	util.sleep(1000);
 		    }
 		};
 		
