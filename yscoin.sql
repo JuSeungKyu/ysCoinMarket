@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 21-10-27 11:14
+-- 생성 시간: 21-11-05 03:16
 -- 서버 버전: 10.4.21-MariaDB
--- PHP 버전: 7.4.23
+-- PHP 버전: 7.4.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -131,6 +131,22 @@ CREATE TABLE `order_info` (
   `order_type` enum('구매','판매') NOT NULL,
   `coin_id` varchar(50) NOT NULL,
   `order_time` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `transaction_details`
+--
+
+CREATE TABLE `transaction_details` (
+  `coin_id` varchar(50) NOT NULL,
+  `ordering_amount` int(11) NOT NULL,
+  `penalty_amount` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `order_type` enum('구매','판매') NOT NULL,
+  `user_id` varchar(20) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

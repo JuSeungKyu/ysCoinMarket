@@ -133,13 +133,10 @@ public class Client {
 	public void setRoot(AnchorPane root) {
 		this.currentRoot = root;
 	}
-<<<<<<< HEAD
-	
 
 	public HistoryInfo getHistoryInfo() {
 		return HistoryData;
 	}
-=======
 
 	public ObjectOutputStream getOos() {
 		return oos;
@@ -188,7 +185,4 @@ public class Client {
 	public void setCurrentHistoryBlockType(String currentHistoryBlockType) {
 		this.currentHistoryBlockType = currentHistoryBlockType;
 	}
-	
-	
->>>>>>> 25191ad400876532ebf35ab8478f577208942817
 }
