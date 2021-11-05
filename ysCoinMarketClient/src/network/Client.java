@@ -131,4 +131,54 @@ public class Client {
 	public void setRoot(AnchorPane root) {
 		this.currentRoot = root;
 	}
+
+	public ObjectOutputStream getOos() {
+		return oos;
+	}
+
+	public void setOos(ObjectOutputStream oos) {
+		this.oos = oos;
+	}
+
+	public ObjectInputStream getOis() {
+		return ois;
+	}
+
+	public void setOis(ObjectInputStream ois) {
+		this.ois = ois;
+	}
+
+	public History getLastHistoryData() {
+		return lastHistoryData;
+	}
+
+	public void setLastHistoryData(History lastHistoryData) {
+		this.lastHistoryData = lastHistoryData;
+	}
+
+	public AnchorPane getCurrentRoot() {
+		return currentRoot;
+	}
+
+	public void setCurrentRoot(AnchorPane currentRoot) {
+		this.currentRoot = currentRoot;
+	}
+
+	public String getCurrentCoinId() {
+		return currentCoinId;
+	}
+
+	public void setCurrentCoinId(String currentCoinId) {
+		this.currentCoinId = currentCoinId;
+	}
+
+	public String getCurrentHistoryBlockType() {
+		return currentHistoryBlockType;
+	}
+
+	public void setCurrentHistoryBlockType(String currentHistoryBlockType) {
+		this.currentHistoryBlockType = currentHistoryBlockType;
+	}
+	
+	
 }

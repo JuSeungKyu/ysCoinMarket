@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import network.Client;
 import util.StageControll;
@@ -32,6 +33,11 @@ public class MainFxcontroller extends Controller {
 		loadPage();
 	}
 
+	public void CoinMining() {
+		System.out.println(client.getCurrentCoinId());
+		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, client.getCurrentCoinId(), false);
+	}
+
 	public void loadPage() {
 		StageControll sc = new StageControll();
 		Util util = new Util();
@@ -40,7 +46,7 @@ public class MainFxcontroller extends Controller {
 			public void update() {
 				while (true) {
 					util.sleep(100);
-					if(client != null) {
+					if (client != null) {
 						sc.addFxmlChildren(pane2, "/view/fxml/Graph.fxml", client);
 						sc.addFxmlChildren(pane1, "/view/fxml/CoinTypeList.fxml", client);
 						break;
