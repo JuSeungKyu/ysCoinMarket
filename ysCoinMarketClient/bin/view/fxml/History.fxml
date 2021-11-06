@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
+<AnchorPane fx:id="root" prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
    <children>
-      <Button fx:id="backBtn" layoutX="62.0" layoutY="598.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="110.0" text="뒤로가기" />
+      <Button layoutX="62.0" layoutY="598.0" mnemonicParsing="false" onAction="#backScene" prefHeight="43.0" prefWidth="110.0" text="뒤로가기" />
       <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="67.0" prefHeight="505.0" prefWidth="918.0">
         <columns>
           <TableColumn fx:id="tbName" prefWidth="155.0" text="종목" />

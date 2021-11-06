@@ -50,11 +50,11 @@ public class HistoryTable {
 		this.time = time;
 	}
 
-	public int getAa() {
+	public int getWhether() {
 		return whether;
 	}
 
-	public void setAa(int whether) {
+	public void setWhether(int whether) {
 		this.whether = whether;
 	}
 	

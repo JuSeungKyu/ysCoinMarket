@@ -25,7 +25,7 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
-	private HistoryInfo HistoryData = null;
+	private HistoryInfo HistoryInfoData = null;
 
 	private String currentCoinId = "양디코인";
 	private String currentHistoryBlockType = "minute";
@@ -132,10 +132,14 @@ public class Client {
 
 	public void setRoot(AnchorPane root) {
 		this.currentRoot = root;
+	}	
+
+	public HistoryInfo getHistoryInfoData() {
+		return HistoryInfoData;
 	}
 
-	public HistoryInfo getHistoryInfo() {
-		return HistoryData;
+	public void setHistoryInfoData(HistoryInfo historyInfoData) {
+		HistoryInfoData = historyInfoData;
 	}
 
 	public ObjectOutputStream getOos() {

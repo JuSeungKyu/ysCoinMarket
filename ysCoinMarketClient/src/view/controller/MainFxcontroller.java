@@ -36,6 +36,10 @@ public class MainFxcontroller extends Controller {
 	public void CoinMining() {
 		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, client.getCurrentCoinId(), false);
 	}
+	
+	public void history() {
+		new StageControll().newStage("/view/fxml/History.fxml", root, client.getHistoryInfoData(), false);
+	}
 
 	public void loadPage() {
 		StageControll sc = new StageControll();
