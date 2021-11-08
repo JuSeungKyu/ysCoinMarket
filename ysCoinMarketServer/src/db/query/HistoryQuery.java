@@ -111,7 +111,7 @@ public class HistoryQuery {
 			
 			sql = "DELETE FROM "+ tableName + " WHERE coin_id=? "
 					+ "AND time = IF((SELECT count FROM "
-					+ "(SELECT count(coin_id) as count FROM " + tableName + " WHERE coin_id=?) as a) > 300, (SELECT time FROM (SELECT time FROM " + tableName + " WHERE coin_id=? ORDER BY time LIMIT 1) as b), NULL)";
+					+ "(SELECT count(coin_id) as count FROM " + tableName + " WHERE coin_id=?) as a) > 9999999, (SELECT time FROM (SELECT time FROM " + tableName + " WHERE coin_id=? ORDER BY time LIMIT 1) as b), NULL)";
 			pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			pstmt.setString(2, coinName);

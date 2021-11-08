@@ -17,8 +17,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -42,14 +40,14 @@ public class GraphController extends Controller {
 	@FXML
 	Canvas graph;
 
+	Canvas bufCanvas;
+
 	private GraphicsContext gc;
 	private SimpleDateFormat minuteFormat = new SimpleDateFormat("HH:mm:ss");
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Client client;
 
 	private boolean graphType = false;
-	
-	private int movementBlock = 0;
 
 	ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -61,13 +59,14 @@ public class GraphController extends Controller {
 		btnSet();
 		blockGroupSet();
 		
+		LongProperty lastUpdateTime = new SimpleLongProperty(0);
 		AnimationTimer timer = new AnimationTimer() {
 		    @Override
 		    public void handle(long timestamp) {
 	        	try {
 					getHistory();
 				} catch (Exception e) {
-					e.printStackTrace();
+					bufCanvas = new Canvas();
 				}
 				sendGraphRangeUpdateRequst();
 		    }
@@ -97,7 +96,7 @@ public class GraphController extends Controller {
 			this.client.SendObject(new UpdateGraphRange(arr));
 		});
 
-		// 마우스 드래그 이벤트
+		// 마우스 그래그 이벤트
 		this.graph.setOnMousePressed((MouseEvent event)->{
 			this.beforeMousePointX = (short) event.getX();
 		});
@@ -106,22 +105,13 @@ public class GraphController extends Controller {
 			this.movementX += (event.getX() - beforeMousePointX) / (this.graph.getWidth() / this.historyLength);
 			this.beforeMousePointX = (short) event.getX();
 		});
-		
-		this.graph.setOnMouseReleased((MouseEvent event)->{
-			this.client.SendObject(new UpdateGraphRange( 
-					(short) this.movementBlock
-			));
-			this.movementX = 0;
-			this.movementBlock = 0;
-			this.getHistory();
-		});
-
 	}
 	
 	private void sendGraphRangeUpdateRequst() {
 		if(Math.abs(this.movementX) > 1) {
-			System.out.println("드래그");
-			this.movementBlock += Math.round(this.movementX);
+			this.client.SendObject(new UpdateGraphRange( 
+					(short) Math.round(movementX)
+			));
 			this.movementX = 0;
 		}
 	}
@@ -192,29 +182,18 @@ public class GraphController extends Controller {
 		}
 		return output;
 	}
-	
-	private void drawCurvedLineGraph(PriceInfo[] pi, int w, int h, int priceScale, int low) {
-		double oneblockScale = (double)w / (double)pi.length;
-		float interval = (float) (pi.length / 4);
 
-		int graphStartPoint = (int) (movementBlock * oneblockScale);
-		
-		short i = 0;
-		short end = (short) (pi.length -1);
-		if(movementBlock > 0) {
-			i += movementBlock;
-		} else {
-			end += movementBlock;
-		}
-		
-		for (; i < end; i++) {
+	private void drawCurvedLineGraph(PriceInfo[] pi, int w, int h, int priceScale, int low) {
+		int oneblockScale = (int) w / pi.length;
+		float interval = (float) (pi.length / 4);
+		for (short i = 0; i < pi.length - 1; i++) {
 //			그래프 그림 그리기
-			int x = (int) (graphStartPoint + w - (oneblockScale * i + oneblockScale / 2));
-			int nextX = (int) (graphStartPoint + w - (oneblockScale * (i + 1) + oneblockScale / 2));
+			int x = w - (oneblockScale * i + oneblockScale / 2);
+			int nextX = w - (oneblockScale * (i + 1) + oneblockScale / 2);
 
 			canvasDrawLine(x, h - (pi[i].closePrice - low) / priceScale, nextX,
 					h - (pi[i + 1].closePrice - low) / priceScale);
-			gc.fillOval(x - 2, h - (pi[i].closePrice - low) / priceScale - 2, 4, 4);
+			gc.fillOval(x - 4, h - (pi[i].closePrice - low) / priceScale - 4, 8, 8);
 
 //			그래프 시간 텍스트 그리기
 			if (i % interval == 0) {
@@ -225,36 +204,26 @@ public class GraphController extends Controller {
 			}
 		}
 
-		gc.fillOval(w - (oneblockScale * (pi.length - 1) + oneblockScale / 2) - 2,
-				h - (pi[pi.length - 1].closePrice - low) / priceScale - 2, 4, 4);
+		gc.fillOval(w - (oneblockScale * (pi.length - 1) + oneblockScale / 2) - 4,
+				h - (pi[pi.length - 1].closePrice - low) / priceScale - 4, 8, 8);
 	}
 
 	private void drawCandleGraph(PriceInfo[] pi, int w, int h, int priceScale, int high, int low) {
-		double rectScale = (double)w / (double)pi.length;
+		int rectScale = (int) w / pi.length;
 		float interval = (float) (pi.length / 4);
-		int graphStartPoint = (int) (movementBlock * rectScale);
 
-		short i = 0;
-		short end = (short) (pi.length);
-		if(movementBlock > 0) {
-			i += movementBlock;
-		} else {
-			end += movementBlock;
-		}
-
-		for (; i < end; i++) {
-			int x = (int) (graphStartPoint + w - (rectScale * i + rectScale / 2));
-			int rectX = (int) (graphStartPoint + w - rectScale * (i + 1));
+		for (short i = 0; i < pi.length; i++) {
+			int x = w - (rectScale * i + rectScale / 2);
 //			그래프 그림 그리기
 			if (pi[i].startPrice > pi[i].closePrice) {
 				gc.setFill(Color.BLUE);
 				canvasDrawLine(x, h - (pi[i].lowPrice - low) / priceScale, x, h - (pi[i].highPrice - low) / priceScale);
-				gc.fillRect(rectX, h - (pi[i].startPrice - low) / priceScale, rectScale,
+				gc.fillRect(w - rectScale * (i + 1), h - (pi[i].startPrice - low) / priceScale, rectScale,
 						((pi[i].startPrice - low) / priceScale) - ((pi[i].closePrice - low) / priceScale));
 			} else {
 				gc.setFill(Color.RED);
 				canvasDrawLine(x, h - (pi[i].lowPrice - low) / priceScale, x, h - (pi[i].highPrice - low) / priceScale);
-				gc.fillRect(rectX, h - (pi[i].closePrice - low) / priceScale, rectScale,
+				gc.fillRect(w - rectScale * (i + 1), h - (pi[i].closePrice - low) / priceScale, rectScale,
 						((pi[i].closePrice - low) / priceScale) - ((pi[i].startPrice - low) / priceScale));
 			}
 

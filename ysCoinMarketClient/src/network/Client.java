@@ -86,9 +86,9 @@ public class Client {
 				e.printStackTrace();
 			}
 
-			if (!util.sleep(100)) {
-				return;
-			}
+//			if (!util.sleep(100)) {
+//				return;
+//			}
 		}
 	}
 
