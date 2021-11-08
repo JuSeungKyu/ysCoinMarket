@@ -14,6 +14,7 @@ import format.TypeInfo;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
+import format.message.TypeInfoUpdate;
 import format.message.UpdateGraphRange;
 import format.message.CoinTypeChange;
 import javafx.scene.layout.AnchorPane;
@@ -29,6 +30,7 @@ public class Client {
 
 	private String currentCoinId = "양디코인";
 	private String currentHistoryBlockType = "minute";
+	private TypeInfo[] typeInfoList;
 
 	public Client() {
 		try {
@@ -80,6 +82,11 @@ public class Client {
 					}
 					continue;
 				}
+				
+				if(objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
+					this.typeInfoList = ((TypeInfoUpdate)objectMsg).info;
+				}
+				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -93,9 +100,7 @@ public class Client {
 	}
 
 	public TypeInfo[] getTypeInfo() {
-		
-		
-		return null;
+		return this.typeInfoList;
 	}
 	
 	public void changeHistoryBlock(String blockType) {

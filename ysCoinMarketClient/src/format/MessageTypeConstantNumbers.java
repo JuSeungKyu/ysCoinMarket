@@ -9,4 +9,5 @@ public interface MessageTypeConstantNumbers {
 	public byte CHAGNE_COIN_TYPE = 5;
 	public byte LOGIN_CHECK_MSG = 6;
 	public byte UPDATE_GRAPH_RANGE = 7;
+	public byte UPDATE_TYPE_INFO = 8;
 }

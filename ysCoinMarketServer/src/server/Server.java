@@ -3,24 +3,13 @@ package server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import db.JDBC;
-import db.query.HistoryQuery;
 import db.query.UtilQuery;
-import format.PriceInfo;
-import format.message.CheckMessage;
-import format.message.History;
-import format.message.LoginCheckMessage;
-import format.message.LoginRequest;
-import util.Util;
 
 public class Server {
 	public static HashMap<String, ClientManager> clientMap;
@@ -48,7 +37,7 @@ public class Server {
 		System.out.println("종목 : " + coinTypelist.toString());
 
 		Thread userLoginManager = new Thread(new UserLoginManager(serverSocket, utilQuery));
-		Thread infomationSendThread = new Thread(new InfomationSendThread());
+		Thread infomationSendThread = new Thread(new InfomationSendThread(utilQuery));
 
 		userLoginManager.start();
 		infomationSendThread.start();
