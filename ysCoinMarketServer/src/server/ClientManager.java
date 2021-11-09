@@ -88,12 +88,16 @@ public class ClientManager extends Thread {
 	}
 	
 	public void checkGraphRange() {
-		if(this.graphRange[0] < 0) {
-			this.graphRange[0] = 0;
+		if(this.graphRange[1] < 0) {
+			this.graphRange[1] = 1;
 		}
 		
 		if(this.graphRange[0] >= this.graphRange[1]) {
 			graphRange[0] = (short) (this.graphRange[1] - 1);
+		}
+		
+		if(this.graphRange[0] < 0) {
+			this.graphRange[0] = 0;
 		}
 	}
 	

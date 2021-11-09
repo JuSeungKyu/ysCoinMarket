@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import application.Main;
 import format.HistoryInfo;
@@ -31,6 +32,9 @@ public class Client {
 	private String currentCoinId = "양디코인";
 	private String currentHistoryBlockType = "minute";
 	private TypeInfo[] typeInfoList;
+	private Util util = new Util();
+	
+	private ArrayList<MessageObject> sendMsgList = new ArrayList<MessageObject>();
 
 	public Client() {
 		try {
@@ -39,14 +43,16 @@ public class Client {
 			this.oos = new ObjectOutputStream(socket.getOutputStream());
 			this.ois = new ObjectInputStream(socket.getInputStream());
 
-			Thread readObjectThread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					readData();
-				}
+			Thread readObjectThread = new Thread(()-> {
+				readData();
+			});
+			Thread writeObjectThread = new Thread(()-> {
+				writeData();
 			});
 			Main.ThreadList.add(readObjectThread);
+			Main.ThreadList.add(writeObjectThread);
 			readObjectThread.start();
+			writeObjectThread.start();
 
 		} catch (UnknownHostException e) {
 			System.out.println("서버에 연결할 수 없습니다");
@@ -54,9 +60,18 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	
+	private void writeData() {
+		while(true) {
+			while(sendMsgList.size() != 0) {
+				this.SendObject(sendMsgList.get(0));
+				sendMsgList.remove(0);
+			}
+			util.sleep(10);
+		}
+	}
 
 	private void readData() {
-		Util util = new Util();
 		StageControll sc = new StageControll();
 		MessageObject objectMsg = null;
 		while (true) {
@@ -122,13 +137,17 @@ public class Client {
 		SendObject(new CoinTypeChange(this.currentCoinId, this.currentHistoryBlockType));
 	}
 
-	public void SendObject(Object obj) {
+	private void SendObject(Object obj) {
 		try {
 			this.oos.writeObject(obj);
 			this.oos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void addSendObject(Object obj) {
+		this.sendMsgList.add((MessageObject) obj);
 	}
 	
 	public History getHistory() {

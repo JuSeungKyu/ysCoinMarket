@@ -130,13 +130,13 @@ public class HistoryQuery {
 		ArrayList<PriceInfo> infoList = new ArrayList<PriceInfo>();
 		try {
 			String sql = "SELECT start, close_or_mp, high, low, time FROM " + tableName
-					+ " WHERE coin_id = ? ORDER BY time DESC";
+					+ " WHERE coin_id = ? GROUP BY time ORDER BY time DESC";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinName);
 			ResultSet rs = pstmt.executeQuery();
 
-			for(byte i = 0; rs.next(); i++) {
+			for(; rs.next();) {
 				infoList.add(new PriceInfo(rs.getInt("start"), rs.getInt("close_or_mp"), rs.getInt("high"), rs.getInt("low"), rs.getTime("time")));
 			}
 		} catch (SQLException e) {
