@@ -215,6 +215,7 @@ public class Client {
 		this.currentHistoryBlockType = currentHistoryBlockType;
 	}
 
+<<<<<<< Updated upstream
 	public byte getCurrentCoinDifficulty() {
 		return currentCoinDifficulty;
 	}
@@ -223,6 +224,8 @@ public class Client {
 		this.currentCoinDifficulty = currentCoinDifficulty;
 	}
 
+=======
+>>>>>>> Stashed changes
 	public TypeInfo[] getTypeInfoList() {
 		return typeInfoList;
 	}
@@ -230,4 +233,8 @@ public class Client {
 	public void setTypeInfoList(TypeInfo[] typeInfoList) {
 		this.typeInfoList = typeInfoList;
 	}
+<<<<<<< Updated upstream
+=======
+	
+>>>>>>> Stashed changes
 }

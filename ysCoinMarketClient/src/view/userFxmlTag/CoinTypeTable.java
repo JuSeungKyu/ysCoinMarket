@@ -32,5 +32,4 @@ public class CoinTypeTable {
 		this.change = change;
 	}
 	
-
 }
