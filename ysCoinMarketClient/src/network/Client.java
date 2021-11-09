@@ -30,6 +30,7 @@ public class Client {
 	private HistoryInfo HistoryInfoData = null;
 
 	private String currentCoinId = "양디코인";
+	private byte currentCoinDifficulty = 1;
 	private String currentHistoryBlockType = "minute";
 	private TypeInfo[] typeInfoList;
 	private Util util = new Util();
@@ -212,5 +213,21 @@ public class Client {
 
 	public void setCurrentHistoryBlockType(String currentHistoryBlockType) {
 		this.currentHistoryBlockType = currentHistoryBlockType;
+	}
+
+	public byte getCurrentCoinDifficulty() {
+		return currentCoinDifficulty;
+	}
+
+	public void setCurrentCoinDifficulty(byte currentCoinDifficulty) {
+		this.currentCoinDifficulty = currentCoinDifficulty;
+	}
+
+	public TypeInfo[] getTypeInfoList() {
+		return typeInfoList;
+	}
+
+	public void setTypeInfoList(TypeInfo[] typeInfoList) {
+		this.typeInfoList = typeInfoList;
 	}
 }

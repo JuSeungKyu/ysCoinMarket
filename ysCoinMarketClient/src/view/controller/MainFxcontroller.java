@@ -3,6 +3,7 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import format.CoinInfo;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,7 +20,9 @@ public class MainFxcontroller extends Controller {
 	private AnchorPane pane1;
 	@FXML
 	private AnchorPane pane2; // 그래프
-
+	@FXML
+	private Button CoinMiningBtn;
+	
 	private Client client;
 
 	public void initData(Object client) {
@@ -34,7 +37,8 @@ public class MainFxcontroller extends Controller {
 	}
 
 	public void CoinMining() {
-		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, client.getCurrentCoinId(), false);
+		CoinMiningBtn.setDisable(true);
+		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, new CoinInfo(client.getCurrentCoinId(), client.getCurrentCoinDifficulty()), false);
 	}
 	
 	public void history() {
