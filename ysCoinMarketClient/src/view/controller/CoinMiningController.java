@@ -3,6 +3,8 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import format.CoinInfo;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -22,15 +24,15 @@ public class CoinMiningController extends Controller {
 	@FXML
 	private Label frequency;
 	
-	private String currentCoin = null;
+	private CoinInfo coin;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		AnimationTimer setType = new AnimationTimer() {
 		    @Override
 		    public void handle(long timestamp) {
-        		if(!currentCoin.isEmpty()) {
-        			type.setText("채굴 종목 : " + currentCoin);
+        		if(!coin.getCoinId().isEmpty()) {
+        			type.setText("채굴 종목 : " + coin.getCoinId());
         			this.stop();
         		}
 		    }
@@ -38,7 +40,7 @@ public class CoinMiningController extends Controller {
 		setType.start();
 		long startTime = System.currentTimeMillis() + 32400000;
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		Util util = new Util();
+
 		Timestamp ts = new Timestamp(System.currentTimeMillis() - startTime);
 		AnimationTimer updateTime = new AnimationTimer() {
 		    @Override
@@ -53,7 +55,7 @@ public class CoinMiningController extends Controller {
 
 	@Override
 	public void initData(Object data) {
-		currentCoin = (String)data;
+		coin = (CoinInfo) data;
 	}
 	
 }
