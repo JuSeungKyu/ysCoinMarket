@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="graphPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: white;" stylesheets="@../../application/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.GraphController">
+<AnchorPane fx:id="graphPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="600.0" style="-fx-background-color: white;" stylesheets="@../../application/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.GraphController">
    <children>
       <Canvas fx:id="graph" height="400.0" layoutY="7.0" width="600.0" />
-      <Pane fx:id="switchPane" layoutY="407.0" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: black;" />
       <Line endX="500.0" layoutX="100.0" layoutY="407.0" startX="-100.0" />
       <Line endX="-216.00001525878906" endY="362.0" layoutX="216.0" layoutY="45.0" startX="-216.0" startY="-45.0" />
-      <RadioButton fx:id="date" layoutX="449.0" layoutY="408.0" mnemonicParsing="false" onAction="#blockUpdate" text="1일" />
-      <RadioButton fx:id="hour" layoutX="499.0" layoutY="408.0" mnemonicParsing="false" onAction="#blockUpdate" text="1시간" />
-      <RadioButton fx:id="minute" layoutX="559.0" layoutY="408.0" mnemonicParsing="false" onAction="#blockUpdate" text="1분" />
    </children>
 </AnchorPane>

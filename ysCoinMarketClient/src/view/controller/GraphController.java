@@ -30,34 +30,18 @@ import view.userFxmlTag.ToggleSwitch;
 public class GraphController extends Controller {
 	@FXML
 	Pane switchPane;
-	@FXML
-	RadioButton date;
-	@FXML
-	RadioButton hour;
-	@FXML
-	RadioButton minute;
-
+	
 	@FXML
 	Canvas graph;
 
-	Canvas bufCanvas;
-
 	private GraphicsContext gc;
 	private SimpleDateFormat minuteFormat = new SimpleDateFormat("HH:mm:ss");
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Client client;
-
-	private boolean graphType = false;
-
-	ToggleGroup toggleGroup = new ToggleGroup();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
-		
-		btnSet();
-		blockGroupSet();
 		
 		LongProperty lastUpdateTime = new SimpleLongProperty(0);
 		AnimationTimer timer = new AnimationTimer() {
@@ -65,9 +49,7 @@ public class GraphController extends Controller {
 		    public void handle(long timestamp) {
 	        	try {
 					getHistory();
-				} catch (Exception e) {
-					bufCanvas = new Canvas();
-				}
+				} catch (Exception e) {}
 				sendGraphRangeUpdateRequst();
 		    }
 		};
@@ -150,11 +132,7 @@ public class GraphController extends Controller {
 		gc.setTextAlign(TextAlignment.CENTER);
 
 //		그래프 그리기
-		if (this.graphType) {
-			drawCurvedLineGraph(pi, w, h, priceScale, low);
-		} else {
-			drawCandleGraph(pi, w, h, priceScale, high, low);
-		}
+		drawCandleGraph(pi, w, h, priceScale, high, low);
 
 //		그래프 가격 그리기
 		drawPrice(high, low, h, w);
@@ -181,31 +159,6 @@ public class GraphController extends Controller {
 			}
 		}
 		return output;
-	}
-
-	private void drawCurvedLineGraph(PriceInfo[] pi, int w, int h, int priceScale, int low) {
-		int oneblockScale = (int) w / pi.length;
-		float interval = (float) (pi.length / 4);
-		for (short i = 0; i < pi.length - 1; i++) {
-//			그래프 그림 그리기
-			int x = w - (oneblockScale * i + oneblockScale / 2);
-			int nextX = w - (oneblockScale * (i + 1) + oneblockScale / 2);
-
-			canvasDrawLine(x, h - (pi[i].closePrice - low) / priceScale, nextX,
-					h - (pi[i + 1].closePrice - low) / priceScale);
-			gc.fillOval(x - 4, h - (pi[i].closePrice - low) / priceScale - 4, 8, 8);
-
-//			그래프 시간 텍스트 그리기
-			if (i % interval == 0) {
-				gc.setFill(Color.BLACK);
-				gc.setFont(new Font(12));
-				gc.fillText(minuteFormat.format(pi[i].time), x, h + 30);
-				canvasDrawLine(x, h + 10, x, h);
-			}
-		}
-
-		gc.fillOval(w - (oneblockScale * (pi.length - 1) + oneblockScale / 2) - 4,
-				h - (pi[pi.length - 1].closePrice - low) / priceScale - 4, 8, 8);
 	}
 
 	private void drawCandleGraph(PriceInfo[] pi, int w, int h, int priceScale, int high, int low) {
@@ -245,26 +198,4 @@ public class GraphController extends Controller {
 		gc.stroke();
 	}
 
-	private void btnSet() {
-		ToggleSwitch btn = new ToggleSwitch("촛불 그래프", "꺾은선 그래프",
-				"-fx-background-color: #ffffff; -fx-text-fill:#c8c8c8; -fx-border-color:#c8c8c8;",
-				"-fx-background-color: #e6e6ff; -fx-text-fill:#6735fb; -fx-border-color:#6735fb;");
-
-		btn.switchOnProperty().addListener((obser, oldV, newV) -> {
-			graphType = btn.switchOnProperty().get();
-		});
-
-		switchPane.getChildren().add(btn);
-	}
-
-	private void blockGroupSet() {
-		minute.setSelected(true);
-		date.setToggleGroup(toggleGroup);
-		hour.setToggleGroup(toggleGroup);
-		minute.setToggleGroup(toggleGroup);
-	}
-
-	public void blockUpdate() {
-		client.changeHistoryBlock(((Node) toggleGroup.getSelectedToggle()).getId());
-	}
 }
