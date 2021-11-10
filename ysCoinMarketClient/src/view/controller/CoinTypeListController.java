@@ -30,29 +30,33 @@ public class CoinTypeListController extends Controller {
 
 	public void initData(Object data) {
 		this.client = (Client) client;
-		System.out.println("C 전달받음");
+		System.out.println("C전달받음");
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-		changeColumn.setCellValueFactory(new PropertyValueFactory<>("change"));
-
+		
+		
+		
+		changeColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
 		System.out.println("종목별 리스트 출력");
 		items = FXCollections.observableArrayList();
 		viewMain.setItems(items);
-
+		
 	}
-
-	public void getTable() {
-		TypeInfo[] typeInfo = this.client.getTypeInfo();
-		if (typeInfo == null) {
-			return;
-
-		}
-
-		items = FXCollections.observableArrayList();
-		viewMain.setItems(items);
-
+public void getTable() {
+	TypeInfo[] typeInfo = this.client.getTypeInfo();
+	if(typeInfo == null) {
+		return;
+		
+	}
+	
+	items = FXCollections.observableArrayList();
+	viewMain.setItems(items);
+	
+	
+	
 	}
 }
