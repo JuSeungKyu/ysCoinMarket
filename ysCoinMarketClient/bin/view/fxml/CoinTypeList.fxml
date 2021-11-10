@@ -9,7 +9,7 @@
       <TableView fx:id="viewMain" prefHeight="719.0" prefWidth="191.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="75.0" text="종목이름" />
-          <TableColumn fx:id="changeColumn" prefWidth="124.0" text="가격(변동률)" />
+          <TableColumn fx:id="changeColumn" prefWidth="124.0" text="가격" />
         </columns>
       </TableView>
    </children>
