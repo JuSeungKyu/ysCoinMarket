@@ -65,7 +65,7 @@ public class Client {
 	private void writeData() {
 		while(true) {
 			while(sendMsgList.size() != 0) {
-				this.SendObject(sendMsgList.get(0));
+				this.sendObject(sendMsgList.get(0));
 				sendMsgList.remove(0);
 			}
 			util.sleep(10);
@@ -108,10 +108,6 @@ public class Client {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-//			if (!util.sleep(100)) {
-//				return;
-//			}
 		}
 	}
 
@@ -122,23 +118,23 @@ public class Client {
 	public void changeHistoryBlock(String blockType) {
 		this.currentHistoryBlockType = blockType;
 		System.out.println(currentHistoryBlockType);
-		CoinTypeChange();
+		coinTypeChange();
 	}
 
 	public void changeCoinType(String coinId) {
 		this.currentCoinId = coinId;
-		CoinTypeChange();
+		coinTypeChange();
 	}
 
 	public void changeGraphRange(short[] range) {
-		SendObject(new UpdateGraphRange(range));
+		sendObject(new UpdateGraphRange(range));
 	}
 
-	private void CoinTypeChange() {
-		SendObject(new CoinTypeChange(this.currentCoinId, this.currentHistoryBlockType));
+	private void coinTypeChange() {
+		sendObject(new CoinTypeChange(this.currentCoinId, this.currentHistoryBlockType));
 	}
 
-	private void SendObject(Object obj) {
+	private void sendObject(Object obj) {
 		try {
 			this.oos.writeObject(obj);
 			this.oos.flush();

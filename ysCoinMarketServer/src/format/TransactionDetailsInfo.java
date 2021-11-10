@@ -18,6 +18,4 @@ public class TransactionDetailsInfo {
 		this.order_type = order_type;
 		this.time = time;
 	}
-	
-	
 }

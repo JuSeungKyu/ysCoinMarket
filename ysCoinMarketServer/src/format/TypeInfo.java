@@ -9,7 +9,5 @@ public class TypeInfo implements Serializable {
 	public TypeInfo(String name, int currentPrice) {
 		this.name = name;
 		this.currentPrice = currentPrice;
-
 	}
-
 }
