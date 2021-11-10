@@ -10,4 +10,6 @@ public interface MessageTypeConstantNumbers {
 	public byte LOGIN_CHECK_MSG = 6;
 	public byte UPDATE_GRAPH_RANGE = 7;
 	public byte UPDATE_TYPE_INFO = 8;
+	public byte TRANSACTION_DETAILS_REQUEST = 9;
+	public byte TRANSACTION_DETAILS_UPDATE = 10;
 }

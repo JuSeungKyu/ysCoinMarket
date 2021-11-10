@@ -75,7 +75,7 @@ public class LoginController extends Controller{
 
 		this.client = new Client();
 		this.client.setRoot(root);
-		this.client.SendObject(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
+		this.client.addSendObject(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
 	}
 	
 	public Client getClient() {

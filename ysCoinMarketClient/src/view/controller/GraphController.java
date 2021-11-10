@@ -93,7 +93,7 @@ public class GraphController extends Controller {
 			} else {
 				arr[1] = -1;
 			}
-			this.client.SendObject(new UpdateGraphRange(arr));
+			this.client.addSendObject(new UpdateGraphRange(arr));
 		});
 
 		// 마우스 그래그 이벤트
@@ -109,7 +109,7 @@ public class GraphController extends Controller {
 	
 	private void sendGraphRangeUpdateRequst() {
 		if(Math.abs(this.movementX) > 1) {
-			this.client.SendObject(new UpdateGraphRange( 
+			this.client.addSendObject(new UpdateGraphRange( 
 					(short) Math.round(movementX)
 			));
 			this.movementX = 0;
