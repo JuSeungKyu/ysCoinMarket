@@ -52,7 +52,7 @@ public class CoinTypeListController extends Controller {
 		items = FXCollections.observableArrayList();
 		viewMain.setItems(items);
 		for (TypeInfo typeInfo2 : typeInfo) {
-			CoinTypeTable c = new CoinTypeTable(typeInfo2.getName(), typeInfo2.getCurrentPrice());
+			CoinTypeTable c = new CoinTypeTable(typeInfo2.name, typeInfo2.currentPrice);
 			items.add(c);
 			
 		}
