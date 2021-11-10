@@ -14,6 +14,7 @@ import format.message.BuyRequest;
 import format.message.CheckMessage;
 import format.message.SellRequest;
 import format.message.UpdateGraphRange;
+import util.MessageInfo;
 import format.message.CoinTypeChange;
 
 
@@ -69,6 +70,11 @@ public class ClientManager extends Thread {
 						continue;
 					}
 					
+					if(msg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_REQUEST) {
+						sendTransactionDetailsMessage();
+						continue;
+					}
+					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -78,6 +84,10 @@ public class ClientManager extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void sendTransactionDetailsMessage() {
+		
 	}
 	
 	private void setGraphRange(short[] graphRange) {
@@ -137,7 +147,7 @@ public class ClientManager extends Thread {
 	}
 	
 	public void sendCheckMessage(String msg, boolean result) {
-		sendObject(new CheckMessage(msg, result));
+		SendMessageThread.addMessageQueue(this, new CheckMessage(msg, result));
 	}
 	
 	public void sendObject(Object object) {

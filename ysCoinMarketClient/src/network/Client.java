@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import application.Main;
 import format.HistoryInfo;
@@ -34,8 +36,8 @@ public class Client {
 	private String currentHistoryBlockType = "minute";
 	private TypeInfo[] typeInfoList;
 	private Util util = new Util();
-	
-	private ArrayList<MessageObject> sendMsgList = new ArrayList<MessageObject>();
+
+	private Queue<MessageObject> sendMsgQueue = new LinkedList<MessageObject>();
 
 	public Client() {
 		try {
@@ -64,9 +66,9 @@ public class Client {
 	
 	private void writeData() {
 		while(true) {
-			while(sendMsgList.size() != 0) {
-				this.sendObject(sendMsgList.get(0));
-				sendMsgList.remove(0);
+			while(sendMsgQueue.size() != 0) {
+				this.sendObject(sendMsgQueue.poll());
+				sendMsgQueue.remove(0);
 			}
 			util.sleep(10);
 		}
@@ -144,7 +146,7 @@ public class Client {
 	}
 	
 	public void addSendObject(Object obj) {
-		this.sendMsgList.add((MessageObject) obj);
+		this.sendMsgQueue.add((MessageObject) obj);
 	}
 	
 	public History getHistory() {

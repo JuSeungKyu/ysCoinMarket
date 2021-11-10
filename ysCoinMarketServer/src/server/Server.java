@@ -36,9 +36,11 @@ public class Server {
 		}
 		System.out.println("종목 : " + coinTypelist.toString());
 
+		Thread sendMessageThread = new Thread(new SendMessageThread());
 		Thread userLoginManager = new Thread(new UserLoginManager(serverSocket, utilQuery));
 		Thread infomationSendThread = new Thread(new InfomationSendThread(utilQuery));
 
+		sendMessageThread.start();
 		userLoginManager.start();
 		infomationSendThread.start();
 		System.out.println("Server Start - (서버를 종료하려면 '종료' 입력)");
@@ -49,6 +51,7 @@ public class Server {
 				serverSocket.close();
 				infomationSendThread.interrupt();
 				userLoginManager.interrupt();
+				sendMessageThread.interrupt();
 			}
 		}
 	}

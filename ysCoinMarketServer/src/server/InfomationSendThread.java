@@ -9,6 +9,7 @@ import format.PriceInfo;
 import format.TypeInfo;
 import format.message.History;
 import format.message.TypeInfoUpdate;
+import util.MessageInfo;
 import util.Util;
 
 public class InfomationSendThread implements Runnable {
@@ -62,8 +63,7 @@ public class InfomationSendThread implements Runnable {
 		}
 		
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
-			ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
-			c.sendObject(new TypeInfoUpdate(infoList));
+			SendMessageThread.addMessageQueue( Server.clientMap.get(Server.clientIdList.get(i)), new TypeInfoUpdate(infoList) );
 		}
 	}
 
@@ -81,12 +81,11 @@ public class InfomationSendThread implements Runnable {
 
 				if (c.getCoinType().equals(coinId)) {
 					if (c.getHistoryBlockType().equals("minute")) {
-						c.sendObject(new History(
-								splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
+						SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 					} else if (c.getHistoryBlockType().equals("hour")) {
-						c.sendObject(minuteHistory);
+						SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 					} else if (c.getHistoryBlockType().equals("date")) {
-						c.sendObject(minuteHistory);
+						SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 					}
 				}
 			} catch (Exception e) {
