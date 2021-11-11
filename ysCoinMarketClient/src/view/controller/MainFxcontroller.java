@@ -38,7 +38,8 @@ public class MainFxcontroller extends Controller {
 
 	public void CoinMining() {
 		CoinMiningBtn.setDisable(true);
-		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, new CoinInfo(client.getCurrentCoinId(), client.getCurrentCoinDifficulty()), false);
+		
+		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, new CoinInfo(client.getCurrentCoinId(), client.getCurrentCoinDifficulty()), false, true);
 	}
 	
 	public void history() {

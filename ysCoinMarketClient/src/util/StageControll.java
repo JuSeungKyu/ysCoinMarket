@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -48,7 +49,47 @@ public class StageControll {
 			}
 		}.start();
 	}
+	
 
+	public void newStage(String src, AnchorPane pane, Object sendData, boolean close, boolean closeEvent) {
+		new UIUpdateThread() {
+			@Override
+			public void update() {
+				Stage newStage = new Stage();
+				Stage stage = (Stage) pane.getScene().getWindow();
+				try {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource(src));
+
+					Parent main = loader.load();
+					Scene sc = new Scene(main);
+					newStage.setTitle("YS Coin Market");
+					newStage.setScene(sc);
+
+					Controller newController = loader.getController();
+					newController.initData(sendData);
+
+					newStage.show();
+
+					if (close) {
+						setCloseEventHandler(newStage);
+						stage.close();
+					}
+					
+					if(closeEvent) {
+						newStage.setOnCloseRequest(event -> {
+							System.out.println(pane.getChildren().get(new Util().getIndexById(pane.getChildren(), "CoinMining")));
+							pane.getChildren().get(new Util().getIndexById(pane.getChildren(), "CoinMining")).setDisable(false);
+						});
+					}
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+	
 	public void setCloseEventHandler(Stage stage) {
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
