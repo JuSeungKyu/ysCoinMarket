@@ -83,10 +83,12 @@ public class Client {
 				objectMsg = (MessageObject) this.ois.readObject();
 				
 				if(objectMsg == null) {
-					System.out.println("null");
+					System.out.println("null 메시지");
 					continue;
 				}
 
+				System.out.println(objectMsg.type);
+				
 				if (objectMsg.type == MessageTypeConstantNumbers.HISTORY_LIST) {
 					this.lastHistoryData = (History) objectMsg;
 					continue;
@@ -114,6 +116,7 @@ public class Client {
 				}
 				
 				if(objectMsg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_UPDATE) {
+					System.out.println("hi");
 					System.out.println(((TransactionDetailsMessage) objectMsg).info.toString());
 					continue;
 				}
