@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import format.CoinInfo;
-import javafx.application.Platform;
+import format.message.TransactionDetailsRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -42,7 +42,8 @@ public class MainFxcontroller extends Controller {
 	}
 	
 	public void history() {
-		new StageControll().newStage("/view/fxml/History.fxml", root, client.getHistoryInfoData(), false);
+		new StageControll().newStage("/view/fxml/History.fxml", root, client, false);
+		client.addSendObject(new TransactionDetailsRequest());
 	}
 
 	public void loadPage() {

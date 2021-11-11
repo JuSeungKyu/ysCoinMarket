@@ -17,6 +17,7 @@ import format.TypeInfo;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
+import format.message.TransactionDetailsMessage;
 import format.message.TypeInfoUpdate;
 import format.message.UpdateGraphRange;
 import format.message.CoinTypeChange;
@@ -33,7 +34,6 @@ public class Client {
 
 	private String currentCoinId = "양디코인";
 	private byte currentCoinDifficulty = 1;
-	private String currentHistoryBlockType = "minute";
 	private TypeInfo[] typeInfoList;
 	private Util util = new Util();
 
@@ -80,9 +80,15 @@ public class Client {
 		while (true) {
 			try {
 				objectMsg = (MessageObject) this.ois.readObject();
+				
+				if(objectMsg == null) {
+					System.out.println("null");
+					continue;
+				}
 
 				if (objectMsg.type == MessageTypeConstantNumbers.HISTORY_LIST) {
 					this.lastHistoryData = (History) objectMsg;
+					continue;
 				}
 
 				if (objectMsg.type == MessageTypeConstantNumbers.CHECK_MSG) {
@@ -103,6 +109,12 @@ public class Client {
 				
 				if(objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
 					this.typeInfoList = ((TypeInfoUpdate)objectMsg).info;
+					continue;
+				}
+				
+				if(objectMsg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_UPDATE) {
+					System.out.println(((TransactionDetailsMessage) objectMsg).info.toString());
+					continue;
 				}
 				
 			} catch (ClassNotFoundException e) {
@@ -116,12 +128,6 @@ public class Client {
 	public TypeInfo[] getTypeInfo() {
 		return this.typeInfoList;
 	}
-	
-	public void changeHistoryBlock(String blockType) {
-		this.currentHistoryBlockType = blockType;
-		System.out.println(currentHistoryBlockType);
-		coinTypeChange();
-	}
 
 	public void changeCoinType(String coinId) {
 		this.currentCoinId = coinId;
@@ -133,7 +139,7 @@ public class Client {
 	}
 
 	private void coinTypeChange() {
-		sendObject(new CoinTypeChange(this.currentCoinId, this.currentHistoryBlockType));
+		sendObject(new CoinTypeChange(this.currentCoinId));
 	}
 
 	private void sendObject(Object obj) {
@@ -161,71 +167,11 @@ public class Client {
 		return HistoryInfoData;
 	}
 
-	public void setHistoryInfoData(HistoryInfo historyInfoData) {
-		HistoryInfoData = historyInfoData;
-	}
-
-	public ObjectOutputStream getOos() {
-		return oos;
-	}
-
-	public void setOos(ObjectOutputStream oos) {
-		this.oos = oos;
-	}
-
-	public ObjectInputStream getOis() {
-		return ois;
-	}
-
-	public void setOis(ObjectInputStream ois) {
-		this.ois = ois;
-	}
-
-	public History getLastHistoryData() {
-		return lastHistoryData;
-	}
-
-	public void setLastHistoryData(History lastHistoryData) {
-		this.lastHistoryData = lastHistoryData;
-	}
-
-	public AnchorPane getCurrentRoot() {
-		return currentRoot;
-	}
-
-	public void setCurrentRoot(AnchorPane currentRoot) {
-		this.currentRoot = currentRoot;
-	}
-
 	public String getCurrentCoinId() {
 		return currentCoinId;
 	}
-
-	public void setCurrentCoinId(String currentCoinId) {
-		this.currentCoinId = currentCoinId;
-	}
-
-	public String getCurrentHistoryBlockType() {
-		return currentHistoryBlockType;
-	}
-
-	public void setCurrentHistoryBlockType(String currentHistoryBlockType) {
-		this.currentHistoryBlockType = currentHistoryBlockType;
-	}
-
+	
 	public byte getCurrentCoinDifficulty() {
 		return currentCoinDifficulty;
-	}
-
-	public void setCurrentCoinDifficulty(byte currentCoinDifficulty) {
-		this.currentCoinDifficulty = currentCoinDifficulty;
-	}
-
-	public TypeInfo[] getTypeInfoList() {
-		return typeInfoList;
-	}
-
-	public void setTypeInfoList(TypeInfo[] typeInfoList) {
-		this.typeInfoList = typeInfoList;
 	}
 }

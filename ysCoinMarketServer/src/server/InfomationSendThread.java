@@ -68,26 +68,18 @@ public class InfomationSendThread implements Runnable {
 	}
 
 	private void sendHistory(String coinId) {
-		ArrayList<PriceInfo> minuteHistory = q1.getHistory("history_minute", coinId);
+		ArrayList<PriceInfo> history = q1.getHistory("history_minute", coinId);
 
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
 			try {
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
 
-				if (minuteHistory.size() < c.getGraphRangeEnd()) {
-					c.setGraphRangeEnd((short) minuteHistory.size());
+				if (history.size() < c.getGraphRangeEnd()) {
+					c.setGraphRangeEnd((short) history.size());
 					c.checkGraphRange();
 				}
 
-				if (c.getCoinType().equals(coinId)) {
-					if (c.getHistoryBlockType().equals("minute")) {
-						SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
-					} else if (c.getHistoryBlockType().equals("hour")) {
-						SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
-					} else if (c.getHistoryBlockType().equals("date")) {
-						SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(minuteHistory, c.getGraphRangeStart(), c.getGraphRangeEnd())));
-					}
-				}
+				SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(history, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
