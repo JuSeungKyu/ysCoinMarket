@@ -35,7 +35,7 @@ public class Util {
 		int index = -1;
 		
 		for (int i = 0; i < list.size(); i++) {
-			if(list.get(i).getId().equals(str)) {
+			if(list.get(i).getId() != null ? list.get(i).getId().equals(str) : false) {
 				index = i;
 				return index;
 			}

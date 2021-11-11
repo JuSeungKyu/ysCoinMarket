@@ -87,7 +87,7 @@ public class Client {
 					continue;
 				}
 
-				System.out.println(objectMsg.type);
+//				System.out.println(objectMsg.type);
 				
 				if (objectMsg.type == MessageTypeConstantNumbers.HISTORY_LIST) {
 					this.lastHistoryData = (History) objectMsg;
