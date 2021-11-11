@@ -10,9 +10,11 @@ import db.query.UserHashControlQuery;
 import db.query.UtilQuery;
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
+import format.TransactionDetailsInfo;
 import format.message.BuyRequest;
 import format.message.CheckMessage;
 import format.message.SellRequest;
+import format.message.TransactionDetailsMessage;
 import format.message.UpdateGraphRange;
 import util.MessageInfo;
 import format.message.CoinTypeChange;
@@ -26,7 +28,6 @@ public class ClientManager extends Thread {
 	private boolean isReady; 
 	
 	private String coinType = "양디코인";
-	private String historyBlockType = "minute";
 	private short[] graphRange = {0, 30};
 
 	public ClientManager(String id, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
@@ -49,6 +50,8 @@ public class ClientManager extends Thread {
 					if (msg == null)
 						break;
 					
+					System.out.println(msg.type);
+					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest)msg);
 						continue;
@@ -61,7 +64,6 @@ public class ClientManager extends Thread {
 					
 					if (msg.type == MessageTypeConstantNumbers.CHAGNE_COIN_TYPE) {
 						this.coinType = ((CoinTypeChange) msg).coinId;
-						this.historyBlockType = ((CoinTypeChange) msg).historyBlock;
 						continue;
 					}
 					
@@ -87,7 +89,10 @@ public class ClientManager extends Thread {
 	}
 	
 	private void sendTransactionDetailsMessage() {
-		
+		MessageObject info = new OrderQuery().getTransactionDetails(this.id);
+		if(info != null) {
+			SendMessageThread.addMessageQueue(this, info);
+		}
 	}
 	
 	private void setGraphRange(short[] graphRange) {
@@ -169,10 +174,6 @@ public class ClientManager extends Thread {
 	
 	public String getCoinType() {
 		return this.coinType;
-	}
-	
-	public String getHistoryBlockType() {
-		return this.historyBlockType;
 	}
 	
 	public short getGraphRangeStart() {

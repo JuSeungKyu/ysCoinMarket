@@ -7,15 +7,16 @@
 
 <AnchorPane fx:id="root" prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
    <children>
-      <Button layoutX="62.0" layoutY="598.0" mnemonicParsing="false" onAction="#backScene" prefHeight="43.0" prefWidth="110.0" text="뒤로가기" />
-      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="67.0" prefHeight="505.0" prefWidth="918.0">
+      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="96.0" prefHeight="505.0" prefWidth="918.0">
         <columns>
-          <TableColumn fx:id="tbName" prefWidth="155.0" text="종목" />
-          <TableColumn fx:id="tbType" minWidth="0.0" prefWidth="169.0" text="거래종류" />
-            <TableColumn fx:id="tbPrice" prefWidth="278.0" text="거래가격 " />
-            <TableColumn fx:id="tbTime" minWidth="0.0" prefWidth="188.0" text="거래시간" />
-            <TableColumn fx:id="tbWhether" prefWidth="127.0" text="여부" />
+          <TableColumn fx:id="tbName" prefWidth="127.0" text="이름" />
+          <TableColumn fx:id="tbOrdering" minWidth="0.0" prefWidth="139.0" text="주문량" />
+            <TableColumn fx:id="tbPenalty" prefWidth="175.0" text="채결량" />
+            <TableColumn fx:id="tbPrice" minWidth="0.0" prefWidth="193.0" text="가격" />
+            <TableColumn fx:id="tbOrder" prefWidth="163.0" text="주문종류" />
+            <TableColumn fx:id="tbTime" prefWidth="120.0" text="시간" />
         </columns>
       </TableView>
+      <Button layoutX="916.0" layoutY="60.0" mnemonicParsing="false" onAction="#refresh" text="새로고침" />
    </children>
 </AnchorPane>
