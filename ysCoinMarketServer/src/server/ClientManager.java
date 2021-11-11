@@ -14,6 +14,7 @@ import format.TransactionDetailsInfo;
 import format.message.BuyRequest;
 import format.message.CheckMessage;
 import format.message.SellRequest;
+import format.message.TransactionDetailsMessage;
 import format.message.UpdateGraphRange;
 import util.MessageInfo;
 import format.message.CoinTypeChange;
@@ -89,7 +90,7 @@ public class ClientManager extends Thread {
 	
 	private void sendTransactionDetailsMessage() {
 		MessageObject info = new OrderQuery().getTransactionDetails(this.id);
-		if(info == null) {
+		if(info != null) {
 			SendMessageThread.addMessageQueue(this, info);
 		}
 	}

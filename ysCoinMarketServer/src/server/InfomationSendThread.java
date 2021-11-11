@@ -49,10 +49,6 @@ public class InfomationSendThread implements Runnable {
 		}
 	}
 
-	public static void sendHistoryForOneUser(String coinId, ClientManager client) {
-
-	}
-
 	private void sendTypeInfo() {
 		TypeInfo[] infoList = new TypeInfo[Server.coinTypelist.size()];
 		for (int i = 0; i < Server.coinTypelist.size(); i++) {
