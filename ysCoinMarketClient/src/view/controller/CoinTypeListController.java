@@ -26,8 +26,7 @@ public class CoinTypeListController extends Controller {
 
 	String st = type.getName();
 	int num = type.getCurrentPrice();
-	
-	
+
 	public void initData(Object data) {
 		this.client = (Client) client;
 		System.out.println("C전달받음");
@@ -43,16 +42,9 @@ public class CoinTypeListController extends Controller {
 
 		System.out.println("종목별 리스트 출력");
 		this.client.getTypeInfoList();
-		for (int i = 0; i <num ; i++) {
-			getTable(st, num);
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	
-		
+
+		getTable(st, num);
+
 	}
 
 	public void getTable(String name, int currentPrice) {
@@ -69,6 +61,5 @@ public class CoinTypeListController extends Controller {
 			items.add(c);
 
 		}
-
 	}
 }
