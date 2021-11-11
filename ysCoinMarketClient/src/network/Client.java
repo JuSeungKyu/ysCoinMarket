@@ -13,6 +13,7 @@ import application.Main;
 import format.HistoryInfo;
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
+import format.TransactionDetailsInfo;
 import format.TypeInfo;
 import format.message.CheckMessage;
 import format.message.History;
@@ -30,7 +31,7 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
-	private HistoryInfo HistoryInfoData = null;
+	private TransactionDetailsInfo HistoryInfoData = null;
 
 	private String currentCoinId = "양디코인";
 	private byte currentCoinDifficulty = 1;
@@ -166,8 +167,44 @@ public class Client {
 		this.currentRoot = root;
 	}	
 
-	public HistoryInfo getHistoryInfoData() {
+	public TransactionDetailsInfo getHistoryInfoData() {
 		return HistoryInfoData;
+	}
+
+	public void setHistoryInfoData(TransactionDetailsInfo historyInfoData) {
+		HistoryInfoData = historyInfoData;
+	}
+
+	public ObjectOutputStream getOos() {
+		return oos;
+	}
+
+	public void setOos(ObjectOutputStream oos) {
+		this.oos = oos;
+	}
+
+	public ObjectInputStream getOis() {
+		return ois;
+	}
+
+	public void setOis(ObjectInputStream ois) {
+		this.ois = ois;
+	}
+
+	public History getLastHistoryData() {
+		return lastHistoryData;
+	}
+
+	public void setLastHistoryData(History lastHistoryData) {
+		this.lastHistoryData = lastHistoryData;
+	}
+
+	public AnchorPane getCurrentRoot() {
+		return currentRoot;
+	}
+
+	public void setCurrentRoot(AnchorPane currentRoot) {
+		this.currentRoot = currentRoot;
 	}
 
 	public String getCurrentCoinId() {

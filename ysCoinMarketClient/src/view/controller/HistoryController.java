@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import format.HistoryInfo;
+import format.TransactionDetailsInfo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,39 +30,37 @@ public class HistoryController extends Controller {
 	private TableColumn<HistoryTable, String> tbName;
 
 	@FXML
-	private TableColumn<HistoryTable, String> tbType;
+	private TableColumn<HistoryTable, Integer> tbOrdering;
+
+	@FXML
+	private TableColumn<HistoryTable, Integer> tbPenalty;
 
 	@FXML
 	private TableColumn<HistoryTable, Integer> tbPrice;
 
 	@FXML
-	private TableColumn<HistoryTable, Time> tbTime;
-
+	private TableColumn<HistoryTable, String> tbOrder;
+	
 	@FXML
-	private TableColumn<HistoryTable, Integer> tbWhether;
+	private TableColumn<HistoryTable, String> tbTime;
 
 	private ObservableList<HistoryTable> items;
-
+	
 	private Client client;
 
 	// 새로고침
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		tbName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		tbType.setCellValueFactory(new PropertyValueFactory<>("type"));
+		tbName.setCellValueFactory(new PropertyValueFactory<>("coin_id"));
+		tbOrdering.setCellValueFactory(new PropertyValueFactory<>("ordering_amount"));
+		tbPenalty.setCellValueFactory(new PropertyValueFactory<>("penalty_amount"));
 		tbPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+		tbOrder.setCellValueFactory(new PropertyValueFactory<>("order_type"));
 		tbTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-		tbWhether.setCellValueFactory(new PropertyValueFactory<>("whether"));
 
 		System.out.println("거래내역 스타트");
-
-		items = FXCollections.observableArrayList();
-		// items.add(new HistoryTable(name, type, price, time, whether))
-		// items.add(new HistoryTable("테스트", "테스트", 1234, null, 1213));
-		tbHistoryView.setItems(items);
-		// getHistoryInfo();
-
+		getHistoryInfoData();
 	}
 
 	@Override
@@ -71,19 +70,20 @@ public class HistoryController extends Controller {
 	}
 
 	private void getHistoryInfoData() {
-		HistoryInfo historyInfo = this.client.getHistoryInfoData();
+		TransactionDetailsInfo historyInfo = this.client.getHistoryInfoData();
 		if (historyInfo == null) {
 			return;
 		}
 
 		// 테이블에 넣기
-		// List<HistoryInfo> HistoryList = client.;
 		items = FXCollections.observableArrayList();
+		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount, 
+				historyInfo.price,historyInfo.order_type, historyInfo.time));
 		tbHistoryView.setItems(items);
 	}
 
 	public void backScene() {
-		
+		new StageControll().newStage("/view/fxml/Main.fxml", root, null, false);
 	}
 
 }
