@@ -40,15 +40,13 @@ public class HistoryController extends Controller {
 
 	@FXML
 	private TableColumn<HistoryTable, String> tbOrder;
-	
+
 	@FXML
 	private TableColumn<HistoryTable, String> tbTime;
 
 	private ObservableList<HistoryTable> items;
-	
-	private Client client;
 
-	// 새로고침
+	private Client client;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -69,6 +67,11 @@ public class HistoryController extends Controller {
 		System.out.println("전달 완료");
 	}
 
+	// 새로고침
+	public void refresh() {
+		tbHistoryView.refresh();
+	}
+
 	private void getHistoryInfoData() {
 		TransactionDetailsInfo historyInfo = this.client.getHistoryInfoData();
 		if (historyInfo == null) {
@@ -77,13 +80,9 @@ public class HistoryController extends Controller {
 
 		// 테이블에 넣기
 		items = FXCollections.observableArrayList();
-		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount, 
-				historyInfo.price,historyInfo.order_type, historyInfo.time));
+		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount,
+				historyInfo.price, historyInfo.order_type, historyInfo.time));
 		tbHistoryView.setItems(items);
-	}
-
-	public void backScene() {
-		new StageControll().newStage("/view/fxml/Main.fxml", root, null, false);
 	}
 
 }

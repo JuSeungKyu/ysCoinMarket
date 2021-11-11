@@ -7,8 +7,7 @@
 
 <AnchorPane fx:id="root" prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
    <children>
-      <Button layoutX="62.0" layoutY="598.0" mnemonicParsing="false" onAction="#backScene" prefHeight="43.0" prefWidth="110.0" text="뒤로가기" />
-      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="67.0" prefHeight="505.0" prefWidth="918.0">
+      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="96.0" prefHeight="505.0" prefWidth="918.0">
         <columns>
           <TableColumn fx:id="tbName" prefWidth="127.0" text="이름" />
           <TableColumn fx:id="tbOrdering" minWidth="0.0" prefWidth="139.0" text="주문량" />
@@ -18,6 +17,6 @@
             <TableColumn fx:id="tbTime" prefWidth="120.0" text="시간" />
         </columns>
       </TableView>
-      <Button layoutX="916.0" layoutY="30.0" mnemonicParsing="false" text="새로고침" />
+      <Button layoutX="916.0" layoutY="60.0" mnemonicParsing="false" onAction="#refresh" text="새로고침" />
    </children>
 </AnchorPane>
