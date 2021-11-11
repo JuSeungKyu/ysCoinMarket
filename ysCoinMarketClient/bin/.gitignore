@@ -1,4 +1,17 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+/application/
+/format/
+/network/
+/util/
+/view/
+=======
+/network/
 /view/
 /format/
-/application/
+>>>>>>> 01ecd53b4f48f86145c0cb6bbcce536410b94ba7
+=======
 /network/
+/view/
+/format/
+>>>>>>> 01ecd53b4f48f86145c0cb6bbcce536410b94ba7

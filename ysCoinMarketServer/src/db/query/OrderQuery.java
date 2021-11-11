@@ -1,10 +1,15 @@
 package db.query;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import db.JDBC;
+import format.MessageObject;
+import format.TransactionDetailsInfo;
+import format.message.TransactionDetailsMessage;
 
 public class OrderQuery {
 	public void buyAndSellRequest(String userId, String coinId, int price, int count, String type) {
@@ -44,5 +49,29 @@ public class OrderQuery {
 				"VALUES ('"+coinId+"','"+orderingAmount+"','"+penaltyAmount+"','"+price+"','"+orderType+"')");
 	}
 	
-	
+	public MessageObject getTransactionDetails(String user_id) {
+		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		ArrayList<TransactionDetailsInfo> info = new ArrayList<TransactionDetailsInfo>();
+		try {
+			PreparedStatement pstmt = JDBC.con.prepareStatement("SELECT `coin_id`, `ordering_amount`, `penalty_amount`, `price`, `order_type`, `time` FROM `transaction_details` WHERE user_id = ?");
+			pstmt.setString(1, user_id);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				info.add(new TransactionDetailsInfo(
+						rs.getString("coin_id"), 
+						rs.getInt("ordering_amount"), 
+						rs.getInt("penalty_amount"), 
+						rs.getInt("price"), 
+						rs.getString("order_type"), 
+						timeFormat.format(rs.getDate("time"))
+					)
+				);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return new TransactionDetailsMessage(info);
+	}
 }

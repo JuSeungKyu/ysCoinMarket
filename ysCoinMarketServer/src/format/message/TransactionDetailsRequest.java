@@ -5,7 +5,7 @@ import format.MessageTypeConstantNumbers;
 import format.TransactionDetailsInfo;
 
 public class TransactionDetailsRequest extends MessageObject{
-	public TransactionDetailsRequest(TransactionDetailsInfo[] info) {
+	public TransactionDetailsRequest() {
 		super(MessageTypeConstantNumbers.TRANSACTION_DETAILS_REQUEST);
 	}
 }
