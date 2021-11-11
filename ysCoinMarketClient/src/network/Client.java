@@ -214,4 +214,8 @@ public class Client {
 	public byte getCurrentCoinDifficulty() {
 		return currentCoinDifficulty;
 	}
+
+	public TypeInfo[] getTypeInfoList() {
+		return typeInfoList;
+	}
 }

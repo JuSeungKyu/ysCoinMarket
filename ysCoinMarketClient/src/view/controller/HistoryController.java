@@ -81,7 +81,7 @@ public class HistoryController extends Controller {
 		// 테이블에 넣기
 		items = FXCollections.observableArrayList();
 		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount,
-				historyInfo.price, historyInfo.order_type, historyInfo.time));
+		historyInfo.price, historyInfo.order_type, historyInfo.time));
 		tbHistoryView.setItems(items);
 	}
 
