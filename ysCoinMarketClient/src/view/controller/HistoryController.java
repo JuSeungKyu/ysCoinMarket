@@ -81,6 +81,7 @@ public class HistoryController extends Controller {
 
 	// 새로고침
 	public void refresh() {
+		System.out.println("새로고침");
 		tbHistoryView.refresh();
 	}
 
@@ -92,10 +93,11 @@ public class HistoryController extends Controller {
 
 		// 테이블에 넣기
 		items = FXCollections.observableArrayList();
-		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount)),
-		historyInfo.price, historyInfo.order_type, historyInfo.time));
+		for (int i = 0; i > historyInfo.size(); i++) {
+			items.add(new HistoryTable(historyInfo.get(i)));
+		}
 		tbHistoryView.setItems(items);
-		
+
 		return true;
 	}
 
