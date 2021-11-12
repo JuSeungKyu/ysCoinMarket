@@ -1,10 +1,11 @@
 package view.controller;
 
 import java.net.URL;
-import java.util.Iterator;
+
 import java.util.ResourceBundle;
 
 import format.TypeInfo;
+import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,44 +23,47 @@ public class CoinTypeListController extends Controller {
 	@FXML
 	public TableColumn<CoinTypeTable, Integer> changeColumn;
 	private Client client;
-	private TypeInfo type;
-
-//	String st = type.name;
-//	int num = type.currentPrice;
 
 	public void initData(Object data) {
-		this.client = (Client) client;
-		System.out.println("C전달받음");
+		this.client = (Client) data;
 	}
 
 	@Override // 불러오기 성공
 	public void initialize(URL location, ResourceBundle resources) {
-
+		viewMain.setItems(items);
+		System.out.println("tableStart");
 		items = FXCollections.observableArrayList();
 		viewMain.setItems(items);
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().getName());
 		changeColumn.setCellValueFactory(cellData -> cellData.getValue().getChange().asObject());
 
-		System.out.println("종목별 리스트 출력");
-//		this.client.getTypeInfoList();
+		AnimationTimer setType = new AnimationTimer() {
+			@Override
+			public void handle(long timestamp) {
+				try {
+					getTable();
+				} catch (Exception e) {
+//					e.printStackTrace();
+				}
 
-		getTable(null, 0);
+			}
 
+		};
+		setType.start();
 	}
 
-	public void getTable(String name, int currentPrice) {
-//		TypeInfo[] typeInfo = this.client.getTypeInfo();
-		TypeInfo[] typeInfo = { new TypeInfo(name, currentPrice) };
-		if (typeInfo == null) {
-			System.out.println("coinTable 오류");
-			return;
+	public boolean getTable() {
+		TypeInfo[] typeInfo = this.client.getTypeInfoList();
+		if (typeInfo.length == 0) {
+			return false;
 		}
-		items = FXCollections.observableArrayList();
-		viewMain.setItems(items);
+		items.clear();
 		for (TypeInfo typeInfo2 : typeInfo) {
 			CoinTypeTable c = new CoinTypeTable(typeInfo2.name, typeInfo2.currentPrice);
 			items.add(c);
 
 		}
+
+		return true;
 	}
 }

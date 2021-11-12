@@ -35,7 +35,7 @@ public class Client {
 
 	private String currentCoinId = "양디코인";
 	private byte currentCoinDifficulty = 1;
-	private TypeInfo[] typeInfoList;
+	private TypeInfo[] typeInfoList = new TypeInfo[0];
 	private Util util = new Util();
 
 	private Queue<MessageObject> sendMsgQueue = new LinkedList<MessageObject>();
