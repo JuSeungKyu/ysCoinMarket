@@ -32,7 +32,12 @@ public class UserLoginManager implements Runnable{
 
 				// 아이디 받음
 				LoginRequest LoginMsg = (LoginRequest) ois.readObject();
-
+				System.out.println(Server.clientMap.get(LoginMsg.id));
+				if(Server.clientMap.get(LoginMsg.id) != null) {
+					oos.writeObject(new LoginCheckMessage("로그인 실패", false));
+					continue;
+				}
+				
 				// 존재하는 아이디인지 확인
 				if(LoginMsg.isLogin) {
 					int idCount = (int) ((long) this.utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
