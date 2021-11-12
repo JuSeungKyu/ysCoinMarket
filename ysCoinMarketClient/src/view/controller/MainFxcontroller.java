@@ -5,8 +5,12 @@ import java.util.ResourceBundle;
 
 import format.CoinInfo;
 import format.message.TransactionDetailsRequest;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import network.Client;
 import util.StageControll;
@@ -34,6 +38,9 @@ public class MainFxcontroller extends Controller {
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println(11);
 		loadPage();
+
+		setNumericField(count);
+		setNumericField(price);
 	}
 
 	public void CoinMining() {
@@ -63,5 +70,51 @@ public class MainFxcontroller extends Controller {
 				}
 			}
 		}.start();
+	}
+	
+	public boolean textValidation(String string) {
+		try {
+			int test = Integer.parseInt(string);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@FXML
+	private TextField count;
+	@FXML
+	private TextField price;
+	
+	private void setNumericField(TextField field) {
+		field.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	field.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+	}
+	
+	private void transaction(String type) {
+		String countText = count.getText();
+		String priceText = price.getText();
+		
+		if(!textValidation(countText) || !textValidation(priceText)) {
+			new Util().alert("경고", "올바르지않은 입력입니다", "다시 입력해주세요");
+			return;
+		}
+
+		int count = Integer.parseInt(countText);
+		int price = Integer.parseInt(priceText);
+	}
+	
+	public void buy() {
+		transaction("구매");
+	}
+	
+	public void sell() {
+		transaction("판매");
 	}
 }
