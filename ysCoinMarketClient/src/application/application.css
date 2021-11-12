@@ -4,7 +4,7 @@
 }
 
 .font1{
-	-fx-font-size: 20px;	
+	-fx-font-size: 20.0px;	
 }
 
 .textfield1{
@@ -12,9 +12,9 @@
 }
 
 .textfield1-label{
-	-fx-font-size: 15px;
+	-fx-font-size: 15.0px;
 	-fx-background-color: white;
-	-fx-padding: 5px;
+	-fx-padding: 5.0px;
 }
 
 .textfield1-textfield{
@@ -22,21 +22,21 @@
 }
 
 .btn1{
-	-fx-background-color: rgba(0,0,0,0);
+	-fx-background-color: rgba(0.0,0.0,0.0,0.0);
 	-fx-text-fill:#6735fb;
 	-fx-border-color:#6735fb;
-	-fx-border-width: 1px 0px 1px 1px;
+	-fx-border-width: 1.0px 0.0px 1.0px 1.0px;
 }
 
 .btn1:hover{
-	-fx-border-width: 2px;
+	-fx-border-width: 2.0px;
 	-fx-border-color: #2c00ad;
 }
 
 .btn1:pressed{
 	-fx-border-color: #2c00ad;
 	-fx-border-style: solid;
-	-fx-border-width: 3px 0px 1px 2px;
+	-fx-border-width: 3.0px 0.0px 1.0px 2.0px;
 }
 
 
@@ -44,23 +44,23 @@
 	-fx-background-color: #FFFFFF;
 	-fx-text-fill:#0044FF;
 	-fx-border-color: #0022FF;
-	-fx-border-radius : 10px;
+	-fx-border-radius : 10.0px;
 }
 .btn2:hover{
 	
-	-fx-border-width: 2px;
+	-fx-border-width: 2.0px;
 	-fx-border-color: #0099FF;
 }
 .btn2:pressed{
 	
 	-fx-border-color: #0099FF;
 	-fx-border-style: solid;
-	-fx-border-width: 3px 3px 3px 3px;
+	-fx-border-width: 3.0px 3.0px 3.0px 3.0px;
 }
 
 
 .btn3{
-	-fx-border-radius : 2px;
+	-fx-border-radius : 2.0px;
 	-fx-background-color: #000000;
 	-fx-border-style: solid;
 	-fx-border-color: #000000;
@@ -74,12 +74,6 @@
 	-fx-background-color: #808080;
 }
 
-
-
-
-
-
-
 .Togglebtn { 
     -fx-background-color:  #262626;
 }
@@ -92,3 +86,24 @@
 }
 
 
+.table-view{
+  -fx-background-color: transparent;
+  -fx-border-color: #ccc;
+  -fx-border-width: 2.0 0.0 0.0 0.0;
+}
+.table-view-focused	{
+  -fx-cell-size: 34.0px;
+  -fx-background-color: white;
+  -fx-border-width: 0.0 0.0 1.0 0.0;
+  -fx-border-color: #ccc;
+}
+.table-row-cell	{
+	
+  -fx-text-fill: black;
+}
+.table-view .column-header{
+  -fx-background-color: #fff;
+  -fx-pref-height: 40.0px;
+  -fx-border-color: #bfbfbf;
+  -fx-border-width: 0.0 0.0 1.0 0.0;
+}
