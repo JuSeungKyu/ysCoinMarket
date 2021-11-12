@@ -31,7 +31,7 @@ public class Client {
 	private ObjectInputStream ois;
 	private History lastHistoryData = null;
 	private AnchorPane currentRoot;
-	private TransactionDetailsInfo HistoryInfoData = null;
+	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
 	private String currentCoinId = "양디코인";
 	private byte currentCoinDifficulty = 1;
@@ -116,8 +116,7 @@ public class Client {
 				}
 				
 				if(objectMsg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_UPDATE) {
-					System.out.println("hi");
-					System.out.println(((TransactionDetailsMessage) objectMsg).info.toString());
+					transactionDetailsInfo = ((TransactionDetailsMessage) objectMsg).info;
 					continue;
 				}
 				
@@ -167,12 +166,12 @@ public class Client {
 		this.currentRoot = root;
 	}	
 
-	public TransactionDetailsInfo getHistoryInfoData() {
-		return HistoryInfoData;
+	public ArrayList<TransactionDetailsInfo> getTransactionDetailsData() {
+		return transactionDetailsInfo;
 	}
 
-	public void setHistoryInfoData(TransactionDetailsInfo historyInfoData) {
-		HistoryInfoData = historyInfoData;
+	public void setHistoryInfoData(TransactionDetailsInfo TransactionDetailsInfo) {
+		TransactionDetailsInfo = TransactionDetailsInfo;
 	}
 
 	public ObjectOutputStream getOos() {

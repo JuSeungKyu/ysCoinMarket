@@ -89,7 +89,7 @@ public class ClientManager extends Thread {
 	}
 	
 	private void sendTransactionDetailsMessage() {
-		MessageObject info = new OrderQuery().getTransactionDetails(this.id);
+		TransactionDetailsMessage info = new OrderQuery().getTransactionDetails(this.id);
 		if(info != null) {
 			SendMessageThread.addMessageQueue(this, info);
 		}
