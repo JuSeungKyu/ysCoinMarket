@@ -85,6 +85,7 @@ public class ClientManager extends Thread {
 			removeClient();
 		} catch (IOException e) {
 			e.printStackTrace();
+			removeClient();
 		}
 	}
 	
@@ -157,6 +158,7 @@ public class ClientManager extends Thread {
 	
 	public void sendObject(Object object) {
 		try {
+			System.out.println(socket.isClosed());
 			this.oos.writeObject(object);
 			this.oos.flush();
 		} catch (IOException e) {
