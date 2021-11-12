@@ -10,14 +10,4 @@ public class TypeInfo implements Serializable {
 		this.name = name;
 		this.currentPrice = currentPrice;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public int getCurrentPrice() {
-		return currentPrice;
-	}
-
-	
 }

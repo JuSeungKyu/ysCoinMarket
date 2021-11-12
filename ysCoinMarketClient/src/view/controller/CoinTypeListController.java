@@ -24,8 +24,8 @@ public class CoinTypeListController extends Controller {
 	private Client client;
 	private TypeInfo type;
 
-	String st = type.getName();
-	int num = type.getCurrentPrice();
+	String st = type.name;
+	int num = type.currentPrice;
 
 	public void initData(Object data) {
 		this.client = (Client) client;
