@@ -49,7 +49,7 @@ public class OrderQuery {
 				"VALUES ('"+coinId+"','"+orderingAmount+"','"+penaltyAmount+"','"+price+"','"+orderType+"')");
 	}
 	
-	public MessageObject getTransactionDetails(String user_id) {
+	public TransactionDetailsMessage getTransactionDetails(String user_id) {
 		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ArrayList<TransactionDetailsInfo> info = new ArrayList<TransactionDetailsInfo>();
 		try {

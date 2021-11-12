@@ -2,11 +2,13 @@ package view.controller;
 
 import java.net.URL;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import format.HistoryInfo;
 import format.TransactionDetailsInfo;
+import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +48,7 @@ public class HistoryController extends Controller {
 
 	private ObservableList<HistoryTable> items;
 
-	private Client client;
+	protected Client client;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -58,7 +60,17 @@ public class HistoryController extends Controller {
 		tbTime.setCellValueFactory(new PropertyValueFactory<>("time"));
 
 		System.out.println("거래내역 스타트");
-		getHistoryInfoData();
+		AnimationTimer set = new AnimationTimer() {
+			@Override
+			public void handle(long timestamp) {
+				try {
+					if (getHistoryInfoData())
+						this.stop();
+				} catch (Exception e) {
+				}
+			}
+		};
+		set.start();
 	}
 
 	@Override
@@ -72,17 +84,19 @@ public class HistoryController extends Controller {
 		tbHistoryView.refresh();
 	}
 
-	private void getHistoryInfoData() {
-		TransactionDetailsInfo historyInfo = this.client.getHistoryInfoData();
+	private boolean getHistoryInfoData() {
+		ArrayList<TransactionDetailsInfo> historyInfo = this.client.getTransactionDetailsData();
 		if (historyInfo == null) {
-			return;
+			return false;
 		}
 
 		// 테이블에 넣기
 		items = FXCollections.observableArrayList();
-		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount,
+		items.add(new HistoryTable(historyInfo.coin_id, historyInfo.ordering_amount, historyInfo.penalty_amount)),
 		historyInfo.price, historyInfo.order_type, historyInfo.time));
 		tbHistoryView.setItems(items);
+		
+		return true;
 	}
 
 }

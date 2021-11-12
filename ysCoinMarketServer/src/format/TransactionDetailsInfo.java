@@ -1,6 +1,8 @@
 package format;
 
-public class TransactionDetailsInfo {
+import java.io.Serializable;
+
+public class TransactionDetailsInfo implements Serializable  {
 	public String coin_id; // 이름
 	public int ordering_amount; // 주문량
 	public int penalty_amount; // 채결량
