@@ -51,6 +51,10 @@ public class CoinMiningController extends Controller {
 		};
 		
 		updateTime.start();
+		
+		Thread coinMiningTHread = new Thread(() -> {
+			
+		});
 	}
 
 	@Override

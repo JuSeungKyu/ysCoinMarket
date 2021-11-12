@@ -24,8 +24,8 @@ public class CoinTypeListController extends Controller {
 	private Client client;
 	private TypeInfo type;
 
-	String st = type.name;
-	int num = type.currentPrice;
+//	String st = type.name;
+//	int num = type.currentPrice;
 
 	public void initData(Object data) {
 		this.client = (Client) client;
@@ -41,9 +41,9 @@ public class CoinTypeListController extends Controller {
 		changeColumn.setCellValueFactory(cellData -> cellData.getValue().getChange().asObject());
 
 		System.out.println("종목별 리스트 출력");
-		this.client.getTypeInfoList();
+//		this.client.getTypeInfoList();
 
-		getTable(st, num);
+		getTable(null, 0);
 
 	}
 
