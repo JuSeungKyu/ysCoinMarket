@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import network.Client;
 import util.StageControll;
 import util.Util;
@@ -24,6 +25,8 @@ public class MainFxcontroller extends Controller {
 	private AnchorPane pane1;
 	@FXML
 	private AnchorPane pane2; // 그래프
+	@FXML
+	private AnchorPane pane3; // 호가창
 	@FXML
 	private Button CoinMiningBtn;
 	
@@ -65,6 +68,7 @@ public class MainFxcontroller extends Controller {
 					if (client != null) {
 						sc.addFxmlChildren(pane2, "/view/fxml/Graph.fxml", client);
 						sc.addFxmlChildren(pane1, "/view/fxml/CoinTypeList.fxml", client);
+						sc.addFxmlChildren(pane3,"/view/fxml/quote.fxml", client);
 						break;
 					}
 				}

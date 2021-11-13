@@ -15,6 +15,7 @@ import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.TransactionDetailsInfo;
 import format.TypeInfo;
+import format.QuoteInfo;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
@@ -37,7 +38,8 @@ public class Client {
 	private byte currentCoinDifficulty = 1;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
 	private Util util = new Util();
-
+	private QuoteInfo[] quoteInfoList = new QuoteInfo[0];
+	
 	private Queue<MessageObject> sendMsgQueue = new LinkedList<MessageObject>();
 
 	public Client() {
@@ -131,6 +133,9 @@ public class Client {
 	public TypeInfo[] getTypeInfo() {
 		return this.typeInfoList;
 	}
+	public QuoteInfo[] getquoteInfo() {
+		return this.quoteInfoList;
+	}
 
 	public void changeCoinType(String coinId) {
 		this.currentCoinId = coinId;
@@ -216,5 +221,10 @@ public class Client {
 
 	public TypeInfo[] getTypeInfoList() {
 		return typeInfoList;
+	}
+
+	public QuoteInfo[] getQuoteInfoList() {
+		
+		return quoteInfoList;
 	}
 }

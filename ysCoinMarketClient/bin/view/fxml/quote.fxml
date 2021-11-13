@@ -4,14 +4,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="250.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.quoteController">
    <children>
-      <TableView prefHeight="250.0" prefWidth="600.0">
+      <TableView fx:id="viewMain" prefHeight="250.0" prefWidth="300.0">
         <columns>
-          <TableColumn prefWidth="200.0" text="일반호가" />
-          <TableColumn prefWidth="200.0" text="누적호가" />
-            <TableColumn prefWidth="200.0" text="호가주문'" />
+          <TableColumn fx:id="normalColumn" prefWidth="100.0" text="일반호가" />
+          <TableColumn fx:id="accumulateColumn" prefWidth="100.0" text="누적호가" />
+            <TableColumn fx:id="orderColumn" prefWidth="100.0" text="호가주문" />
         </columns>
       </TableView>
    </children>

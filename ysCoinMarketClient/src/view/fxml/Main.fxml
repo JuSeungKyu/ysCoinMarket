@@ -19,5 +19,6 @@
       <Label layoutX="622.0" layoutY="567.0" text="가격" />
       <Button layoutX="722.0" layoutY="594.0" mnemonicParsing="false" onAction="#buy" text="매수" />
       <Button layoutX="762.0" layoutY="594.0" mnemonicParsing="false" onAction="#sell" text="매도" />
+      <AnchorPane fx:id="pane3" layoutX="225.0" layoutY="433.0" prefHeight="194.0" prefWidth="374.0" />
    </children>
 </AnchorPane>

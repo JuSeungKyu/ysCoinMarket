@@ -12,4 +12,5 @@ public interface MessageTypeConstantNumbers {
 	public byte UPDATE_TYPE_INFO = 8;
 	public byte TRANSACTION_DETAILS_REQUEST = 9;
 	public byte TRANSACTION_DETAILS_UPDATE = 10;
+	public byte UPDATE_QUOTE_INFO=11;
 }
