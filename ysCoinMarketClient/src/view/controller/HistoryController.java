@@ -90,13 +90,10 @@ public class HistoryController extends Controller {
 		if (historyInfo == null) {
 			return false;
 		}
-		
-		System.out.println(historyInfo.size());
-		System.out.println(historyInfo.get(0).toString());
+
 		// 테이블에 넣기
 		items = FXCollections.observableArrayList();
 		for (int i = 0; i < historyInfo.size(); i++) {
-			System.out.println(historyInfo.get(i).toString());
 			items.add(new HistoryTable(historyInfo.get(i)));
 		}
 		tbHistoryView.setItems(items);

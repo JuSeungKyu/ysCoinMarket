@@ -82,7 +82,6 @@ public class ClientManager extends Thread {
 			
 			removeClient();
 		} catch (IOException e) {
-			e.printStackTrace();
 			removeClient();
 		}
 	}

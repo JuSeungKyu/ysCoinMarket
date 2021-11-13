@@ -24,7 +24,6 @@ public class quoteController extends Controller {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		
 	}
 
 	public void initData(Object data) {

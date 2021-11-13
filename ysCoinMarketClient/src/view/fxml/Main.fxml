@@ -4,20 +4,29 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.MainFxcontroller">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1042.0" styleClass="background1" stylesheets="@../../application/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.MainFxcontroller">
    <children>
       <Line endX="193.0" endY="678.0" startX="193.0" />
       <AnchorPane fx:id="pane1" prefHeight="678.0" prefWidth="191.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane fx:id="pane2" prefHeight="450.0" prefWidth="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="CoinMiningBtn" layoutX="889.0" layoutY="551.0" mnemonicParsing="false" onAction="#CoinMining" text="채굴" />
       <Button layoutX="225.0" layoutY="23.0" mnemonicParsing="false" onAction="#history" prefHeight="53.0" prefWidth="176.0" text="거래내역 보기" />
-      <TextField fx:id="count" layoutX="664.0" layoutY="540.0" />
-      <Label layoutX="622.0" layoutY="544.0" text="수량" />
-      <TextField fx:id="price" layoutX="664.0" layoutY="563.0" />
-      <Label layoutX="622.0" layoutY="567.0" text="가격" />
-      <Button layoutX="722.0" layoutY="594.0" mnemonicParsing="false" onAction="#buy" text="매수" />
-      <Button layoutX="762.0" layoutY="594.0" mnemonicParsing="false" onAction="#sell" text="매도" />
+      <Button layoutX="619.0" layoutY="594.0" mnemonicParsing="false" onAction="#buy" prefHeight="31.0" prefWidth="105.0" styleClass="btn2" text="매수" />
+      <Button layoutX="731.0" layoutY="594.0" mnemonicParsing="false" onAction="#sell" prefHeight="31.0" prefWidth="105.0" styleClass="btn2" text="매도" />
+      <Pane layoutX="536.0" layoutY="450.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
+         <children>
+            <TextField fx:id="count" layoutY="10.0" prefHeight="45.0" prefWidth="300.0" styleClass="textfield1-textfield" />
+            <Label layoutX="14.0" layoutY="-4.0" styleClass="textfield1-label" text="수량" />
+         </children>
+      </Pane>
+      <Pane layoutX="536.0" layoutY="523.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
+         <children>
+            <TextField fx:id="price" layoutY="10.0" prefHeight="45.0" prefWidth="300.0" styleClass="textfield1-textfield" />
+            <Label layoutX="14.0" layoutY="-4.0" styleClass="textfield1-label" text="가격" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

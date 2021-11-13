@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="719.0" prefWidth="191.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.CoinTypeListController">
+<AnchorPane prefHeight="678" prefWidth="191.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.CoinTypeListController">
    <children>
-      <TableView fx:id="viewMain" prefHeight="719.0" prefWidth="191.0" stylesheets="@../../application/application.css">
+      <TableView fx:id="viewMain" prefHeight="678" prefWidth="191.0" stylesheets="@../../application/application.css">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="75.0" text="종목이름" />
           <TableColumn fx:id="changeColumn" prefWidth="124.0" text="가격" />
