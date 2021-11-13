@@ -97,6 +97,13 @@ public class StageControll {
 				for (int i = 0; i < Main.ThreadList.size(); i++) {
 					Main.ThreadList.get(i).interrupt();
 				}
+				if(Main.socket != null) {
+					try {
+						Main.socket.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 	}

@@ -50,8 +50,6 @@ public class ClientManager extends Thread {
 					if (msg == null)
 						break;
 					
-					System.out.println(msg.type);
-					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest)msg);
 						continue;
@@ -78,7 +76,7 @@ public class ClientManager extends Thread {
 					}
 					
 				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+					removeClient();
 				}
 			}
 			
@@ -158,7 +156,8 @@ public class ClientManager extends Thread {
 	
 	public void sendObject(Object object) {
 		try {
-			System.out.println(socket.isClosed());
+			if(socket.isClosed())
+				throw new Error();
 			this.oos.writeObject(object);
 			this.oos.flush();
 		} catch (IOException e) {

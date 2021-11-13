@@ -43,7 +43,7 @@ public class Client {
 	public Client() {
 		try {
 			Socket socket = new Socket("127.0.0.1", 2657);
-
+			Main.socket = socket;
 			this.oos = new ObjectOutputStream(socket.getOutputStream());
 			this.ois = new ObjectInputStream(socket.getInputStream());
 
@@ -121,9 +121,9 @@ public class Client {
 				}
 				
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				break;
 			} catch (IOException e) {
-				e.printStackTrace();
+				break;
 			}
 		}
 	}

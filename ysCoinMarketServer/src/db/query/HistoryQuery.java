@@ -35,7 +35,6 @@ public class HistoryQuery {
 				if (format.format(currentTime).equals(rs.getString("time"))) {
 					updateMarketPrice("history_minute", coinName, price, rs.getInt("high"), rs.getInt("low"));
 				} else {
-					System.out.println(format.format(currentTime).equals(rs.getString("time")));
 					insertMarketPrice("history_minute", coinName, price, currentTime);
 				}
 			}

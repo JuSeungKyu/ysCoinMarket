@@ -1,5 +1,6 @@
 package application;
 	
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -12,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class Main extends Application {
 	public static ArrayList<Thread> ThreadList = new ArrayList<Thread>();
-	
+	public static Socket socket = null;
 	@Override
 	public void start(Stage primaryStage) {
 		try {

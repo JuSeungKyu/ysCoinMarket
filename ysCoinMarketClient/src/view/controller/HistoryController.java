@@ -94,6 +94,7 @@ public class HistoryController extends Controller {
 		// 테이블에 넣기
 		items = FXCollections.observableArrayList();
 		for (int i = 0; i > historyInfo.size(); i++) {
+			System.out.println(historyInfo.get(i).toString());
 			items.add(new HistoryTable(historyInfo.get(i)));
 		}
 		tbHistoryView.setItems(items);
