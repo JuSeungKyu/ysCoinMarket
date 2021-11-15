@@ -1,6 +1,7 @@
 package db.query;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 public class UserHashControlQuery {
@@ -63,5 +64,20 @@ public class UserHashControlQuery {
 	
 	public void updateTransactionDetails(UtilQuery uq, String userId, String coinId, int penaltyAmount, String time) {
 		uq.justUpdate("UPDATE `transaction_details` SET penalty_amount=penalty_amount+"+penaltyAmount+" WHERE coin_id='"+coinId+"' AND user_id='"+userId+"' AND time='"+time+"'");
+	}
+	
+	public String getPreviousHash(String coinId) {
+		UtilQuery uq = new UtilQuery();
+		ResultSet rs = uq.justGetResultSet("SELECT MAX(id), hash FROM `hash` WHERE coin_id='" + coinId + "'");
+		
+		try {
+			if(rs.next()) {
+				return rs.getString("hash");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

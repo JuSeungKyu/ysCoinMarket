@@ -3,7 +3,9 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.Main;
 import format.CoinInfo;
+import format.message.PreviousHashRequest;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -11,6 +13,7 @@ import java.text.SimpleDateFormat;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import network.Client;
 import util.Util;
 
 public class CoinMiningController extends Controller {
@@ -24,7 +27,9 @@ public class CoinMiningController extends Controller {
 	@FXML
 	private Label frequency;
 	
+	private Client client;
 	private CoinInfo coin;
+	private PreviousHashRequest preHashReq;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -53,13 +58,32 @@ public class CoinMiningController extends Controller {
 		updateTime.start();
 		
 		Thread coinMiningTHread = new Thread(() -> {
+			String PreviousHash = null;
+			this.preHashReq = new PreviousHashRequest(this.coin.getCoinId());
 			
+			this.client.addSendObject(preHashReq);
+			
+			while(PreviousHash.isEmpty()) {
+				PreviousHash = this.client.getHash();
+				System.out.println(PreviousHash);
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			System.out.println("coin type : " + coin.getCoinId() + ", previous hash : " + PreviousHash);
 		});
+		
+		Main.ThreadList.add(coinMiningTHread);
+		coinMiningTHread.start();
 	}
 
 	@Override
 	public void initData(Object data) {
-		coin = (CoinInfo) data;
+		this.client = (Client) data;
+		this.coin = new CoinInfo(this.client.getCurrentCoinId(), this.client.getCurrentCoinDifficulty());
 	}
 	
 }

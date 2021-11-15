@@ -18,6 +18,7 @@ import format.TypeInfo;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
+import format.message.PreviousHashMessage;
 import format.message.TransactionDetailsMessage;
 import format.message.TypeInfoUpdate;
 import format.message.UpdateGraphRange;
@@ -34,7 +35,8 @@ public class Client {
 	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
 	private String currentCoinId = "양디코인";
-	private byte currentCoinDifficulty = 1;
+	private byte currentCoinDifficulty = 4;
+	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
 	private Util util = new Util();
 
@@ -47,10 +49,10 @@ public class Client {
 			this.oos = new ObjectOutputStream(socket.getOutputStream());
 			this.ois = new ObjectInputStream(socket.getInputStream());
 
-			Thread readObjectThread = new Thread(()-> {
+			Thread readObjectThread = new Thread(() -> {
 				readData();
 			});
-			Thread writeObjectThread = new Thread(()-> {
+			Thread writeObjectThread = new Thread(() -> {
 				writeData();
 			});
 			Main.ThreadList.add(readObjectThread);
@@ -64,10 +66,10 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void writeData() {
-		while(true) {
-			while(sendMsgQueue.size() != 0) {
+		while (true) {
+			while (sendMsgQueue.size() != 0) {
 				this.sendObject(sendMsgQueue.poll());
 				sendMsgQueue.remove(0);
 			}
@@ -81,14 +83,14 @@ public class Client {
 		while (true) {
 			try {
 				objectMsg = (MessageObject) this.ois.readObject();
-				
-				if(objectMsg == null) {
+
+				if (objectMsg == null) {
 					System.out.println("null 메시지");
 					continue;
 				}
 
 //				System.out.println(objectMsg.type);
-				
+
 				if (objectMsg.type == MessageTypeConstantNumbers.HISTORY_LIST) {
 					this.lastHistoryData = (History) objectMsg;
 					continue;
@@ -109,17 +111,23 @@ public class Client {
 					}
 					continue;
 				}
-				
-				if(objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
-					this.typeInfoList = ((TypeInfoUpdate)objectMsg).info;
+
+				if (objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
+					this.typeInfoList = ((TypeInfoUpdate) objectMsg).info;
 					continue;
 				}
-				
-				if(objectMsg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_UPDATE) {
+
+				if (objectMsg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_UPDATE) {
 					transactionDetailsInfo = ((TransactionDetailsMessage) objectMsg).info;
 					continue;
 				}
-				
+
+				if (objectMsg.type == MessageTypeConstantNumbers.PREVIOUS_HASH_MESSAGE) {
+					System.out.println("get Object");
+					this.hash = ((PreviousHashMessage) objectMsg).hash;
+					continue;
+				}
+
 			} catch (ClassNotFoundException e) {
 				break;
 			} catch (IOException e) {
@@ -153,18 +161,19 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addSendObject(Object obj) {
+		System.out.println("send Object");
 		this.sendMsgQueue.add((MessageObject) obj);
 	}
-	
+
 	public History getHistory() {
 		return this.lastHistoryData;
 	}
 
 	public void setRoot(AnchorPane root) {
 		this.currentRoot = root;
-	}	
+	}
 
 	public ArrayList<TransactionDetailsInfo> getTransactionDetailsData() {
 		return transactionDetailsInfo;
@@ -209,12 +218,20 @@ public class Client {
 	public String getCurrentCoinId() {
 		return currentCoinId;
 	}
-	
+
 	public byte getCurrentCoinDifficulty() {
 		return currentCoinDifficulty;
 	}
 
 	public TypeInfo[] getTypeInfoList() {
 		return typeInfoList;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 }

@@ -18,6 +18,8 @@ import format.message.TransactionDetailsMessage;
 import format.message.UpdateGraphRange;
 import util.MessageInfo;
 import format.message.CoinTypeChange;
+import format.message.PreviousHashMessage;
+import format.message.PreviousHashRequest;
 
 
 public class ClientManager extends Thread {
@@ -75,6 +77,12 @@ public class ClientManager extends Thread {
 						continue;
 					}
 					
+					if(msg.type == MessageTypeConstantNumbers.PREVIOUS_HASH_REQUEST) {
+						System.out.println("get Object");
+						sendPreviousHash(((PreviousHashRequest)msg).coinId);
+						continue;
+					}
+					
 				} catch (ClassNotFoundException e) {
 					removeClient();
 				}
@@ -84,6 +92,15 @@ public class ClientManager extends Thread {
 		} catch (IOException e) {
 			removeClient();
 		}
+	}
+	
+	private void sendPreviousHash(String coinId) {
+		 UserHashControlQuery uhcq = new UserHashControlQuery();
+		 String hash = uhcq.getPreviousHash(coinId);
+		 if(!hash.isEmpty()) {
+			 System.out.println("send Object");
+			 SendMessageThread.addMessageQueue(this, new PreviousHashMessage(hash));
+		 }
 	}
 	
 	private void sendTransactionDetailsMessage() {
