@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import format.CoinInfo;
+import format.message.BuyRequest;
+import format.message.SellRequest;
 import format.message.TransactionDetailsRequest;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -99,6 +101,10 @@ public class MainFxcontroller extends Controller {
 
 		int count = Integer.parseInt(countText);
 		int price = Integer.parseInt(priceText);
+
+		client.addSendObject(type.equals("구매") ? 
+				new BuyRequest(client.getCurrentCoinId(), price, count)
+				: new SellRequest(client.getCurrentCoinId(), price, count));
 	}
 	
 	public void buy() {

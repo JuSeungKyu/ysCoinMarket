@@ -42,12 +42,8 @@ public class CoinTypeListController extends Controller {
 			public void handle(long timestamp) {
 				try {
 					getTable();
-				} catch (Exception e) {
-//					e.printStackTrace();
-				}
-
+				} catch (Exception e) {}
 			}
-
 		};
 		setType.start();
 	}

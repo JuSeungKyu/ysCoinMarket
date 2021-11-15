@@ -1,5 +1,6 @@
 package db.query;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +15,8 @@ import format.message.TransactionDetailsMessage;
 public class OrderQuery {
 	public void buyAndSellRequest(String userId, String coinId, int price, int count, String type) {
 		UtilQuery uq = new UtilQuery();
-		int sellOrderCount = (int) uq.justGetObject("SELECT sum(count) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
-				+"' AND coin_id = '" + coinId + "'");
+		int sellOrderCount = ((BigDecimal) uq.justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
+				+"' AND coin_id = '" + coinId + "'")).intValue();
 
 		UserHashControlQuery uhcq = new UserHashControlQuery();
 		if(sellOrderCount == 0) {
@@ -36,7 +37,7 @@ public class OrderQuery {
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, price);
 			pstmt.setInt(3, count);
-			pstmt.setString(5, type);
+			pstmt.setString(4, type);
 			pstmt.setString(5, coinId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -46,7 +47,7 @@ public class OrderQuery {
 	
 	public void setTransactionDetails(UtilQuery uq, String userId, String coinId, int orderingAmount, int penaltyAmount, int price, String orderType) {
 		uq.justUpdate("INSERT INTO `transaction_details`(`coin_id`, `ordering_amount`, `penalty_amount`, `price`, `order_type`, `user_id`) "+ 
-				"VALUES ('"+coinId+"','"+orderingAmount+"','"+penaltyAmount+"','"+price+"','"+orderType+"')");
+				"VALUES ('"+coinId+"','"+orderingAmount+"','"+penaltyAmount+"','"+price+"','"+orderType+"','"+userId+"')");
 	}
 	
 	public TransactionDetailsMessage getTransactionDetails(String user_id) {

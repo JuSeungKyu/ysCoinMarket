@@ -33,6 +33,7 @@ public class InfomationSendThread implements Runnable {
 			int randInt = r.nextInt(200) + 8000 + randInt2;
 			randInt2 += r.nextInt(1000) - 500;
 			q1.CoinHistoryUpdate("양디코인", randInt);
+			q1.CoinHistoryUpdate("바이트코인", randInt);
 			// ----- 테스트용-----
 
 			// ---- 가격 역사 보내기 ----
@@ -69,13 +70,14 @@ public class InfomationSendThread implements Runnable {
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
 			try {
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
+				if(c.getCoinType().equals(coinId)) {
+					if (history.size() < c.getGraphRangeEnd()) {
+						c.setGraphRangeEnd((short) history.size());
+						c.checkGraphRange();
+					}
 
-				if (history.size() < c.getGraphRangeEnd()) {
-					c.setGraphRangeEnd((short) history.size());
-					c.checkGraphRange();
+					SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(history, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 				}
-
-				SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(history, c.getGraphRangeStart(), c.getGraphRangeEnd())));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

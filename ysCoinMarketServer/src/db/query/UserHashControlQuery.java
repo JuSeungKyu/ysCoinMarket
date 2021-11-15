@@ -1,5 +1,6 @@
 package db.query;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -7,14 +8,14 @@ import java.text.SimpleDateFormat;
 public class UserHashControlQuery {
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	public int getUserHashCount(String userId, String coinname) {
-		return (int) new UtilQuery().justGetObject(
-				"SELECT count(hash) FROM hash WHERE coin_id='" + coinname + "' AND user_id='" + userId + "'");
+	public long getUserHashCount(String userId, String coinname) {
+		return ((long) new UtilQuery().justGetObject(
+				"SELECT count(hash) FROM hash WHERE coin_id='" + coinname + "' AND user_id='" + userId + "'"));
 	}
 
 	public int getUserOrderedHashCount(String userId, String coinname) {
-		return (int) new UtilQuery().justGetObject("SELECT sum(count) FROM order_info WHERE coin_id='" + coinname
-				+ "' AND user_id='" + userId + "' AND order_type='구매'");
+		return ((BigDecimal) new UtilQuery().justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE coin_id='" + coinname
+				+ "' AND user_id='" + userId + "' AND order_type='구매'")).intValue();
 	}
 
 	public void hashOwnerTransfer(String coinId, String userId, int price, int count, String type) {

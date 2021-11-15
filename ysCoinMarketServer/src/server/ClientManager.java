@@ -131,7 +131,7 @@ public class ClientManager extends Thread {
 	
 	private void sellRequest(SellRequest msg) {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		if(uhcq.getUserHashCount(this.id, msg.coinname) > msg.count - uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
+		if(msg.count > uhcq.getUserHashCount(this.id, msg.coinname) - uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
 			sendCheckMessage("매도 주문 실패", false);
 		} else {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "판매");
@@ -140,9 +140,9 @@ public class ClientManager extends Thread {
 	}
 	
 	private void buyRequest(BuyRequest msg) {
-		int money = (int) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
+		long money = (long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
 		if(msg.count * msg.price > money) {
-			sendCheckMessage("매수 주문 실패", false);
+			sendCheckMessage("돈이 부족합니다.", false);
 		} else{
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
 			sendCheckMessage("매수 주문 성공", true);

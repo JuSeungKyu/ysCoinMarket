@@ -48,6 +48,7 @@ public class GraphController extends Controller {
 		    @Override
 		    public void handle(long timestamp) {
 	        	try {
+					System.out.println("실행중");
 					getHistory();
 				} catch (Exception e) {}
 				sendGraphRangeUpdateRequst();

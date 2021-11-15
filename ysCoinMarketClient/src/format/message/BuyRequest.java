@@ -8,7 +8,7 @@ public class BuyRequest extends MessageObject{
 	public int price;
 	public int count;
 	
-	public BuyRequest(String id, String coinname, int price, int count) {
+	public BuyRequest(String coinname, int price, int count) {
 		super(MessageTypeConstantNumbers.BUY_REQEUST);
 		this.coinname = coinname;
 		this.price= price; 
