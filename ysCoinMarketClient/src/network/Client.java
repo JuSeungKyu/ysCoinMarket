@@ -98,6 +98,7 @@ public class Client {
 
 				if (objectMsg.type == MessageTypeConstantNumbers.CHECK_MSG) {
 					util.alert("안내", ((CheckMessage) objectMsg).check ? "성공" : "실패", ((CheckMessage) objectMsg).msg);
+					this.justCheck = ((CheckMessage) objectMsg).check;
 					continue;
 				}
 
@@ -105,6 +106,7 @@ public class Client {
 					if (((LoginCheckMessage) objectMsg).check) {
 						sc.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
 						util.alert("안내", "성공", ((LoginCheckMessage) objectMsg).msg);
+						this.justCheck = true;
 					} else {
 						util.alert("안내", "실패", ((LoginCheckMessage) objectMsg).msg);
 						break;
@@ -177,10 +179,6 @@ public class Client {
 		return transactionDetailsInfo;
 	}
 
-	public void setHistoryInfoData(TransactionDetailsInfo TransactionDetailsInfo) {
-		TransactionDetailsInfo = TransactionDetailsInfo;
-	}
-
 	public ObjectOutputStream getOos() {
 		return oos;
 	}
@@ -231,5 +229,13 @@ public class Client {
 
 	public void setHash(String hash) {
 		this.hash = hash;
+	}
+	
+	private boolean justCheck;
+	public void justCheckStart() {
+		this.justCheck = false;
+	}
+	public boolean justChecking() {
+		return this.justCheck;
 	}
 }

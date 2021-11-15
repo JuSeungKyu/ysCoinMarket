@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import format.message.History;
 import format.message.LoginRequest;
+import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +35,7 @@ public class LoginController extends Controller{
 	
 	private Util util;
 	private Client client;
+	private boolean isLoding = false;
 	
 	@Override
 	public void initData(Object data) {
@@ -56,6 +58,10 @@ public class LoginController extends Controller{
 	}
 	
 	public void joinOrLogin() {
+		if(isLoding) {
+			return;
+		}
+		
 		String id = this.id.getText();
 		String pw = this.pw.getText();
 
@@ -75,6 +81,22 @@ public class LoginController extends Controller{
 
 		this.client = new Client();
 		this.client.setRoot(root);
+		this.client.justCheckStart();
+		
+		AnimationTimer set = new AnimationTimer() {
+			@Override
+			public void handle(long timestamp) {
+				try {
+					if (client.justChecking()) {
+						this.stop();
+						isLoding = false;
+					}
+				} catch (Exception e) {
+				}
+			}
+		};
+		set.start();
+		
 		this.client.addSendObject(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
 	}
 	
