@@ -15,19 +15,21 @@ import format.message.TransactionDetailsMessage;
 public class OrderQuery {
 	public void buyAndSellRequest(String userId, String coinId, int price, int count, String type) {
 		UtilQuery uq = new UtilQuery();
-		int sellOrderCount = ((BigDecimal) uq.justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
-				+"' AND coin_id = '" + coinId + "'")).intValue();
-
+		int orderCount = ((BigDecimal) uq.justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
+				+"' AND coin_id = '" + coinId + "' AND price" + (type.equals("구매") ? ">" : "<") + "=" + price)).intValue();
+		System.out.println(orderCount);
+		long orderInfoId = (long) uq.justGetObject("SELECT IFNULL(MAX(id), 0) FROM `order_info`");
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		if(sellOrderCount == 0) {
+		if(orderCount == 0) {
 			addRequest(userId, price, count, type, coinId);
-		} else if(sellOrderCount < count){
-			addRequest(userId, price, count-sellOrderCount, type, coinId);
-			uhcq.hashOwnerTransfer(coinId, userId, price, sellOrderCount, type);
-		} else if(sellOrderCount >= count){
-			uhcq.hashOwnerTransfer(coinId, userId, price, count, type);
+		} else if(orderCount < count){
+			addRequest(userId, price, count-orderCount, type, coinId);
+			uhcq.hashOwnerTransfer(coinId, userId, price, orderCount, type, orderInfoId);
+		} else if(orderCount >= count){
+			uhcq.hashOwnerTransfer(coinId, userId, price, count, type, orderInfoId);
 		}
-		setTransactionDetails(uq, userId, coinId, count, sellOrderCount, price, type);
+		
+		setTransactionDetails(uq, userId, coinId, count, Math.min(count, orderCount), price, type, orderInfoId);
 	}
 	
 	public void addRequest(String userId, int price, int count, String type, String coinId) {
@@ -45,16 +47,15 @@ public class OrderQuery {
 		}
 	}
 	
-	public void setTransactionDetails(UtilQuery uq, String userId, String coinId, int orderingAmount, int penaltyAmount, int price, String orderType) {
-		uq.justUpdate("INSERT INTO `transaction_details`(`coin_id`, `ordering_amount`, `penalty_amount`, `price`, `order_type`, `user_id`) "+ 
-				"VALUES ('"+coinId+"','"+orderingAmount+"','"+penaltyAmount+"','"+price+"','"+orderType+"','"+userId+"')");
+	public void setTransactionDetails(UtilQuery uq, String userId, String coinId, int orderingAmount, int penaltyAmount, int price, String orderType, long orderInfoId) {
+		uq.justUpdate("INSERT INTO `transaction_details`(`coin_id`, `ordering_amount`, `penalty_amount`, `price`, `order_type`, `user_id`, `order_info_id`) "+ 
+				"VALUES ('"+coinId+"','"+orderingAmount+"','"+penaltyAmount+"','"+price+"','"+orderType+"','"+userId+"','"+orderInfoId+"')");
 	}
 	
 	public TransactionDetailsMessage getTransactionDetails(String user_id) {
-		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ArrayList<TransactionDetailsInfo> info = new ArrayList<TransactionDetailsInfo>();
 		try {
-			PreparedStatement pstmt = JDBC.con.prepareStatement("SELECT `coin_id`, `ordering_amount`, `penalty_amount`, `price`, `order_type`, `time` FROM `transaction_details` WHERE user_id = ?");
+			PreparedStatement pstmt = JDBC.con.prepareStatement("SELECT `coin_id`, `ordering_amount`, `penalty_amount`, `price`, `order_type`, `time` FROM `transaction_details` WHERE user_id = ? ORDER BY time DESC");
 			pstmt.setString(1, user_id);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -64,7 +65,7 @@ public class OrderQuery {
 						rs.getInt("penalty_amount"), 
 						rs.getInt("price"), 
 						rs.getString("order_type"), 
-						timeFormat.format(rs.getDate("time"))
+						rs.getString("time")
 					)
 				);
 			}

@@ -15,17 +15,17 @@ public class UserHashControlQuery {
 
 	public int getUserOrderedHashCount(String userId, String coinname) {
 		return ((BigDecimal) new UtilQuery().justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE coin_id='" + coinname
-				+ "' AND user_id='" + userId + "' AND order_type='구매'")).intValue();
+				+ "' AND user_id='" + userId + "' AND order_type='판매'")).intValue();
 	}
 
-	public void hashOwnerTransfer(String coinId, String userId, int price, int count, String type) {
+	public void hashOwnerTransfer(String coinId, String userId, int price, int count, String type, long orderInfoId) {
 		UtilQuery uq = new UtilQuery();
 		ResultSet rs = null;
 		if (type.equals("구매")) {
-			rs = uq.justGetResultSet("SELECT order_time, user_id, count FROM order_info WHERE price<=" + price
+			rs = uq.justGetResultSet("SELECT order_time, user_id, count, id FROM order_info WHERE price<=" + price
 					+ " AND order_type='판매' ORDER BY price DESC, order_time DESC");
 		} else {
-			rs = uq.justGetResultSet("SELECT order_time, user_id, count FROM order_info WHERE price>=" + price
+			rs = uq.justGetResultSet("SELECT order_time, user_id, count, id FROM order_info WHERE price>=" + price
 					+ " AND order_type='구매' ORDER BY price DESC, order_time DESC");
 		}
 		
@@ -33,7 +33,8 @@ public class UserHashControlQuery {
 			while (rs.next() && count > 0) {
 				String buyer = "";
 				String seller = "";
-				String time = timeFormat.format(rs.getString("order_time"));
+				String time = rs.getString("order_time");
+				System.out.println(time);
 				
 				if(type.equals("구매")) {
 					buyer = userId;
@@ -42,29 +43,34 @@ public class UserHashControlQuery {
 					buyer = rs.getString("user_id");
 					seller = userId;
 				}
+				System.out.println(buyer + " " + seller);
 				
-				if (rs.getInt(count) > count) {
+				if (rs.getInt("count") > count) {
 					uq.justUpdate("UPDATE hash SET user_id='" + buyer + "' WHERE user_id='" + seller
-					+ "' AND coin_id='" + coinId + " LIMIT " + count);
-					uq.justUpdate("UPDATE order_info SET count=count-"+count+" WHERE user_id='" + rs.getString("user_id") +"' AND price="+price + " AND coin_id='"+coinId+"' AND order_time='"+time+"'");
+					+ "' AND coin_id='" + coinId + "' LIMIT " + count);
+					uq.justUpdate("UPDATE order_info SET count=count-"+count+" WHERE id="+rs.getInt("id"));
 					uq.justUpdate("UPDATE users SET money=money+"+(price*count)+" WHERE id='"+ seller + "'");
-					updateTransactionDetails(uq, userId, coinId, count, time);
+					uq.justUpdate("UPDATE users SET money=money-"+(price*count)+" WHERE id='"+ buyer + "'");
 				} else {
 					uq.justUpdate("UPDATE hash SET user_id='" + buyer + "' WHERE user_id='" + seller
-							+ "' AND coin_id='" + coinId + " LIMIT " + rs.getInt(count));
-					uq.justUpdate("DELETE FROM order_info WHERE user_id='" + rs.getString("user_id") +"' price="+price + " coin_id='"+coinId+"' AND order_time='"+time+"'");
-					uq.justUpdate("UPDATE users SET money=money+"+(price*rs.getInt(count))+" WHERE id='"+ seller + "'");
-					updateTransactionDetails(uq, userId, coinId, rs.getInt(count), time);
+							+ "' AND coin_id='" + coinId + "' LIMIT " + rs.getInt("count"));
+					uq.justUpdate("DELETE FROM order_info WHERE id="+rs.getInt("id"));
+					uq.justUpdate("UPDATE users SET money=money+"+(price*rs.getInt("count"))+" WHERE id='"+ seller + "'");
+					uq.justUpdate("UPDATE users SET money=money-"+(price*rs.getInt("count"))+" WHERE id='"+ buyer + "'");
 				}
-
-				count -= rs.getInt(count);
+				
+				updateTransactionDetails(uq, count, orderInfoId);
+				updateTransactionDetails(uq, count, rs.getInt("id"));
+				count -= rs.getInt("count");
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
-	public void updateTransactionDetails(UtilQuery uq, String userId, String coinId, int penaltyAmount, String time) {
-		uq.justUpdate("UPDATE `transaction_details` SET penalty_amount=penalty_amount+"+penaltyAmount+" WHERE coin_id='"+coinId+"' AND user_id='"+userId+"' AND time='"+time+"'");
+	public void updateTransactionDetails(UtilQuery uq, int penaltyAmount, long orderInfoId) {
+		uq.justUpdate("UPDATE `transaction_details` SET penalty_amount=penalty_amount+"+penaltyAmount+" WHERE order_info_id="+orderInfoId);
 	}
 	
 	public String getPreviousHash(String coinId) {

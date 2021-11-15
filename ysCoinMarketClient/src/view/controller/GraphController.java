@@ -43,12 +43,10 @@ public class GraphController extends Controller {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
 		
-		LongProperty lastUpdateTime = new SimpleLongProperty(0);
 		AnimationTimer timer = new AnimationTimer() {
 		    @Override
 		    public void handle(long timestamp) {
 	        	try {
-					System.out.println("실행중");
 					getHistory();
 				} catch (Exception e) {}
 				sendGraphRangeUpdateRequst();

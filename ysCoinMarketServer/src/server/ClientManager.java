@@ -131,6 +131,7 @@ public class ClientManager extends Thread {
 	
 	private void sellRequest(SellRequest msg) {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
+		System.out.println(msg.count + " " + uhcq.getUserHashCount(this.id, msg.coinname) + " " + uhcq.getUserOrderedHashCount(this.id, msg.coinname));
 		if(msg.count > uhcq.getUserHashCount(this.id, msg.coinname) - uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
 			sendCheckMessage("매도 주문 실패", false);
 		} else {
