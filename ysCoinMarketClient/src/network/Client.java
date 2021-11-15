@@ -123,7 +123,6 @@ public class Client {
 				}
 
 				if (objectMsg.type == MessageTypeConstantNumbers.PREVIOUS_HASH_MESSAGE) {
-					System.out.println("get Object");
 					this.hash = ((PreviousHashMessage) objectMsg).hash;
 					continue;
 				}
@@ -163,7 +162,6 @@ public class Client {
 	}
 
 	public void addSendObject(Object obj) {
-		System.out.println("send Object");
 		this.sendMsgQueue.add((MessageObject) obj);
 	}
 

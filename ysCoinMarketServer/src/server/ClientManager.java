@@ -78,7 +78,6 @@ public class ClientManager extends Thread {
 					}
 					
 					if(msg.type == MessageTypeConstantNumbers.PREVIOUS_HASH_REQUEST) {
-						System.out.println("get Object");
 						sendPreviousHash(((PreviousHashRequest)msg).coinId);
 						continue;
 					}
@@ -98,7 +97,6 @@ public class ClientManager extends Thread {
 		 UserHashControlQuery uhcq = new UserHashControlQuery();
 		 String hash = uhcq.getPreviousHash(coinId);
 		 if(!hash.isEmpty()) {
-			 System.out.println("send Object");
 			 SendMessageThread.addMessageQueue(this, new PreviousHashMessage(hash));
 		 }
 	}

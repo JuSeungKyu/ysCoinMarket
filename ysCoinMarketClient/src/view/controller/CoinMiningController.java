@@ -28,7 +28,7 @@ public class CoinMiningController extends Controller {
 	private Label frequency;
 	
 	private Client client;
-	private CoinInfo coin;
+	private CoinInfo coin = null;
 	private PreviousHashRequest preHashReq;
 	
 	@Override
@@ -58,24 +58,21 @@ public class CoinMiningController extends Controller {
 		updateTime.start();
 		
 		Thread coinMiningTHread = new Thread(() -> {
-			String PreviousHash = null;
+			while(coin == null);
+			
 			this.preHashReq = new PreviousHashRequest(this.coin.getCoinId());
 			
 			this.client.addSendObject(preHashReq);
 			
-			while(PreviousHash.isEmpty()) {
-				PreviousHash = this.client.getHash();
-				System.out.println(PreviousHash);
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			while(client.getHash() == null) {
+				System.out.println(client.getHash());
 			}
+			
+			String PreviousHash = client.getHash();
 			
 			System.out.println("coin type : " + coin.getCoinId() + ", previous hash : " + PreviousHash);
 		});
-		
+
 		Main.ThreadList.add(coinMiningTHread);
 		coinMiningTHread.start();
 	}
