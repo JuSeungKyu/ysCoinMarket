@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
+import coin.Block;
 import format.CoinInfo;
-import format.message.PreviousHashRequest;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -14,7 +14,6 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import network.Client;
-import util.Util;
 
 public class CoinMiningController extends Controller {
 	
@@ -29,7 +28,6 @@ public class CoinMiningController extends Controller {
 	
 	private Client client;
 	private CoinInfo coin = null;
-	private PreviousHashRequest preHashReq;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -58,19 +56,21 @@ public class CoinMiningController extends Controller {
 		updateTime.start();
 		
 		Thread coinMiningTHread = new Thread(() -> {
-			while(coin == null);
 			
-			this.preHashReq = new PreviousHashRequest(this.coin.getCoinId());
-			
-			this.client.addSendObject(preHashReq);
-			
+			while(client == null);
 			while(client.getHash() == null) {
 				System.out.println(client.getHash());
 			}
 			
 			String PreviousHash = client.getHash();
+			Block previousBlock = new Block(PreviousHash, coin.getCoinDifficulty());
 			
-			System.out.println("coin type : " + coin.getCoinId() + ", previous hash : " + PreviousHash);
+			System.out.println("Block : " + previousBlock.getValidHashString());
+			
+			while(true) {
+				Block block = new Block(previousBlock.getValidHashString(), coin.getCoinDifficulty());
+				previousBlock = block;
+			}
 		});
 
 		Main.ThreadList.add(coinMiningTHread);

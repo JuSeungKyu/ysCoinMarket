@@ -35,7 +35,7 @@ public class Client {
 	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
 	private String currentCoinId = "양디코인";
-	private byte currentCoinDifficulty = 4;
+	private byte currentCoinDifficulty = 3;
 	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
 	private Util util = new Util();

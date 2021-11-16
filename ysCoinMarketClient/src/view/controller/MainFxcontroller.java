@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import format.CoinInfo;
 import format.message.BuyRequest;
+import format.message.PreviousHashRequest;
 import format.message.SellRequest;
 import format.message.TransactionDetailsRequest;
 import javafx.beans.value.ChangeListener;
@@ -49,7 +50,8 @@ public class MainFxcontroller extends Controller {
 
 	public void CoinMining() {
 		CoinMiningBtn.setDisable(true);
-		
+		PreviousHashRequest preHashReq = new PreviousHashRequest(client.getCurrentCoinId());
+		this.client.addSendObject(preHashReq);
 		new StageControll().newStage("/view/fxml/CoinMining.fxml", root, client, false, true);
 	}
 	

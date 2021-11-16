@@ -4,28 +4,21 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class Block {
-	int blockNumber;
     Timestamp timestamp;
     String prevHashString;
     String validHashString;
     int difficulty;
     int nonce = 0;
-    List<String> transactionsList;
 
-    public Block(int blockNumber, String prevHashString, int difficulty, List<String> transactionsList) {
-        this.blockNumber = blockNumber;
+    public Block(String prevHashString, int difficulty) {
         this.prevHashString = prevHashString;
         this.difficulty = difficulty;
-        this.transactionsList = transactionsList;
         timestamp = new Timestamp(System.currentTimeMillis());
-
-        ShaHash blockNumberHash = new ShaHash(String.valueOf(blockNumber));
+        
         ShaHash difficultyHash = new ShaHash(String.valueOf(difficulty));
         ShaHash timestampHash = new ShaHash(String.valueOf(timestamp));
 
-        String baseHashString = blockNumberHash.getHashedString()
-                + difficultyHash.getHashedString()
-                + timestampHash.getHashedString();
+        String baseHashString = difficultyHash.getHashedString() + timestampHash.getHashedString();
 
         miningHash(this.nonce, baseHashString, difficulty);
     }
@@ -58,14 +51,6 @@ public class Block {
 
         return true;
     }
-
-	public int getBlockNumber() {
-		return blockNumber;
-	}
-
-	public void setBlockNumber(int blockNumber) {
-		this.blockNumber = blockNumber;
-	}
 
 	public Timestamp getTimestamp() {
 		return timestamp;
@@ -106,13 +91,4 @@ public class Block {
 	public void setNonce(int nonce) {
 		this.nonce = nonce;
 	}
-
-	public List<String> getTransactionsList() {
-		return transactionsList;
-	}
-
-	public void setTransactionsList(List<String> transactionsList) {
-		this.transactionsList = transactionsList;
-	}
-
 }
