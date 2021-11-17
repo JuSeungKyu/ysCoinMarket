@@ -1,7 +1,5 @@
 package format.message;
 
-import java.util.ArrayList;
-
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.PriceInfo;

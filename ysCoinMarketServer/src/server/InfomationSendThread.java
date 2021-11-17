@@ -9,7 +9,6 @@ import format.PriceInfo;
 import format.TypeInfo;
 import format.message.History;
 import format.message.TypeInfoUpdate;
-import util.MessageInfo;
 import util.Util;
 
 public class InfomationSendThread implements Runnable {

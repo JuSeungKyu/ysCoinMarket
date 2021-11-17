@@ -4,19 +4,15 @@ import java.net.URL;
 
 import java.util.ResourceBundle;
 
-import javax.naming.NameClassPair;
 
 import format.TypeInfo;
 import format.message.CoinTypeChange;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import network.Client;
 import view.userFxmlTag.CoinTypeTable;
@@ -50,8 +46,9 @@ public class CoinTypeListController extends Controller {
 			if(index < 0 || index >= items.size()) {
 				return;
 			} 
-			
-			client.addSendObject(new CoinTypeChange(nameColumn.getCellData(index)));
+			String coinId = nameColumn.getCellData(index);
+			client.setCurrentCoinId(coinId);
+			client.addSendObject(new CoinTypeChange(coinId));
 		});
 		
 		AnimationTimer setType = new AnimationTimer() {

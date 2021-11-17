@@ -2,11 +2,8 @@ package view.userFxmlTag;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 
 public class ToggleSwitch extends HBox {
 

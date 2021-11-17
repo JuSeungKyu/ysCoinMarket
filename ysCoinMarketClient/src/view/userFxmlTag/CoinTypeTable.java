@@ -9,10 +9,6 @@ public class CoinTypeTable {
 	private StringProperty name;
 	private IntegerProperty change;
 	
-	public CoinTypeTable() {
-		// X
-	}
-	
 	public CoinTypeTable(String name, int change) {
 		this.name = new SimpleStringProperty(name);
 		this.change = new SimpleIntegerProperty(change);

@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import application.Main;
-import format.HistoryInfo;
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.TransactionDetailsInfo;
@@ -211,6 +210,10 @@ public class Client {
 		this.currentRoot = currentRoot;
 	}
 
+	public void setCurrentCoinId(String currentCoinId) {
+		this.currentCoinId = currentCoinId;
+	}
+	
 	public String getCurrentCoinId() {
 		return currentCoinId;
 	}

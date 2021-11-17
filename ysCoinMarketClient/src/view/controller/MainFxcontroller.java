@@ -3,15 +3,11 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import format.CoinInfo;
 import format.message.BuyRequest;
 import format.message.PreviousHashRequest;
 import format.message.SellRequest;
 import format.message.TransactionDetailsRequest;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;

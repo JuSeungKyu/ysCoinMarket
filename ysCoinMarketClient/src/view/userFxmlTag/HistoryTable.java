@@ -1,7 +1,5 @@
 package view.userFxmlTag;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import format.TransactionDetailsInfo;
 
