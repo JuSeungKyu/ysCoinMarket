@@ -98,12 +98,12 @@
   -fx-border-color: #ccc;
 }
 .table-row-cell	{
-	
+  -fx-cell-size: 30.0px;
   -fx-text-fill: black;
 }
 .table-view .column-header{
   -fx-background-color: #fff;
-  -fx-pref-height: 40.0px;
+  -fx-pref-height: 30.0px;
   -fx-border-color: #bfbfbf;
   -fx-border-width: 0.0 0.0 1.0 0.0;
 }

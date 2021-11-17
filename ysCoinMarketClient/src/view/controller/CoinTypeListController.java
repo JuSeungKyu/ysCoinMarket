@@ -4,13 +4,20 @@ import java.net.URL;
 
 import java.util.ResourceBundle;
 
+import javax.naming.NameClassPair;
+
 import format.TypeInfo;
+import format.message.CoinTypeChange;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import network.Client;
 import view.userFxmlTag.CoinTypeTable;
 
@@ -37,6 +44,16 @@ public class CoinTypeListController extends Controller {
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().getName());
 		changeColumn.setCellValueFactory(cellData -> cellData.getValue().getChange().asObject());
 
+		viewMain.setOnMouseClicked((MouseEvent e) -> {
+			int index = Math.round((Math.round(e.getY()) - 30) / 30);
+			
+			if(index < 0 || index >= items.size()) {
+				return;
+			} 
+			
+			client.addSendObject(new CoinTypeChange(nameColumn.getCellData(index)));
+		});
+		
 		AnimationTimer setType = new AnimationTimer() {
 			@Override
 			public void handle(long timestamp) {
@@ -61,5 +78,11 @@ public class CoinTypeListController extends Controller {
 		}
 
 		return true;
+	}
+	
+	@FXML
+	public void rowFromTable() {
+//		viewMain.getSelectionModel().getSelectedItem()
+	
 	}
 }
