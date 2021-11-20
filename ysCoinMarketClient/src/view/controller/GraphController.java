@@ -30,7 +30,7 @@ import view.userFxmlTag.ToggleSwitch;
 public class GraphController extends Controller {
 	@FXML
 	Pane switchPane;
-	
+
 	@FXML
 	Canvas graph;
 
@@ -42,15 +42,16 @@ public class GraphController extends Controller {
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
-		
+
 		AnimationTimer timer = new AnimationTimer() {
-		    @Override
-		    public void handle(long timestamp) {
-	        	try {
+			@Override
+			public void handle(long timestamp) {
+				try {
 					getHistory();
-				} catch (Exception e) {}
+				} catch (Exception e) {
+				}
 				sendGraphRangeUpdateRequst();
-		    }
+			}
 		};
 		timer.start();
 		setEvent();
@@ -64,7 +65,7 @@ public class GraphController extends Controller {
 	protected short beforeMousePointX = 0;
 	protected short historyLength = 0;
 	protected float movementX = 0;
-	
+
 	private void setEvent() {
 		// 마우스 휠 이벤트
 		this.graph.setOnScroll((ScrollEvent event) -> {
@@ -78,21 +79,19 @@ public class GraphController extends Controller {
 		});
 
 		// 마우스 그래그 이벤트
-		this.graph.setOnMousePressed((MouseEvent event)->{
+		this.graph.setOnMousePressed((MouseEvent event) -> {
 			this.beforeMousePointX = (short) event.getX();
 		});
-		
-		this.graph.setOnMouseDragged((MouseEvent event)->{
+
+		this.graph.setOnMouseDragged((MouseEvent event) -> {
 			this.movementX += (event.getX() - beforeMousePointX) / (this.graph.getWidth() / this.historyLength);
 			this.beforeMousePointX = (short) event.getX();
 		});
 	}
-	
+
 	private void sendGraphRangeUpdateRequst() {
-		if(Math.abs(this.movementX) > 1) {
-			this.client.addSendObject(new UpdateGraphRange( 
-					(short) Math.round(movementX)
-			));
+		if (Math.abs(this.movementX) > 1) {
+			this.client.addSendObject(new UpdateGraphRange((short) Math.round(movementX)));
 			this.movementX = 0;
 		}
 	}
@@ -169,14 +168,20 @@ public class GraphController extends Controller {
 //			그래프 그림 그리기
 			if (pi[i].startPrice > pi[i].closePrice) {
 				gc.setFill(Color.BLUE);
+				int candelHeight = ((pi[i].startPrice - low) / priceScale) - ((pi[i].closePrice - low) / priceScale);
+				candelHeight = candelHeight < 1 ? 1 : candelHeight;
+				
 				canvasDrawLine(x, h - (pi[i].lowPrice - low) / priceScale, x, h - (pi[i].highPrice - low) / priceScale);
 				gc.fillRect(w - rectScale * (i + 1), h - (pi[i].startPrice - low) / priceScale, rectScale,
-						((pi[i].startPrice - low) / priceScale) - ((pi[i].closePrice - low) / priceScale));
+						candelHeight);
 			} else {
 				gc.setFill(Color.RED);
+				int candelHeight = ((pi[i].closePrice - low) / priceScale) - ((pi[i].startPrice - low) / priceScale);
+				candelHeight = candelHeight < 1 ? 1 : candelHeight;
+				
 				canvasDrawLine(x, h - (pi[i].lowPrice - low) / priceScale, x, h - (pi[i].highPrice - low) / priceScale);
 				gc.fillRect(w - rectScale * (i + 1), h - (pi[i].closePrice - low) / priceScale, rectScale,
-						((pi[i].closePrice - low) / priceScale) - ((pi[i].startPrice - low) / priceScale));
+						candelHeight);
 			}
 
 //			그래프 시간 텍스트 그리기

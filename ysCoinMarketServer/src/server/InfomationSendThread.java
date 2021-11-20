@@ -28,13 +28,6 @@ public class InfomationSendThread implements Runnable {
 		util = new Util();
 
 		while (true) {
-			// ----- 테스트용-----
-			int randInt = r.nextInt(200) + 8000 + randInt2;
-			randInt2 += r.nextInt(1000) - 500;
-			q1.CoinHistoryUpdate("양디코인", randInt);
-			q1.CoinHistoryUpdate("바이트코인", randInt);
-			// ----- 테스트용-----
-
 			// ---- 가격 역사 보내기 ----
 			for (int i = 0; i < Server.coinTypelist.size(); i++) {
 				sendHistory(Server.coinTypelist.get(i));
