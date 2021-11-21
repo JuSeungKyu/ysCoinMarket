@@ -33,7 +33,6 @@ public class CoinTypeListController extends Controller {
 
 	@Override // 불러오기 성공
 	public void initialize(URL location, ResourceBundle resources) {
-		viewMain.setItems(items);
 		System.out.println("tableStart");
 		items = FXCollections.observableArrayList();
 		viewMain.setItems(items);
