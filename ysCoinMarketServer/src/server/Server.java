@@ -39,20 +39,12 @@ public class Server {
 		Thread sendMessageThread = new Thread(new SendMessageThread());
 		Thread userLoginManager = new Thread(new UserLoginManager(serverSocket, utilQuery));
 		Thread infomationSendThread = new Thread(new InfomationSendThread(utilQuery));
+		Thread historyManager = new Thread(new HistoryManager());
 
 		sendMessageThread.start();
 		userLoginManager.start();
 		infomationSendThread.start();
-		System.out.println("Server Start - (서버를 종료하려면 '종료' 입력)");
-
-		while (true) {
-			BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-			if (bf.readLine().equals("종료")) {
-				serverSocket.close();
-				infomationSendThread.interrupt();
-				userLoginManager.interrupt();
-				sendMessageThread.interrupt();
-			}
-		}
+		historyManager.start();
+		System.out.println("Server Start");
 	}
 }

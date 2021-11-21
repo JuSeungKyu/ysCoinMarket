@@ -22,12 +22,10 @@ public class InfomationSendThread implements Runnable {
 
 	@Override
 	public void run() {
-		Random r = new Random();
-		int randInt2 = r.nextInt(1000) - 500;
 		q1 = new HistoryQuery();
 		util = new Util();
 
-		while (true) {
+		while (true) { 
 			// ---- 가격 역사 보내기 ----
 			for (int i = 0; i < Server.coinTypelist.size(); i++) {
 				sendHistory(Server.coinTypelist.get(i));
@@ -38,7 +36,9 @@ public class InfomationSendThread implements Runnable {
 			sendTypeInfo();
 			// ---- 현재 코인 리스트 정보 보내기
 
-			util.sleep(50);
+			if(!util.sleep(50)) {
+				return;
+			}
 		}
 	}
 

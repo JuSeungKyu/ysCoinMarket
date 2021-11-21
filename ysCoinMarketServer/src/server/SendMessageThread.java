@@ -28,7 +28,9 @@ public class SendMessageThread implements Runnable {
 				MessageInfo msg = messageQueue.poll();
 				msg.recipient.sendObject(msg.obj);
 			}
-			util.sleep(10);
+			if(!util.sleep(10)) {
+				return;
+			}
 		}
 	}
 }
