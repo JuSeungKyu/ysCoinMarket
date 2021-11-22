@@ -1,6 +1,7 @@
 package db.query;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -86,5 +87,10 @@ public class UserHashControlQuery {
 		}
 		
 		return null;
+	}
+	
+	public boolean addBlock(String hash, String userId, String coinId) {
+		UtilQuery uq = new UtilQuery();
+		return uq.justInsert("INSERT INTO `hash`(`hash`, `user_id`, `coin_id`) VALUES ('" + hash + "''" + userId + "''" + coinId + "')");
 	}
 }

@@ -17,6 +17,7 @@ import format.TypeInfo;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
+import format.message.MineBlockRequest;
 import format.message.PreviousHashMessage;
 import format.message.TransactionDetailsMessage;
 import format.message.TypeInfoUpdate;
@@ -34,7 +35,7 @@ public class Client {
 	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
 	private String currentCoinId = "양디코인";
-	private byte currentCoinDifficulty = 3;
+	private byte currentCoinDifficulty = 5;
 	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
 	private Util util = new Util();
@@ -134,6 +135,12 @@ public class Client {
 				break;
 			}
 		}
+	}
+	
+
+
+	public void addBlock(String hash) {
+		addSendObject(new MineBlockRequest(hash, null, this.currentCoinId));
 	}
 
 	public TypeInfo[] getTypeInfo() {

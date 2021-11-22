@@ -40,4 +40,15 @@ public class UtilQuery {
 		}
 		return null;
 	}
+	
+	public boolean justInsert(String sql) {
+		try {
+			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
+			pstmt.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

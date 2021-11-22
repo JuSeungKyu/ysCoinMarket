@@ -16,6 +16,7 @@ import format.message.SellRequest;
 import format.message.TransactionDetailsMessage;
 import format.message.UpdateGraphRange;
 import format.message.CoinTypeChange;
+import format.message.MineBlockRequest;
 import format.message.PreviousHashMessage;
 import format.message.PreviousHashRequest;
 
@@ -80,6 +81,11 @@ public class ClientManager extends Thread {
 						continue;
 					}
 					
+					if(msg.type == MessageTypeConstantNumbers.BLOCK_MINE_REQUEST) {
+						addNewBlock(((MineBlockRequest)msg).hash, ((MineBlockRequest)msg).userId, ((MineBlockRequest)msg).coinId);
+						continue;
+					}
+					
 				} catch (ClassNotFoundException e) {
 					removeClient();
 				}
@@ -89,6 +95,11 @@ public class ClientManager extends Thread {
 		} catch (IOException e) {
 			removeClient();
 		}
+	}
+	
+	private void addNewBlock(String hash, String userId, String coinId) {
+		 UserHashControlQuery uhcq = new UserHashControlQuery();
+		 uhcq.addBlock(hash, userId, coinId);
 	}
 	
 	private void sendPreviousHash(String coinId) {

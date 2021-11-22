@@ -19,6 +19,6 @@
             <TableColumn prefWidth="121.0" text="시간" />
         </columns>
       </TableView>
-      <Button layoutX="384.0" layoutY="551.0" mnemonicParsing="false" text="종료" />
+      <Button fx:id="closeBtn" layoutX="384.0" layoutY="551.0" mnemonicParsing="false" text="종료" />
    </children>
 </AnchorPane>
