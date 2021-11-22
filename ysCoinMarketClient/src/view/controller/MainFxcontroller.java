@@ -25,6 +25,8 @@ public class MainFxcontroller extends Controller {
 	@FXML
 	private AnchorPane pane2; // 그래프
 	@FXML
+	private AnchorPane pane3; // 호가창
+	@FXML
 	private Button CoinMiningBtn;
 	
 	private Client client;
@@ -67,6 +69,7 @@ public class MainFxcontroller extends Controller {
 					if (client != null) {
 						sc.addFxmlChildren(pane2, "/view/fxml/Graph.fxml", client);
 						sc.addFxmlChildren(pane1, "/view/fxml/CoinTypeList.fxml", client);
+						sc.addFxmlChildren(pane3, "/view/fxml/OrderBook.fxml", client);
 						break;
 					}
 				}

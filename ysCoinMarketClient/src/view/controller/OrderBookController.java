@@ -36,8 +36,8 @@ public class OrderBookController extends Controller{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		orderBookTable.setItems(items);
 		items = FXCollections.observableArrayList();
+		orderBookTable.setItems(items);
 		
 		sellPriceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
 		volumnColumn.setCellValueFactory(new PropertyValueFactory<>("volume"));
