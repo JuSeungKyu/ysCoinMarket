@@ -15,8 +15,8 @@
       <AnchorPane fx:id="pane3" layoutX="203.0" layoutY="178.0" prefHeight="500.0" prefWidth="230.0" />
       <Button fx:id="CoinMiningBtn" layoutX="889.0" layoutY="483.0" mnemonicParsing="false" onAction="#CoinMining" prefHeight="114.0" prefWidth="113.0" styleClass="btn2" text="채굴" />
       <Button layoutX="230.0" layoutY="27.0" mnemonicParsing="false" onAction="#history" prefHeight="53.0" prefWidth="176.0" styleClass="btn2" text="거래내역 보기" />
-      <Button layoutX="552.0" layoutY="616.0" mnemonicParsing="false" onAction="#buy" prefHeight="31.0" prefWidth="105.0" styleClass="btn2" text="매수" />
-      <Button layoutX="666.0" layoutY="616.0" mnemonicParsing="false" onAction="#sell" prefHeight="31.0" prefWidth="105.0" styleClass="btn2" text="매도" />
+      <Button layoutX="552.0" layoutY="616.0" mnemonicParsing="false" onAction="#buy" prefHeight="31.0" prefWidth="105.0" styleClass="salebtn" text="매수" />
+      <Button layoutX="666.0" layoutY="616.0" mnemonicParsing="false" onAction="#sell" prefHeight="31.0" prefWidth="105.0" styleClass="purchasebtn" text="매도" />
       <Pane layoutX="552.0" layoutY="473.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
          <children>
             <TextField fx:id="count" layoutY="10.0" prefHeight="45.0" prefWidth="300.0" styleClass="textfield1-textfield" />

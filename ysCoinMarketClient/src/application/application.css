@@ -12,7 +12,7 @@
 }
 
 .textfield1-label{
-	-fx-font-size: 15.0px;
+	-fx-font-size: 17.5px;
 	-fx-background-color: white;
 	-fx-padding: 5.0px;
 }
@@ -106,4 +106,27 @@
   -fx-pref-height: 30.0px;
   -fx-border-color: #bfbfbf;
   -fx-border-width: 0.0 0.0 1.0 0.0;
+}
+.salebtn{
+	-fx-background-color: ff2828;
+	-fx-border-radius: 10.0px;
+	-fx-text-fill: #FFFFFF;
+}.salebtn:hover{
+	-fx-background-color: #FF5252;
+}.salebtn:pressed{
+	-fx-background-color: #FF0000;
+}
+
+
+
+.purchasebtn{
+	-fx-background-color: #2828FF;
+	-fx-border-radius: 10.0px;
+	-fx-text-fill: #FFFFFF;
+}.purchasebtn:hover{
+	-fx-background-color: #5252FF;
+	
+	
+}.purchasebtn:pressed{
+	-fx-background-color: #0000FF
 }
