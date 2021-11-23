@@ -49,6 +49,7 @@ public class GraphController extends Controller {
 				try {
 					getHistory();
 				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				sendGraphRangeUpdateRequst();
 			}
@@ -120,7 +121,7 @@ public class GraphController extends Controller {
 		int priceScale = (int) (high - low) / h;
 
 		if (priceScale == 0) {
-			return;
+			priceScale = 1;
 		}
 
 //		테두리 그리기, 그래프 초기화
