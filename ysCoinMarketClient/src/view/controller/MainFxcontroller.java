@@ -55,7 +55,6 @@ public class MainFxcontroller extends Controller {
 	
 	public void history() {
 		new StageControll().newStage("/view/fxml/History.fxml", root, client, false);
-		client.addSendObject(new TransactionDetailsRequest());
 	}
 
 	public void loadPage() {

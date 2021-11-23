@@ -109,6 +109,7 @@ public class Client {
 						this.justCheck = true;
 					} else {
 						util.alert("안내", "실패", ((LoginCheckMessage) objectMsg).msg);
+						this.justCheck = true;
 						break;
 					}
 					continue;
