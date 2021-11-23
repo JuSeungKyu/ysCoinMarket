@@ -12,7 +12,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import network.Client;
-import view.userFxmlTag.CoinTypeTable;
 import view.userFxmlTag.OrderBookTable;
 
 public class OrderBookController extends Controller{
@@ -32,6 +31,7 @@ public class OrderBookController extends Controller{
 	@Override
 	public void initData(Object client) {
 		this.client = (Client) client;
+		System.out.println("orderBook start");
 	}
 	
 	@Override

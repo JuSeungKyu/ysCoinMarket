@@ -58,7 +58,6 @@ public class InfomationSendThread implements Runnable {
 
 	private void sendHistory(String coinId) {
 		ArrayList<PriceInfo> history = q1.getHistory("history_minute", coinId);
-
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
 			try {
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));

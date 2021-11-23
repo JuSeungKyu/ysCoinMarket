@@ -55,7 +55,6 @@ public class MainFxcontroller extends Controller {
 	
 	public void history() {
 		new StageControll().newStage("/view/fxml/History.fxml", root, client, false);
-		client.addSendObject(new TransactionDetailsRequest());
 	}
 
 	public void loadPage() {
@@ -94,6 +93,9 @@ public class MainFxcontroller extends Controller {
 	private void transaction(String type) {
 		String countText = count.getText();
 		String priceText = price.getText();
+
+		count.setText("");
+		price.setText("");
 		
 		if(!textValidation(countText) || !textValidation(priceText)) {
 			new Util().alert("경고", "올바르지않은 입력입니다", "다시 입력해주세요");

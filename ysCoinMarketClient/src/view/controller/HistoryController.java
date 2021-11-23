@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import format.TransactionDetailsInfo;
+import format.message.TransactionDetailsRequest;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,8 +55,32 @@ public class HistoryController extends Controller {
 		tbPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 		tbOrder.setCellValueFactory(new PropertyValueFactory<>("order_type"));
 		tbTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+		
+		AnimationTimer set = new AnimationTimer() {
+			@Override
+			public void handle(long timestamp) {
+				try {
+					if(!client.equals(null)) {
+						client.addSendObject(new TransactionDetailsRequest());
+						refresh();
+						this.stop();
+					}
+				} catch (Exception e) {
+				}
+			}
+		};
+		set.start();
+	}
 
-		System.out.println("거래내역 스타트");
+	@Override
+	public void initData(Object client) {
+		this.client = (Client) client;
+		System.out.println(this.client);
+	}
+
+	public void refresh() {
+		client.addSendObject(new TransactionDetailsRequest());
+		items.clear();
 		AnimationTimer set = new AnimationTimer() {
 			@Override
 			public void handle(long timestamp) {
@@ -67,20 +92,6 @@ public class HistoryController extends Controller {
 			}
 		};
 		set.start();
-	}
-
-	@Override
-	public void initData(Object client) {
-		this.client = (Client) client;
-		System.out.println("전달 완료");
-	}
-
-	// 새로고침
-	public void refresh() {
-		System.out.println("새로고침");
-		items.clear();
-		tbHistoryView.refresh();
-		tbHistoryView.setItems(items);
 	}
 
 	private boolean getHistoryInfoData() {

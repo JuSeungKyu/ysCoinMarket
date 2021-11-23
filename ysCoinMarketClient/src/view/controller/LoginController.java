@@ -32,7 +32,7 @@ public class LoginController extends Controller {
 
 	@Override
 	public void initData(Object data) {
-
+		this.client = (Client) data;
 	}
 
 	@Override
@@ -53,6 +53,7 @@ public class LoginController extends Controller {
 		if (isLoding) {
 			return;
 		}
+		isLoding = true;
 
 		String id = this.id.getText();
 		String pw = this.pw.getText();
