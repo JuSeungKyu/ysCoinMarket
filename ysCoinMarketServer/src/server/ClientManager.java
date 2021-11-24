@@ -15,6 +15,7 @@ import format.message.CheckMessage;
 import format.message.SellRequest;
 import format.message.TransactionDetailsMessage;
 import format.message.UpdateGraphRange;
+import format.message.UserInfoMsg;
 import format.message.CoinTypeChange;
 import format.message.MineBlockRequest;
 import format.message.PreviousHashMessage;
@@ -63,6 +64,7 @@ public class ClientManager extends Thread {
 					
 					if (msg.type == MessageTypeConstantNumbers.CHAGNE_COIN_TYPE) {
 						this.coinType = ((CoinTypeChange) msg).coinId;
+						this.sendUserInfo();
 						continue;
 					}
 					
@@ -147,6 +149,7 @@ public class ClientManager extends Thread {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "판매");
 			sendCheckMessage("매도 주문 성공", true);
 		}
+		this.sendUserInfo();
 	}
 	
 	private void buyRequest(BuyRequest msg) {
@@ -157,6 +160,7 @@ public class ClientManager extends Thread {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
 			sendCheckMessage("매수 주문 성공", true);
 		}
+		this.sendUserInfo();
 	}
 	
 	public void removeClient() {
@@ -211,5 +215,16 @@ public class ClientManager extends Thread {
 
 	public void setGraphRangeEnd(short size) {
 		this.graphRange[1] = size;
+	}
+
+	private void sendUserInfo() {
+		UserHashControlQuery uhcq = new UserHashControlQuery();
+		SendMessageThread.addMessageQueue(
+				this, 
+				new UserInfoMsg(
+						(long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'"), 
+						uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType)
+				)
+		);
 	}
 }

@@ -5,7 +5,7 @@ import format.MessageTypeConstantNumbers;
 
 public class PreviousHashRequest extends MessageObject {
 
-	public String coinId;
+	public String coinId = null;
 	
 	public PreviousHashRequest(String coinId) {
 		super(MessageTypeConstantNumbers.PREVIOUS_HASH_REQUEST);

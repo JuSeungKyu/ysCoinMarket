@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import format.message.BuyRequest;
+import format.message.CoinTypeChange;
 import format.message.PreviousHashRequest;
 import format.message.SellRequest;
 import format.message.TransactionDetailsRequest;
@@ -28,11 +29,18 @@ public class MainFxcontroller extends Controller {
 	private AnchorPane pane3; // 호가창
 	@FXML
 	private Button CoinMiningBtn;
+
+	@FXML
+	private TextField money;
+	@FXML
+	private TextField coinCount;
 	
 	private Client client;
 
 	public void initData(Object client) {
 		this.client = (Client) client;
+		this.client.setCurrentRoot(root);
+		this.client.addSendObject(new CoinTypeChange(this.client.getCurrentCoinId()));
 		System.out.println("전달받음");
 	}
 

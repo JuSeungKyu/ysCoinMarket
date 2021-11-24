@@ -22,10 +22,14 @@ import format.message.PreviousHashMessage;
 import format.message.TransactionDetailsMessage;
 import format.message.TypeInfoUpdate;
 import format.message.UpdateGraphRange;
+import format.message.UserInfoMsg;
 import format.message.CoinTypeChange;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import util.StageControll;
 import util.Util;
+import util.uiUpdate.UIUpdateClass;
+import util.uiUpdate.UIUpdateThread;
 
 public class Client {
 	private ObjectOutputStream oos;
@@ -38,6 +42,10 @@ public class Client {
 	private byte currentCoinDifficulty = 5;
 	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
+
+	private int money = 0;
+	private int coinCount = 0;
+
 	private Util util = new Util();
 
 	private Queue<MessageObject> sendMsgQueue = new LinkedList<MessageObject>();
@@ -96,6 +104,16 @@ public class Client {
 					continue;
 				}
 
+				if (objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
+					this.typeInfoList = ((TypeInfoUpdate) objectMsg).info;
+					continue;
+				}
+
+				if (objectMsg.type == MessageTypeConstantNumbers.USER_INFO_MSG) {
+					this.updateMoneyInfo((UserInfoMsg) objectMsg);
+					continue;
+				}
+
 				if (objectMsg.type == MessageTypeConstantNumbers.CHECK_MSG) {
 					util.alert("안내", ((CheckMessage) objectMsg).check ? "성공" : "실패", ((CheckMessage) objectMsg).msg);
 					this.justCheck = ((CheckMessage) objectMsg).check;
@@ -114,12 +132,6 @@ public class Client {
 					}
 					continue;
 				}
-
-				if (objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
-					this.typeInfoList = ((TypeInfoUpdate) objectMsg).info;
-					continue;
-				}
-
 				if (objectMsg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_UPDATE) {
 					transactionDetailsInfo = ((TransactionDetailsMessage) objectMsg).info;
 					continue;
@@ -137,8 +149,21 @@ public class Client {
 			}
 		}
 	}
-	
 
+	private void updateMoneyInfo(UserInfoMsg msg) {
+		Label moneyLabel = (Label) this.currentRoot.getChildren()
+				.get(util.getIndexById(this.currentRoot.getChildren(), "moneyLabel"));
+		Label coinCountLabel = (Label) this.currentRoot.getChildren()
+				.get(util.getIndexById(this.currentRoot.getChildren(), "coinCountLabel"));
+
+		new UIUpdateClass() {
+			@Override
+			public void update() {
+				moneyLabel.setText("사용 가능한 돈 : " + msg.money);
+				coinCountLabel.setText("사용 가능 코인 : " + msg.count);
+			}
+		}.start();
+	}
 
 	public void addBlock(String hash) {
 		addSendObject(new MineBlockRequest(hash, null, this.currentCoinId));
@@ -221,7 +246,7 @@ public class Client {
 	public void setCurrentCoinId(String currentCoinId) {
 		this.currentCoinId = currentCoinId;
 	}
-	
+
 	public String getCurrentCoinId() {
 		return currentCoinId;
 	}
@@ -241,12 +266,22 @@ public class Client {
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
-	
+
 	private boolean justCheck;
+
 	public void justCheckStart() {
 		this.justCheck = false;
 	}
+
 	public boolean justChecking() {
 		return this.justCheck;
+	}
+
+	public int getMoney() {
+		return this.money;
+	}
+
+	public int getCoinCount() {
+		return this.coinCount;
 	}
 }

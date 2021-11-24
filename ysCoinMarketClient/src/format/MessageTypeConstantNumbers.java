@@ -15,4 +15,5 @@ public interface MessageTypeConstantNumbers {
 	public byte PREVIOUS_HASH_REQUEST = 11;
 	public byte PREVIOUS_HASH_MESSAGE = 12;
 	public byte BLOCK_MINE_REQUEST = 13;
+	public byte USER_INFO_MSG = 14;
 }
