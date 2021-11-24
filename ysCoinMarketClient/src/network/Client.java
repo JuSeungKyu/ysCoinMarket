@@ -22,6 +22,7 @@ import format.message.PreviousHashMessage;
 import format.message.TransactionDetailsMessage;
 import format.message.TypeInfoUpdate;
 import format.message.UpdateGraphRange;
+import format.message.UpdateOrderBook;
 import format.message.UserInfoMsg;
 import format.message.CoinTypeChange;
 import javafx.scene.control.Label;
@@ -45,6 +46,8 @@ public class Client {
 
 	private int money = 0;
 	private int coinCount = 0;
+	
+	private ArrayList<int[]> orderBook = null;
 
 	private Util util = new Util();
 
@@ -106,6 +109,11 @@ public class Client {
 
 				if (objectMsg.type == MessageTypeConstantNumbers.UPDATE_TYPE_INFO) {
 					this.typeInfoList = ((TypeInfoUpdate) objectMsg).info;
+					continue;
+				}
+				
+				if (objectMsg.type == MessageTypeConstantNumbers.UPDATE_ORDER_BOOK) {
+					this.orderBook = ((UpdateOrderBook) objectMsg).info;
 					continue;
 				}
 
@@ -208,7 +216,9 @@ public class Client {
 	}
 
 	public ArrayList<TransactionDetailsInfo> getTransactionDetailsData() {
-		return transactionDetailsInfo;
+		ArrayList<TransactionDetailsInfo> info = (ArrayList<TransactionDetailsInfo>) this.transactionDetailsInfo.clone();
+		this.transactionDetailsInfo = null;
+		return info;
 	}
 
 	public ObjectOutputStream getOos() {
@@ -283,5 +293,9 @@ public class Client {
 
 	public int getCoinCount() {
 		return this.coinCount;
+	}
+	
+	public ArrayList<int[]> getOrderBook(){
+		return this.orderBook;
 	}
 }
