@@ -38,6 +38,8 @@ public class UserLoginManager implements Runnable{
 					continue;
 				}
 				
+				System.out.println(LoginMsg);
+				
 				// 존재하는 아이디인지 확인
 				if(LoginMsg.isLogin) {
 					int idCount = (int) ((long) this.utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
@@ -62,7 +64,7 @@ public class UserLoginManager implements Runnable{
 				Server.clientIdList.add(LoginMsg.id);
 				Server.clientMap.put(LoginMsg.id, new ClientManager(LoginMsg.id, clientSocket, ois, oos));
 			} catch (Exception e) {
-				System.out.println(e.toString());
+				e.printStackTrace();
 			}
 		}
 	}

@@ -80,6 +80,7 @@ public class HistoryController extends Controller {
 
 	public void refresh() {
 		client.addSendObject(new TransactionDetailsRequest());
+		items = FXCollections.observableArrayList();
 		items.clear();
 		AnimationTimer set = new AnimationTimer() {
 			@Override
@@ -99,9 +100,6 @@ public class HistoryController extends Controller {
 		if (historyInfo == null) {
 			return false;
 		}
-
-		// 테이블에 넣기
-		items = FXCollections.observableArrayList();
 		
 		for (int i = 0; i < historyInfo.size(); i++) {
 			items.add(new HistoryTable(historyInfo.get(i)));

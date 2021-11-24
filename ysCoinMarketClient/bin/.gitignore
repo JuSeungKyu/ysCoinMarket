@@ -1,4 +1,6 @@
-/network/
-/format/
-/view/
 /application/
+/coin/
+/format/
+/network/
+/util/
+/view/
