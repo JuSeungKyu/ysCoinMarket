@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
+/application/
+/coin/
 /format/
 /network/
 /util/
 /view/
-=======
-/view/
-/application/
->>>>>>> Stashed changes
