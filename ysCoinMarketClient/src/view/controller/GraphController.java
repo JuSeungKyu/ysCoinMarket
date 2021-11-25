@@ -149,7 +149,8 @@ public class GraphController extends Controller {
 
 	private int[] getHighPriceAndLowPrice(PriceInfo[] pi) {
 		int[] output = { pi[0].highPrice, pi[0].lowPrice };
-		for (short i = 0; i < pi.length; i++) {
+		
+		for (int i = 0; i < pi.length; i++) {
 			if (output[0] < pi[i].highPrice) {
 				output[0] = pi[i].highPrice;
 			}
