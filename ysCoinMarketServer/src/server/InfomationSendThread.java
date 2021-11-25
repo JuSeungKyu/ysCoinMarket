@@ -83,9 +83,9 @@ public class InfomationSendThread implements Runnable {
 		}
 	}
 
-	private PriceInfo[] splitPriceInfoArrayList(ArrayList<PriceInfo> arr, short start, short end) {
+	private PriceInfo[] splitPriceInfoArrayList(ArrayList<PriceInfo> arr, int start, int end) {
 		PriceInfo[] output = new PriceInfo[end - start];
-		for (short i = 0; i < end - start; i++) {
+		for (int i = 0; i < end - start; i++) {
 			output[i] = arr.get(i + start);
 		}
 

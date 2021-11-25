@@ -19,6 +19,7 @@ public class Server {
 		new JDBC("112.153.122.10", "skills09", "skills09", "0702");
 
 		clientMap = new HashMap<String, ClientManager>();
+		feeMap = new HashMap<String, Integer>();
 		clientIdList = new ArrayList<String>();
 		coinTypelist = new ArrayList<String>();
 		ServerSocket serverSocket = new ServerSocket(2657);
