@@ -91,6 +91,17 @@
   -fx-border-color: #ccc;
   -fx-border-width: 2.0 0.0 0.0 0.0;
 }
+
+.table-view .scroll-bar * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
 .table-view-focused	{
   -fx-cell-size: 34.0px;
   -fx-border-width: 0.0 0.0 1.0 0.0;
