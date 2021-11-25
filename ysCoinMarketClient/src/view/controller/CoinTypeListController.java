@@ -14,17 +14,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import network.Client;
 import view.userFxmlTag.CoinTypeTable;
 
 public class CoinTypeListController extends Controller {
 	@FXML
 	public TableView<CoinTypeTable> viewMain;
+	
 	private ObservableList<CoinTypeTable> items;
+	
 	@FXML
 	public TableColumn<CoinTypeTable, String> nameColumn;
 	@FXML
 	public TableColumn<CoinTypeTable, Integer> changeColumn;
+	
+	@FXML
+	public Pane pane;
+	
 	private Client client;
 
 	public void initData(Object data) {
@@ -39,7 +46,7 @@ public class CoinTypeListController extends Controller {
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().getName());
 		changeColumn.setCellValueFactory(cellData -> cellData.getValue().getChange().asObject());
 
-		viewMain.setOnMouseClicked((MouseEvent e) -> {
+		pane.setOnMouseClicked((MouseEvent e) -> {
 			int index = Math.round((Math.round(e.getY()) - 30) / 30);
 			
 			if(index < 0 || index >= items.size()) {
