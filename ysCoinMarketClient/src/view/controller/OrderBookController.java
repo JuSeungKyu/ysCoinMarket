@@ -55,17 +55,16 @@ public class OrderBookController extends Controller{
 	}
 	
 	public void drawTable() {
-		ArrayList<Integer[]> data = getInfo();
+		ArrayList<int[]> data = getInfo();
 		items.clear();
 		for(byte i = 0; i < data.size(); i++) {
 			OrderBookTable c = new OrderBookTable(data.get(i)[0], data.get(i)[1], data.get(i)[2]);
 			items.add(c);
 		}
+		System.out.println(items.size());
 	}
 	
-	public ArrayList<Integer[]> getInfo() {
-		ArrayList<Integer[]> output = new ArrayList<Integer[]>();
-		
-		return output;
+	public ArrayList<int[]> getInfo() {
+		return this.client.getOrderBook();
 	}
 }
