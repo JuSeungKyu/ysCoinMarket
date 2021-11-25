@@ -14,9 +14,10 @@ public class OrderQuery {
 	public void buyAndSellRequest(String userId, String coinId, int price, int count, String type) {
 		UtilQuery uq = new UtilQuery();
 		int orderCount = ((BigDecimal) uq.justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
-				+"' AND coin_id = '" + coinId + "' AND price" + (type.equals("구매") ? ">" : "<") + "=" + price)).intValue();
-		System.out.println(orderCount);
+				+"' AND coin_id = '" + coinId + "' AND price" + (type.equals("구매") ? "<" : ">") + "=" + price)).intValue();
+		
 		long orderInfoId = (long) uq.justGetObject("SELECT IFNULL(MAX(id), 0) FROM `order_info`");
+		
 		UserHashControlQuery uhcq = new UserHashControlQuery();
 		if(orderCount == 0) {
 			addRequest(userId, price, count, type, coinId);
