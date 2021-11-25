@@ -11,6 +11,7 @@ import db.query.UtilQuery;
 
 public class Server {
 	public static HashMap<String, ClientManager> clientMap;
+	public static HashMap<String, Integer> feeMap; 
 	public static ArrayList<String> clientIdList;
 	public static ArrayList<String> coinTypelist;
 
@@ -24,11 +25,12 @@ public class Server {
 		UtilQuery utilQuery = new UtilQuery();
 
 		try {
-			ResultSet coinTypeRs = utilQuery.justGetResultSet("SELECT id FROM `coin_type`");
-			while (coinTypeRs.next()) {
-				coinTypelist.add(coinTypeRs.getString("id"));
+			ResultSet rs = utilQuery.justGetResultSet("SELECT id, fee FROM `coin_type`");
+			while (rs.next()) {
+				coinTypelist.add(rs.getString("id"));
+				feeMap.put(rs.getString("id"), rs.getInt("fee"));
 			}
-			coinTypeRs.close();
+			rs.close();
 		} catch (Exception e) {
 			System.out.println("종목 불러오기 실패 " + e.toString());
 		}
