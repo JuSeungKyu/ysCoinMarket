@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import server.ClientManager;
 import server.Server;
 
 public class UserHashControlQuery {
@@ -60,7 +61,10 @@ public class UserHashControlQuery {
 					uq.justUpdate("UPDATE users SET money=money-"+(price*rs.getInt("count"))+" WHERE id='"+ buyer + "'");
 				}
 				
-				Server.clientMap.get(rs.getString("user_id")).sendUserInfo();
+				ClientManager c = Server.clientMap.get(rs.getString("user_id"));
+				if(c != null) {
+					c.sendUserInfo();
+				}
 				
 				updateTransactionDetails(uq, count, orderInfoId);
 				updateTransactionDetails(uq, count, rs.getInt("id"));

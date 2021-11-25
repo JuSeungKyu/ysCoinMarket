@@ -37,7 +37,7 @@ public class UserLoginManager implements Runnable{
 				
 				// 로그인 되어 있는 아이디인지 체크
 				if(Server.clientMap.get(LoginMsg.id) != null) {
-					oos.writeObject(new LoginCheckMessage("로그인 실패", false));
+					oos.writeObject(new LoginCheckMessage("이미 같은 아이디로 로그인 하였습니다.", false));
 					continue;
 				}
 				
@@ -49,6 +49,7 @@ public class UserLoginManager implements Runnable{
 						oos.writeObject(new LoginCheckMessage("로그인 되었습니다.", true));
 					} else {
 						oos.writeObject(new LoginCheckMessage("로그인 실패", false));
+						continue;
 					}
 				} else {
 					int idCount = (int) ((long) this.utilQuery.justGetObject("SELECT count(id) FROM users WHERE id = '"
@@ -59,8 +60,10 @@ public class UserLoginManager implements Runnable{
 						oos.writeObject(new LoginCheckMessage("회원가입 되었습니다.", true));
 					} else {
 						oos.writeObject(new LoginCheckMessage("회원가입 실패", false));
+						continue;
 					}
 				}
+				
 				// 클라이언트 저장
 				Server.clientIdList.add(LoginMsg.id);
 				Server.clientMap.put(LoginMsg.id, new ClientManager(LoginMsg.id, clientSocket, ois, oos));
