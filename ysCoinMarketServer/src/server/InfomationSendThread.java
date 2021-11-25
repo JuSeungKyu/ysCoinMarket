@@ -4,33 +4,38 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import db.query.HistoryQuery;
+import db.query.OrderBookQuery;
 import db.query.UtilQuery;
 import format.PriceInfo;
 import format.TypeInfo;
 import format.message.History;
 import format.message.TypeInfoUpdate;
+import format.message.UpdateOrderBook;
 import util.Util;
 
 public class InfomationSendThread implements Runnable {
-	HistoryQuery q1;
+	HistoryQuery hq;
 	Util util;
 	UtilQuery utilQuery;
+	OrderBookQuery obq;
+	
 
 	public InfomationSendThread(UtilQuery utilQuery) {
 		this.utilQuery = utilQuery;
+		this.hq = new HistoryQuery();
+		this.obq = new OrderBookQuery();
+		this.util = new Util();
 	}
 
 	@Override
 	public void run() {
-		q1 = new HistoryQuery();
-		util = new Util();
 
 		while (true) { 
-			// ---- 가격 역사 보내기 ----
+			// ---- 가격 역사, 호가정보 보내기 ----
 			for (int i = 0; i < Server.coinTypelist.size(); i++) {
-				sendHistory(Server.coinTypelist.get(i));
+				sendHistoryAndOrderBook(Server.coinTypelist.get(i));
 			}
-			// ---- 가격 역사 보내기 ----
+			// ---- 가격 역사, 호가정보 보내기 ----
 
 			// ---- 현재 코인 리스트 정보 보내기
 			sendTypeInfo();
@@ -52,12 +57,14 @@ public class InfomationSendThread implements Runnable {
 		}
 		
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
-			SendMessageThread.addMessageQueue( Server.clientMap.get(Server.clientIdList.get(i)), new TypeInfoUpdate(infoList) );
+			ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
+			SendMessageThread.addMessageQueue( c, new TypeInfoUpdate(infoList) );
 		}
 	}
 
-	private void sendHistory(String coinId) {
-		ArrayList<PriceInfo> history = q1.getHistory("history_minute", coinId);
+	private void sendHistoryAndOrderBook(String coinId) {
+		ArrayList<PriceInfo> history = hq.getHistory("history_minute", coinId);
+			
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
 			try {
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
@@ -68,6 +75,7 @@ public class InfomationSendThread implements Runnable {
 					}
 
 					SendMessageThread.addMessageQueue(c, new History(splitPriceInfoArrayList(history, c.getGraphRangeStart(), c.getGraphRangeEnd())));
+					SendMessageThread.addMessageQueue(c, new UpdateOrderBook(this.obq.getOrderInfo(coinId)) );
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

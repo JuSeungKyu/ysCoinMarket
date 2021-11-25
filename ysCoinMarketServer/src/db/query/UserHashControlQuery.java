@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import server.Server;
+
 public class UserHashControlQuery {
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -34,8 +36,6 @@ public class UserHashControlQuery {
 			while (rs.next() && count > 0) {
 				String buyer = "";
 				String seller = "";
-				String time = rs.getString("order_time");
-				System.out.println(time);
 				
 				if(type.equals("구매")) {
 					buyer = userId;
@@ -59,6 +59,8 @@ public class UserHashControlQuery {
 					uq.justUpdate("UPDATE users SET money=money+"+(price*rs.getInt("count"))+" WHERE id='"+ seller + "'");
 					uq.justUpdate("UPDATE users SET money=money-"+(price*rs.getInt("count"))+" WHERE id='"+ buyer + "'");
 				}
+				
+				Server.clientMap.get(rs.getString("user_id")).sendUserInfo();
 				
 				updateTransactionDetails(uq, count, orderInfoId);
 				updateTransactionDetails(uq, count, rs.getInt("id"));

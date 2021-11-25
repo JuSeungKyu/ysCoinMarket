@@ -217,7 +217,7 @@ public class ClientManager extends Thread {
 		this.graphRange[1] = size;
 	}
 
-	private void sendUserInfo() {
+	public void sendUserInfo() {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
 		SendMessageThread.addMessageQueue(
 				this, 
