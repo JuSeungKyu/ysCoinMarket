@@ -17,56 +17,74 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import network.Client;
 import util.Util;
+import util.uiUpdate.UIUpdateClass;
+import util.uiUpdate.UIUpdateThread;
 
 public class CoinMiningController extends Controller {
 
 	@FXML
-	private Label type;
+	private Label typeLbl;
 	@FXML
-	private Label time;
+	private Label timeLbl;
 	@FXML
-	private Label number;
+	private Label numberLbl;
 	@FXML
-	private Label frequency;
+	private Label frequencyLbl;
 	@FXML
 	private Button closeBtn;
 
-	private Client client;
+	private Client client = null;
 	private CoinInfo coin = null;
+	private boolean isReady = false;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-
-		AnimationTimer setType = new AnimationTimer() {
+	public boolean setType(String type) {
+		new UIUpdateThread() {
+			
 			@Override
-			public void handle(long timestamp) {
-				if (!coin.getCoinId().isEmpty()) {
-					type.setText("채굴 종목 : " + coin.getCoinId());
-					this.stop();
-				}
+			public void update() {
+				typeLbl.setText(type);
 			}
-		};
-
-		setType.start();
-
+		}.start();
+		
+		return true;
+	}
+	
+	public boolean setTime() {
 		long startTime = System.currentTimeMillis() + 32400000;
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
 		Timestamp ts = new Timestamp(System.currentTimeMillis() - startTime);
-		AnimationTimer updateTime = new AnimationTimer() {
+		new UIUpdateThread() {
+			
 			@Override
-			public void handle(long timestamp) {
-				ts.setTime(System.currentTimeMillis() - startTime);
-				time.setText("경과 시간 : " + sdf.format(ts));
+			public void update() {
+				while(new Util().sleep(1000)) {
+					ts.setTime(System.currentTimeMillis() - startTime);
+					timeLbl.setText("경과 시간 : " + sdf.format(ts));
+				}
 			}
-		};
+		}.start();
+		
+		return true;
+	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		while(!isReady);
+		
 
-		updateTime.start();
+		setType(coin.getCoinId());
+		setTime();
 
 		Thread coinMiningTHread = new Thread(() -> {
-
-
+			new UIUpdateClass() {
+				@Override
+				public void update() {
+					numberLbl.setText("0");
+				}
+			}.start();
+			
 			while (client == null && coin == null)
 				;
 			while (client.getHash() == null) {
@@ -81,7 +99,13 @@ public class CoinMiningController extends Controller {
 			while (true) {
 				Block block = new Block(previousBlock.getValidHashString(), coin.getCoinDifficulty());
 				previousBlock = block;
-				client.addBlock();
+				new UIUpdateClass() {
+					@Override
+					public void update() {
+						numberLbl.setText(Integer.toString(Integer.parseInt(numberLbl.getText()) + 1));
+					}
+				}.start();
+				client.addBlock(block.getPrevHashString());
 			}
 		});
 
@@ -94,6 +118,7 @@ public class CoinMiningController extends Controller {
 	public void initData(Object data) {
 		this.client = (Client) data;
 		this.coin = new CoinInfo(this.client.getCurrentCoinId(), this.client.getCurrentCoinDifficulty());
+		isReady = true;
 	}
 
 }
