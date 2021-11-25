@@ -3,6 +3,7 @@ package view.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import format.Bool;
 import format.message.LoginRequest;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -28,7 +29,7 @@ public class LoginController extends Controller {
 
 	private Util util;
 	private Client client;
-	private boolean isLoding = false;
+	private Bool isLoding = new Bool(false);
 
 	@Override
 	public void initData(Object data) {
@@ -50,46 +51,34 @@ public class LoginController extends Controller {
 	}
 
 	public void joinOrLogin() {
-		if (isLoding) {
+		if (isLoding.getValue()) {
 			return;
 		}
-		isLoding = true;
+		isLoding.setValue(true);
 
 		String id = this.id.getText();
 		String pw = this.pw.getText();
 
 		if (id.equals(null) || pw.equals(null) || id.length() == 0 || pw.length() == 0) {
 			util.alert("경고", "잘못된 입력", "모든 필드를 채웠는지 확인해주십시오");
+			isLoding.setValue(false);
 			return;
 		}
 
 		if (id.length() > 20) {
 			util.alert("경고", "잘못된 입력", "너무 긴 아이디 입니다. (최대 20글자)");
+			isLoding.setValue(false);
 			return;
 		}
+		
 		if (pw.length() > 50) {
 			util.alert("경고", "잘못된 입력", "너무 긴 비밀번호 입니다. (최대 50글자)");
+			isLoding.setValue(false);
 			return;
 		}
 
-		this.client = new Client();
+		this.client = new Client(isLoding);
 		this.client.setRoot(root);
-		this.client.justCheckStart();
-
-		AnimationTimer set = new AnimationTimer() {
-			@Override
-			public void handle(long timestamp) {
-				try {
-					if (client.justChecking()) {
-						this.stop();
-						isLoding = false;
-					}
-				} catch (Exception e) {
-				}
-			}
-		};
-		set.start();
-
 		this.client.addSendObject(new LoginRequest(id, pw, this.submit.getText().equals("로그인")));
 	}
 

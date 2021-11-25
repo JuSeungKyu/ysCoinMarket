@@ -195,6 +195,7 @@ public class ClientManager extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(this.id + "님이 로그아웃 하셨습니다.");
 	}
 
 	public void sendCheckMessage(String msg, boolean result) {
@@ -204,7 +205,7 @@ public class ClientManager extends Thread {
 	public void sendObject(Object object) {
 		try {
 			if (socket.isClosed())
-				throw new Error();
+				removeClient();
 			this.oos.writeObject(object);
 			this.oos.flush();
 		} catch (IOException e) {
@@ -246,8 +247,8 @@ public class ClientManager extends Thread {
 	
 	private long getMoney() {
 		UtilQuery uq = new UtilQuery();
-		Object money1 = uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
-		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
-		return (long) (money1 == null ? 0 : money1) - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
+		long money1 = (long) uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
+		BigDecimal money2 = (BigDecimal) uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
+		return money1 - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
 	}
 }

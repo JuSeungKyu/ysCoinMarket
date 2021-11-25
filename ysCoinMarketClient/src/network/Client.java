@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import application.Main;
+import format.Bool;
 import format.MessageObject;
 import format.MessageTypeConstantNumbers;
 import format.TransactionDetailsInfo;
@@ -17,6 +18,7 @@ import format.TypeInfo;
 import format.message.CheckMessage;
 import format.message.History;
 import format.message.LoginCheckMessage;
+import format.message.LoginRequest;
 import format.message.MineBlockRequest;
 import format.message.PreviousHashMessage;
 import format.message.TransactionDetailsMessage;
@@ -53,8 +55,12 @@ public class Client {
 
 	private Queue<MessageObject> sendMsgQueue = new LinkedList<MessageObject>();
 
-	public Client() {
+	private Bool loginCheck;
+	
+	public Client(Bool loginCheck) {
 		try {
+			this.loginCheck = loginCheck;
+			
 			Socket socket = new Socket("127.0.0.1", 2657);
 			Main.socket = socket;
 			this.oos = new ObjectOutputStream(socket.getOutputStream());
@@ -72,9 +78,11 @@ public class Client {
 			writeObjectThread.start();
 
 		} catch (UnknownHostException e) {
-			System.out.println("서버에 연결할 수 없습니다");
+			util.alert("경고", "서버에 연결할 수 없습니다", "연결 상태를 확인해주세요");
+			this.loginCheck.setValue(false);
 		} catch (IOException e) {
-			e.printStackTrace();
+			util.alert("경고", "서버에 연결할 수 없습니다", "연결 상태를 확인해주세요");
+			this.loginCheck.setValue(false);
 		}
 	}
 
@@ -89,7 +97,6 @@ public class Client {
 	}
 
 	private void readData() {
-		StageControll sc = new StageControll();
 		MessageObject objectMsg = null;
 		while (true) {
 			try {
@@ -130,13 +137,9 @@ public class Client {
 
 				if (objectMsg.type == MessageTypeConstantNumbers.LOGIN_CHECK_MSG) {
 					if (((LoginCheckMessage) objectMsg).check) {
-						sc.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
-						util.alert("안내", "성공", ((LoginCheckMessage) objectMsg).msg);
-						this.justCheck = true;
+						successLogin((LoginCheckMessage) objectMsg);
 					} else {
-						util.alert("안내", "실패", ((LoginCheckMessage) objectMsg).msg);
-						this.justCheck = true;
-						break;
+						failLogin((LoginCheckMessage) objectMsg);
 					}
 					continue;
 				}
@@ -156,6 +159,21 @@ public class Client {
 				break;
 			}
 		}
+	}
+	
+	private void failLogin(LoginCheckMessage msg) {
+		StageControll sc = new StageControll();
+		util.alert("안내", "실패", ((LoginCheckMessage) msg).msg);
+		this.loginCheck.setValue(false);
+	}
+	
+	private void successLogin(LoginCheckMessage msg) {
+		StageControll sc = new StageControll();
+		
+		sc.newStage("/view/fxml/Main.fxml", this.currentRoot, this, true);
+		util.alert("안내", "성공", ((LoginCheckMessage) msg).msg);
+		this.loginCheck.setValue(false);
+		this.loginCheck = null;
 	}
 
 	private void updateMoneyInfo(UserInfoMsg msg) {

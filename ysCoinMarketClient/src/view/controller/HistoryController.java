@@ -55,12 +55,12 @@ public class HistoryController extends Controller {
 		tbPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 		tbOrder.setCellValueFactory(new PropertyValueFactory<>("order_type"));
 		tbTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-		
+
 		AnimationTimer set = new AnimationTimer() {
 			@Override
 			public void handle(long timestamp) {
 				try {
-					if(!client.equals(null)) {
+					if (!client.equals(null)) {
 						client.addSendObject(new TransactionDetailsRequest());
 						refresh();
 						this.stop();
@@ -78,7 +78,14 @@ public class HistoryController extends Controller {
 		System.out.println(this.client);
 	}
 
+	private boolean isRefresing;
+
 	public void refresh() {
+		if (isRefresing) {
+			return;
+		}
+		isRefresing = true;
+		
 		client.addSendObject(new TransactionDetailsRequest());
 		items = FXCollections.observableArrayList();
 		items.clear();
@@ -93,6 +100,8 @@ public class HistoryController extends Controller {
 			}
 		};
 		set.start();
+		
+		isRefresing = false;
 	}
 
 	private boolean getHistoryInfoData() {
@@ -100,10 +109,10 @@ public class HistoryController extends Controller {
 		if (historyInfo == null) {
 			return false;
 		}
-		
+
 		for (int i = 0; i < historyInfo.size(); i++) {
 			items.add(new HistoryTable(historyInfo.get(i)));
-			
+
 		}
 		tbHistoryView.setItems(items);
 

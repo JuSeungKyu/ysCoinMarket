@@ -91,7 +91,7 @@ public class StageControll {
 			public void handle(WindowEvent evt) {
 				try {
 					Main.socket.close();
-				} catch (IOException e) {}
+				} catch (Exception e) {}
 				
 				for (int i = 0; i < Main.ThreadList.size(); i++) {
 					Main.ThreadList.get(i).interrupt();
