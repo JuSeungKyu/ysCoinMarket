@@ -89,16 +89,12 @@ public class StageControll {
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent evt) {
-				System.out.println("종료");
+				try {
+					Main.socket.close();
+				} catch (IOException e) {}
+				
 				for (int i = 0; i < Main.ThreadList.size(); i++) {
 					Main.ThreadList.get(i).interrupt();
-				}
-				if(Main.socket != null) {
-					try {
-						Main.socket.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		});

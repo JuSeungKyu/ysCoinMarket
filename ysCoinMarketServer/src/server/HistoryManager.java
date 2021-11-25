@@ -18,7 +18,6 @@ public class HistoryManager extends Thread {
 	public void run() {
 		super.run();
 		Util util = new Util();
-		UtilQuery uq = new UtilQuery();
 		HistoryQuery hq = new HistoryQuery();
 
 		while (true) {

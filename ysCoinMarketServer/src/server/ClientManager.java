@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.net.Socket;
 
 import db.query.OrderQuery;
@@ -123,17 +124,17 @@ public class ClientManager extends Thread {
 		if (this.graphRange[0] > Short.MAX_VALUE) {
 			return;
 		}
-		
+
 		if (this.graphRange[1] + graphRange[1] > Short.MAX_VALUE) {
 			return;
 		}
-		
-		short range = (short) ((this.graphRange[1]+graphRange[1]) - (this.graphRange[0]+graphRange[0]));
-		
-		if( (this.graphRange[1]+graphRange[1]) - (this.graphRange[0]+graphRange[0]) > 100 ) {
+
+		short range = (short) ((this.graphRange[1] + graphRange[1]) - (this.graphRange[0] + graphRange[0]));
+
+		if (range > 100 || range < 5) {
 			return;
 		}
-		
+
 		this.graphRange[0] += graphRange[0];
 		this.graphRange[1] += graphRange[1];
 
@@ -170,8 +171,9 @@ public class ClientManager extends Thread {
 	}
 
 	private void buyRequest(BuyRequest msg) {
-		long money = (long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
-		if (msg.count * msg.price > money) {
+		long price = msg.count * msg.price;
+		
+		if (price > getMoney()) {
 			sendCheckMessage("돈이 부족합니다.", false);
 		} else {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
@@ -236,8 +238,16 @@ public class ClientManager extends Thread {
 
 	public void sendUserInfo() {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
+		System.out.println(this.getMoney());
 		SendMessageThread.addMessageQueue(this, new UserInfoMsg(
-				(long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'"),
+				this.getMoney(),
 				uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType)));
+	}
+	
+	private long getMoney() {
+		UtilQuery uq = new UtilQuery();
+		Object money1 = uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
+		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
+		return (long) (money1 == null ? 0 : money1) - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
 	}
 }
