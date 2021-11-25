@@ -23,26 +23,28 @@ import util.uiUpdate.UIUpdateThread;
 public class CoinMiningController extends Controller {
 
 	@FXML
-	private Label typeLbl;
+	private Label type;
 	@FXML
-	private Label timeLbl;
+	private Label time;
 	@FXML
-	private Label numberLbl;
+	private Label number;
 	@FXML
-	private Label frequencyLbl;
+	private Label frequency;
 	@FXML
 	private Button closeBtn;
-
+	
+	private Util util = new Util();
 	private Client client = null;
 	private CoinInfo coin = null;
 	private boolean isReady = false;
 
-	public boolean setType(String type) {
+	public boolean setType(String typeStr) {
 		new UIUpdateThread() {
 			
 			@Override
 			public void update() {
-				typeLbl.setText(type);
+				type.setText(typeStr);
+				System.out.println(type.getText());
 			}
 		}.start();
 		
@@ -58,9 +60,11 @@ public class CoinMiningController extends Controller {
 			
 			@Override
 			public void update() {
-				while(new Util().sleep(1000)) {
+				while(util.sleep(1000)) {
 					ts.setTime(System.currentTimeMillis() - startTime);
-					timeLbl.setText("경과 시간 : " + sdf.format(ts));
+					time.setText("경과 시간 : " + sdf.format(ts));
+					System.out.println(time.getText());
+					
 				}
 			}
 		}.start();
@@ -71,25 +75,30 @@ public class CoinMiningController extends Controller {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		while(!isReady);
-		
-
-		setType(coin.getCoinId());
 		setTime();
-
-		Thread coinMiningTHread = new Thread(() -> {
+		System.out.println("setTime : " + time.getText());
+		
+		Thread coinMiningThread = new Thread(() -> {
+			
+			while(!isReady) {
+				System.out.println("Waiting");
+				if(!util.sleep(1000)) {
+					break;
+				}
+			}
+			
+			System.out.println("isReady");
+			
+			coin.getCoinId();
+			System.out.println("setType : " + type.getText());
+			
 			new UIUpdateClass() {
 				@Override
 				public void update() {
-					numberLbl.setText("0");
+					number.setText("0");
 				}
 			}.start();
-			
-			while (client == null && coin == null)
-				;
-			while (client.getHash() == null) {
-				System.out.println(client.getHash());
-			}
+			System.out.println("setNumber : " + number.getText());
 
 			String PreviousHash = client.getHash();
 			Block previousBlock = new Block(PreviousHash, coin.getCoinDifficulty());
@@ -102,15 +111,15 @@ public class CoinMiningController extends Controller {
 				new UIUpdateClass() {
 					@Override
 					public void update() {
-						numberLbl.setText(Integer.toString(Integer.parseInt(numberLbl.getText()) + 1));
+						number.setText(Integer.toString(Integer.parseInt(number.getText()) + 1));
 					}
 				}.start();
 				client.addBlock(block.getPrevHashString());
 			}
 		});
 
-		Main.ThreadList.add(coinMiningTHread);
-		coinMiningTHread.start();
+		Main.ThreadList.add(coinMiningThread);
+		coinMiningThread.start();
 
 	}
 
@@ -118,6 +127,7 @@ public class CoinMiningController extends Controller {
 	public void initData(Object data) {
 		this.client = (Client) data;
 		this.coin = new CoinInfo(this.client.getCurrentCoinId(), this.client.getCurrentCoinDifficulty());
+		System.out.println("client ready");
 		isReady = true;
 	}
 
