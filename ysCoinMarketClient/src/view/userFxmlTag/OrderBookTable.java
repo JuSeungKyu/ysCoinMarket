@@ -1,40 +1,37 @@
 package view.userFxmlTag;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 public class OrderBookTable {
-	private IntegerProperty sellPrice;
-	private IntegerProperty volume;
-	private IntegerProperty buyPrice;
+	private int sellPrice;
+	private int volume;
+	private int buyPrice;
 	
 	public OrderBookTable(int sellPrice, int volume, int buyPrice) {
-		this.sellPrice = new SimpleIntegerProperty(sellPrice);
-		this.volume = new SimpleIntegerProperty(volume);
-		this.buyPrice = new SimpleIntegerProperty(buyPrice);
+		this.sellPrice = sellPrice;
+		this.volume = volume;
+		this.buyPrice = buyPrice;
 	}
 
-	public void setSellPrice(IntegerProperty sellPrice) {
+	public void setSellPrice(int sellPrice) {
 		this.sellPrice = sellPrice;
 	}
 	
-	public void setVolume(IntegerProperty volume) {
+	public void setVolume(int volume) {
 		this.volume = volume;
 	}
 	
-	public void setBuyPrice(IntegerProperty buyPrice) {
+	public void setBuyPrice(int buyPrice) {
 		this.buyPrice = buyPrice;
 	}
 	
-	public IntegerProperty getSellPrice() {
+	public int getSellPrice() {
 		return this.sellPrice;
 	}
 	
-	public IntegerProperty getVolume() {
+	public int getVolume() {
 		return this.volume;
 	}
 	
-	public IntegerProperty getBuyPrice() {
+	public int getBuyPrice() {
 		return this.buyPrice;
 	}
 	

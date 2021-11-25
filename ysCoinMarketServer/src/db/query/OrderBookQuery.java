@@ -59,7 +59,7 @@ public class OrderBookQuery {
 				list.add(new int[] { 0, rs.getInt(1), rs.getInt(2) });
 			}
 
-			while (list.size() < 10) {
+			while (list.size() < 5) {
 				int[] info = { 0, 0, 0 };
 				list.add(info);
 			}
