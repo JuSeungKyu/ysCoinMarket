@@ -21,23 +21,22 @@ import format.message.MineBlockRequest;
 import format.message.PreviousHashMessage;
 import format.message.PreviousHashRequest;
 
-
 public class ClientManager extends Thread {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	private String id;
 	private Socket socket;
-	private boolean isReady; 
-	
+	private boolean isReady;
+
 	private String coinType = "양디코인";
-	private short[] graphRange = {0, 30};
+	private int[] graphRange = { 0, 30 };
 
 	public ClientManager(String id, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
 		this.id = id;
 		this.socket = socket;
 		this.ois = ois;
 		this.oos = oos;
-		
+
 		this.start();
 	}
 
@@ -48,102 +47,120 @@ public class ClientManager extends Thread {
 			while (true) {
 				try {
 					MessageObject msg = (MessageObject) ois.readObject();
-					
+
 					if (msg == null)
 						break;
-					
+
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
-						buyRequest((BuyRequest)msg);
+						buyRequest((BuyRequest) msg);
 						continue;
 					}
-					
+
 					if (msg.type == MessageTypeConstantNumbers.SELL_REQEUST) {
-						sellRequest((SellRequest)msg);
+						sellRequest((SellRequest) msg);
 						continue;
 					}
-					
+
 					if (msg.type == MessageTypeConstantNumbers.CHAGNE_COIN_TYPE) {
 						this.coinType = ((CoinTypeChange) msg).coinId;
 						this.sendUserInfo();
 						continue;
 					}
-					
-					if(msg.type == MessageTypeConstantNumbers.UPDATE_GRAPH_RANGE) {
+
+					if (msg.type == MessageTypeConstantNumbers.UPDATE_GRAPH_RANGE) {
 						setGraphRange(((UpdateGraphRange) msg).range);
 						continue;
 					}
-					
-					if(msg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_REQUEST) {
+
+					if (msg.type == MessageTypeConstantNumbers.TRANSACTION_DETAILS_REQUEST) {
 						sendTransactionDetailsMessage();
 						continue;
 					}
-					
-					if(msg.type == MessageTypeConstantNumbers.PREVIOUS_HASH_REQUEST) {
-						sendPreviousHash(((PreviousHashRequest)msg).coinId);
+
+					if (msg.type == MessageTypeConstantNumbers.PREVIOUS_HASH_REQUEST) {
+						sendPreviousHash(((PreviousHashRequest) msg).coinId);
 						continue;
 					}
-					
-					if(msg.type == MessageTypeConstantNumbers.BLOCK_MINE_REQUEST) {
-						addNewBlock(((MineBlockRequest)msg).hash, ((MineBlockRequest)msg).userId, ((MineBlockRequest)msg).coinId);
+
+					if (msg.type == MessageTypeConstantNumbers.BLOCK_MINE_REQUEST) {
+						addNewBlock(((MineBlockRequest) msg).hash, ((MineBlockRequest) msg).userId,
+								((MineBlockRequest) msg).coinId);
 						continue;
 					}
-					
+
 				} catch (ClassNotFoundException e) {
 					removeClient();
 				}
 			}
-			
+
 			removeClient();
 		} catch (IOException e) {
 			removeClient();
 		}
 	}
-	
+
 	private void addNewBlock(String hash, String userId, String coinId) {
-		 UserHashControlQuery uhcq = new UserHashControlQuery();
-		 uhcq.addBlock(hash, userId, coinId);
+		UserHashControlQuery uhcq = new UserHashControlQuery();
+		uhcq.addBlock(hash, userId, coinId);
 	}
-	
+
 	private void sendPreviousHash(String coinId) {
-		 UserHashControlQuery uhcq = new UserHashControlQuery();
-		 String hash = uhcq.getPreviousHash(coinId);
-		 if(!hash.isEmpty()) {
-			 SendMessageThread.addMessageQueue(this, new PreviousHashMessage(hash));
-		 }
+		UserHashControlQuery uhcq = new UserHashControlQuery();
+		String hash = uhcq.getPreviousHash(coinId);
+		if (!hash.isEmpty()) {
+			SendMessageThread.addMessageQueue(this, new PreviousHashMessage(hash));
+		}
 	}
-	
+
 	private void sendTransactionDetailsMessage() {
 		TransactionDetailsMessage info = new OrderQuery().getTransactionDetails(this.id);
-		if(info != null) {
+		if (info != null) {
 			SendMessageThread.addMessageQueue(this, info);
 		}
 	}
-	
+
 	private void setGraphRange(short[] graphRange) {
+		if (this.graphRange[0] > Short.MAX_VALUE) {
+			return;
+		}
+		
+		if (this.graphRange[1] + graphRange[1] > Short.MAX_VALUE) {
+			return;
+		}
+		
+		short range = (short) ((this.graphRange[1]+graphRange[1]) - (this.graphRange[0]+graphRange[0]));
+		
+		if( (this.graphRange[1]+graphRange[1]) - (this.graphRange[0]+graphRange[0]) > 100 ) {
+			return;
+		}
+		
 		this.graphRange[0] += graphRange[0];
 		this.graphRange[1] += graphRange[1];
-		
+
 		checkGraphRange();
 	}
-	
+
 	public void checkGraphRange() {
-		if(this.graphRange[1] < 0) {
+
+		if (this.graphRange[1] < 0) {
 			this.graphRange[1] = 1;
 		}
-		
-		if(this.graphRange[0] >= this.graphRange[1]) {
+
+		if (this.graphRange[0] >= this.graphRange[1]) {
 			graphRange[0] = (short) (this.graphRange[1] - 1);
 		}
-		
-		if(this.graphRange[0] < 0) {
+
+		if (this.graphRange[0] < 0) {
 			this.graphRange[0] = 0;
 		}
 	}
-	
+
 	private void sellRequest(SellRequest msg) {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		System.out.println(msg.count + " " + uhcq.getUserHashCount(this.id, msg.coinname) + " " + uhcq.getUserOrderedHashCount(this.id, msg.coinname));
-		if(msg.count > uhcq.getUserHashCount(this.id, msg.coinname) - uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
+		System.out.println(msg.count + " " + uhcq.getUserHashCount(this.id, msg.coinname) + " "
+				+ uhcq.getUserOrderedHashCount(this.id, msg.coinname));
+		if (msg.count > uhcq.getUserHashCount(this.id, msg.coinname)
+				- uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
 			sendCheckMessage("매도 주문 실패", false);
 		} else {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "판매");
@@ -151,22 +168,22 @@ public class ClientManager extends Thread {
 		}
 		this.sendUserInfo();
 	}
-	
+
 	private void buyRequest(BuyRequest msg) {
 		long money = (long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
-		if(msg.count * msg.price > money) {
+		if (msg.count * msg.price > money) {
 			sendCheckMessage("돈이 부족합니다.", false);
-		} else{
+		} else {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
 			sendCheckMessage("매수 주문 성공", true);
 		}
 		this.sendUserInfo();
 	}
-	
+
 	public void removeClient() {
 		Server.clientMap.remove(id);
-		for(int i = 0; i < Server.clientIdList.size(); i++) {
-			if(Server.clientIdList.get(i).equals(this.id)) {
+		for (int i = 0; i < Server.clientIdList.size(); i++) {
+			if (Server.clientIdList.get(i).equals(this.id)) {
 				Server.clientIdList.remove(i);
 				break;
 			}
@@ -177,14 +194,14 @@ public class ClientManager extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendCheckMessage(String msg, boolean result) {
 		SendMessageThread.addMessageQueue(this, new CheckMessage(msg, result));
 	}
-	
+
 	public void sendObject(Object object) {
 		try {
-			if(socket.isClosed())
+			if (socket.isClosed())
 				throw new Error();
 			this.oos.writeObject(object);
 			this.oos.flush();
@@ -192,24 +209,24 @@ public class ClientManager extends Thread {
 			removeClient();
 		}
 	}
-	
+
 	public boolean isReady() {
 		return this.isReady;
 	}
-	
+
 	public void setCoinType(String coinId) {
 		this.coinType = coinId;
 	}
-	
+
 	public String getCoinType() {
 		return this.coinType;
 	}
-	
-	public short getGraphRangeStart() {
+
+	public int getGraphRangeStart() {
 		return this.graphRange[0];
 	}
-	
-	public short getGraphRangeEnd() {
+
+	public int getGraphRangeEnd() {
 		return this.graphRange[1];
 	}
 
@@ -219,12 +236,8 @@ public class ClientManager extends Thread {
 
 	public void sendUserInfo() {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		SendMessageThread.addMessageQueue(
-				this, 
-				new UserInfoMsg(
-						(long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'"), 
-						uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType)
-				)
-		);
+		SendMessageThread.addMessageQueue(this, new UserInfoMsg(
+				(long) new UtilQuery().justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'"),
+				uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType)));
 	}
 }
