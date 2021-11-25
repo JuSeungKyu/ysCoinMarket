@@ -61,7 +61,6 @@ public class OrderBookController extends Controller{
 			OrderBookTable c = new OrderBookTable(data.get(i)[0], data.get(i)[1], data.get(i)[2]);
 			items.add(c);
 		}
-		System.out.println(items.size());
 	}
 	
 	public ArrayList<int[]> getInfo() {

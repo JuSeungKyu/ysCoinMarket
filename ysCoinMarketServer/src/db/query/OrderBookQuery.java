@@ -30,7 +30,7 @@ public class OrderBookQuery {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				list.add(new int[] { rs.getInt(0), rs.getInt(1), 0 });
+				list.add(new int[] { rs.getInt(1), rs.getInt(2), 0 });
 			}
 
 			while (list.size() < 5) {
@@ -49,14 +49,14 @@ public class OrderBookQuery {
 	private ArrayList<int[]> getBuyOrder(String coinId) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
 		try {
-			String sql = "SELECT price, count FROM order_info WHERE coin_id=? AND order_type='구매' ORDER BY price DESC LIMIT 5";
+			String sql = "SELECT count, price FROM order_info WHERE coin_id=? AND order_type='구매' ORDER BY price DESC LIMIT 5";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinId);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				list.add(new int[] { 0, rs.getInt(1), rs.getInt(2) });
+				list.add(new int[] { 0, rs.getInt("count"), rs.getInt("price") });
 			}
 
 			while (list.size() < 5) {
