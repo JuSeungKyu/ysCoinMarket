@@ -5,10 +5,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="root" prefHeight="678.0" prefWidth="1042.0" stylesheets="@../../application/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
+<AnchorPane fx:id="root" prefHeight="678.0" prefWidth="1042.0" styleClass="background1" stylesheets="@../../application/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.HistoryController">
    <children>
-      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="96.0" prefHeight="505.0" prefWidth="918.0">
+      <TableView fx:id="tbHistoryView" layoutX="62.0" layoutY="96.0" prefHeight="505.0" prefWidth="918.0" styleClass="orderHistoryTable">
         <columns>
           <TableColumn fx:id="tbName" prefWidth="127.0" text="이름" />
           <TableColumn fx:id="tbOrdering" minWidth="0.0" prefWidth="139.0" text="주문량" />
@@ -21,9 +22,13 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button layoutX="916.0" layoutY="60.0" mnemonicParsing="false" onAction="#refresh" style="-fx-background-color: #FFFFFF; -fx-border-color: #0022FF; -fx-border-radius: 5;" text="새로고침" textAlignment="CENTER" textFill="#0044ff">
+      <Button layoutX="916.0" layoutY="60.0" mnemonicParsing="false" onAction="#refresh" styleClass="btn4" text="새로고침" textAlignment="CENTER">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
+      <Line endX="817.0" layoutX="163.0" layoutY="96.0" startX="-100.0" />
+      <Line endX="817.0" layoutX="162.0" layoutY="601.0" startX="-100.0" />
+      <Line endX="193.0" endY="598.0" layoutX="-131.0" layoutY="3.0" startX="193.0" startY="93.0" />
+      <Line endX="193.0" endY="598.0" layoutX="787.0" layoutY="3.0" startX="193.0" startY="93.0" />
    </children>
 </AnchorPane>
