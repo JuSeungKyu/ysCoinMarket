@@ -51,7 +51,7 @@ public class ClientManager extends Thread {
 
 					if (msg == null)
 						break;
-
+					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest) msg);
 						continue;
@@ -84,8 +84,7 @@ public class ClientManager extends Thread {
 					}
 
 					if (msg.type == MessageTypeConstantNumbers.BLOCK_MINE_REQUEST) {
-						addNewBlock(((MineBlockRequest) msg).hash, ((MineBlockRequest) msg).userId,
-								((MineBlockRequest) msg).coinId);
+						addNewBlock(((MineBlockRequest) msg).hash, ((MineBlockRequest) msg).coinId);
 						continue;
 					}
 
@@ -100,9 +99,9 @@ public class ClientManager extends Thread {
 		}
 	}
 
-	private void addNewBlock(String hash, String userId, String coinId) {
+	private void addNewBlock(String hash, String coinId) {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		uhcq.addBlock(hash, userId, coinId);
+		uhcq.addBlock(hash, this.id, coinId);
 	}
 
 	private void sendPreviousHash(String coinId) {

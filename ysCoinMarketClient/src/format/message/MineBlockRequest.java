@@ -5,13 +5,11 @@ import format.MessageTypeConstantNumbers;
 
 public class MineBlockRequest extends MessageObject {
 	public String hash;
-	public String userId;
 	public String coinId;
 	
-	public MineBlockRequest(String hash, String userId, String coinId) {
+	public MineBlockRequest(String hash, String coinId) {
 		super(MessageTypeConstantNumbers.BLOCK_MINE_REQUEST);
 		this.hash = hash;
-		this.userId = userId;
 		this.coinId = coinId;
 	}
 }

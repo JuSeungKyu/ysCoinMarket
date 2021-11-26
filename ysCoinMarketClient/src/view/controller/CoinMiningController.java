@@ -54,49 +54,40 @@ public class CoinMiningController extends Controller {
 					public void update() {
 						ts.setTime(System.currentTimeMillis() - startTime);
 						time.setText("경과 시간 : " + sdf.format(ts));
-						System.out.println(time.getText());
 					}
 				}.start();
 			} while (util.sleep(1000));
 		});
 
-		System.out.println("setTime : " + time.getText());
 
 		Thread coinMiningThread = new Thread(() -> {
 
 			while (!isReady) {
-				System.out.println("Waiting");
 				if (!util.sleep(1000)) {
 					break;
 				}
 			}
 
-			System.out.println("isReady");
 
 			coin.getCoinId();
 			new UIUpdateClass() {
 
 				@Override
 				public void update() {
-					type.setText(coin.getCoinId());
-					System.out.println(type.getText());
+					type.setText("채굴 종목 : " + coin.getCoinId());
 				}
 			}.start();
 
-			System.out.println("setType : " + type.getText());
 
 			new UIUpdateClass() {
 				@Override
 				public void update() {
-					number.setText("0");
+					number.setText("채굴 횟수 : 0");
 				}
 			}.start();
-			System.out.println("setNumber : " + number.getText());
 
 			String PreviousHash = client.getHash();
 			Block previousBlock = new Block(PreviousHash, coin.getCoinDifficulty());
-
-			System.out.println("Block : " + previousBlock.getValidHashString());
 
 			while (true) {
 				Block block = new Block(previousBlock.getValidHashString(), coin.getCoinDifficulty());
@@ -104,7 +95,7 @@ public class CoinMiningController extends Controller {
 				new UIUpdateClass() {
 					@Override
 					public void update() {
-						number.setText(Integer.toString(Integer.parseInt(number.getText()) + 1));
+						number.setText("채굴 횟수 : " + Integer.toString(Integer.parseInt(number.getText().substring(8)) + 1));
 					}
 				}.start();
 				client.addBlock(block.getPrevHashString());
@@ -115,7 +106,6 @@ public class CoinMiningController extends Controller {
 		Main.ThreadList.add(coinMiningThread);
 		coinMiningTimingThread.start();
 		coinMiningThread.start();
-
 	}
 
 	@Override
