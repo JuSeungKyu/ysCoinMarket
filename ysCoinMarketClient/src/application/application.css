@@ -12,13 +12,18 @@
 }
 
 .textfield1-label{
-	-fx-font-size: 17.5px;
+	-fx-font-size: 12px;
 	-fx-background-color: white;
 	-fx-padding: 5.0px;
 }
 
 .textfield1-textfield{
 	-fx-border-color: black;
+}
+
+Button {
+	-fx-cursor: hand;
+	-fx-font-size: 11px;	
 }
 
 .btn1{
@@ -85,7 +90,6 @@
     -fx-background-color: blue;
 }
 
-
 .table-view{
   -fx-background-color: transparent;
   -fx-border-color: #ccc;
@@ -101,7 +105,6 @@
     -fx-pref-height: 0;
     -fx-max-height: 0;
 }
-
 .table-view-focused	{
   -fx-cell-size: 34.0px;
   -fx-border-width: 0.0 0.0 1.0 0.0;
@@ -117,6 +120,11 @@
   -fx-border-width: 0.0 0.0 1.0 0.0;
 }
 
+.coinTypeTable .column-header{
+	-fx-background-color: #BBCCFC;
+	-fx-border-color: #14399D;
+}
+
 .salebtn{
 	-fx-background-color: ff2828;
 	-fx-border-radius: 10.0px;
@@ -126,7 +134,9 @@
 }.salebtn:pressed{
 	-fx-background-color: #FF0000;
 }
-
+Line{
+	-fx-stroke: #23293A;
+}
 
 
 .purchasebtn{
