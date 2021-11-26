@@ -79,6 +79,21 @@ Button {
 	-fx-background-color: #808080;
 }
 
+.btn4{
+	-fx-background-color: #FFFFFF;
+	-fx-text-fill:#012F8A;
+	-fx-border-color: #012F8A;
+	-fx-border-radius : 5.0px;
+}.btn4:hover{
+	-fx-border-width: 2.0px;
+	-fx-border-color: #0099FF;
+	
+}.btn4:pressed{
+	-fx-border-color: #0099FF;
+	-fx-border-style: solid;
+	-fx-border-width: 3.0px 3.0px 3.0px 3.0px;
+}
+
 .Togglebtn { 
     -fx-background-color:  #262626;
 }
@@ -120,12 +135,12 @@ Button {
   -fx-border-width: 0.0 0.0 1.0 0.0;
 }
 
-.coinTypeTable .column-header{
+.orderHistoryTable .column-header{
 	-fx-background-color: #BBCCFC;
 	-fx-border-color: #14399D;
 }
 
-.orderBookTable .column-header{
+.coinTable .column-header{
 	-fx-background-color: #e6e6ff;
 	-fx-border-color: #14399D;
 }
@@ -139,8 +154,9 @@ Button {
 }.salebtn:pressed{
 	-fx-background-color: #FF0000;
 }
+
 Line{
-	-fx-stroke: #0E1D46;
+	-fx-stroke: #000080;
 }
 
 
