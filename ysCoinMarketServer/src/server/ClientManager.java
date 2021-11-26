@@ -157,14 +157,12 @@ public class ClientManager extends Thread {
 	}
 
 	private void sellRequest(SellRequest msg) {
-		if(msg.count < 1) {
+		if (msg.count < 1) {
 			sendCheckMessage("주문량이 1보다 작습니다", false);
 			return;
 		}
-		
+
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		System.out.println(msg.count + " " + uhcq.getUserHashCount(this.id, msg.coinname) + " "
-				+ uhcq.getUserOrderedHashCount(this.id, msg.coinname));
 		if (msg.count > uhcq.getUserHashCount(this.id, msg.coinname)
 				- uhcq.getUserOrderedHashCount(this.id, msg.coinname)) {
 			sendCheckMessage("매도 주문 실패", false);
@@ -176,13 +174,13 @@ public class ClientManager extends Thread {
 	}
 
 	private void buyRequest(BuyRequest msg) {
-		if(msg.count < 1) {
+		if (msg.count < 1) {
 			sendCheckMessage("주문량이 1보다 작습니다", false);
 			return;
 		}
-		
+
 		long price = msg.count * msg.price;
-		
+
 		if (price > getMoney()) {
 			sendCheckMessage("돈이 부족합니다.", false);
 		} else {
@@ -202,10 +200,10 @@ public class ClientManager extends Thread {
 		}
 		try {
 			this.socket.close();
+			System.out.println(this.id + "님이 로그아웃 하셨습니다.");
 		} catch (IOException e) {
 			System.out.println(this.id + "님의 소켓이 이미 닫혀있습니다");
 		}
-		System.out.println(this.id + "님이 로그아웃 하셨습니다.");
 	}
 
 	public void sendCheckMessage(String msg, boolean result) {
@@ -249,17 +247,24 @@ public class ClientManager extends Thread {
 
 	public void sendUserInfo() {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		System.out.println(this.getMoney());
-		SendMessageThread.addMessageQueue(this, new UserInfoMsg(
-				this.getMoney(),
+		SendMessageThread.addMessageQueue(this, new UserInfoMsg(this.getMoney(),
 				uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType)));
 	}
-	
+
 	private long getMoney() {
 		UtilQuery uq = new UtilQuery();
-		long money1 = (long) uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
-		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
-		System.out.println(money2);
-		return money1 - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
+		Object money1 = uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
+		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"
+				+ this.id + "' AND order_type='구매'");
+
+		if (money1 == null) {
+			return 0;
+		}
+
+		if (money2 == null) {
+			return (long) money1;
+		}
+
+		return (long)money1 - ((BigDecimal) money2).longValue();
 	}
 }

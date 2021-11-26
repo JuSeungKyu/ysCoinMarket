@@ -26,7 +26,11 @@ public class SendMessageThread implements Runnable {
 		while(true) {
 			while(messageQueue.size() != 0) {
 				MessageInfo msg = messageQueue.poll();
-				msg.recipient.sendObject(msg.obj);
+				try {
+					msg.recipient.sendObject(msg.obj);
+				} catch (Exception e) {
+					System.out.println("유저에게 메시지를 보낼 수 없습니다.");
+				}
 			}
 			if(!util.sleep(10)) {
 				return;

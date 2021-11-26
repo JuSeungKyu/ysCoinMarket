@@ -92,7 +92,9 @@ public class Client {
 				this.sendObject(sendMsgQueue.poll());
 				sendMsgQueue.remove(0);
 			}
-			util.sleep(10);
+			if(!util.sleep(10)) {
+				return;
+			}
 		}
 	}
 
@@ -106,8 +108,6 @@ public class Client {
 					System.out.println("null 메시지");
 					continue;
 				}
-
-//				System.out.println(objectMsg.type);
 
 				if (objectMsg.type == MessageTypeConstantNumbers.HISTORY_LIST) {
 					this.lastHistoryData = (History) objectMsg;
