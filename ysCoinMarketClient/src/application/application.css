@@ -12,7 +12,7 @@
 }
 
 .textfield1-label{
-	-fx-font-size: 12px;
+	-fx-font-size: 14px;
 	-fx-background-color: white;
 	-fx-padding: 5.0px;
 }
@@ -125,6 +125,11 @@ Button {
 	-fx-border-color: #14399D;
 }
 
+.orderBookTable .column-header{
+	-fx-background-color: #e6e6ff;
+	-fx-border-color: #14399D;
+}
+
 .salebtn{
 	-fx-background-color: ff2828;
 	-fx-border-radius: 10.0px;
@@ -135,7 +140,7 @@ Button {
 	-fx-background-color: #FF0000;
 }
 Line{
-	-fx-stroke: #23293A;
+	-fx-stroke: #0E1D46;
 }
 
 
