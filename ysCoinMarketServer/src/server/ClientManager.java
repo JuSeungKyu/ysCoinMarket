@@ -248,7 +248,7 @@ public class ClientManager extends Thread {
 	private long getMoney() {
 		UtilQuery uq = new UtilQuery();
 		long money1 = (long) uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
-		BigDecimal money2 = (BigDecimal) uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
-		return money1 - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
+		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
+		return money1 - (int) (money2 == null ? 0 : money2);
 	}
 }

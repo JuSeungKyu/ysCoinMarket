@@ -106,6 +106,10 @@ public class GraphController extends Controller {
 		PriceInfo[] pi = history.info;
 		this.historyLength = (short) pi.length;
 
+		if(this.historyLength < 1) {
+			return;
+		}
+		
 		int[] temp = getHighPriceAndLowPrice(pi);
 		int high = temp[0];
 		int low = temp[1];
