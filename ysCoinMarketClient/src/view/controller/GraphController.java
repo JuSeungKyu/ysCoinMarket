@@ -150,6 +150,11 @@ public class GraphController extends Controller {
 	private void drawPrice(int high, int low, int h, int w) {
 		gc.setFill(Color.BLACK);
 		gc.setTextAlign(TextAlignment.LEFT);
+		
+		if(high - low < 8) {
+			high+=8-(high-low);
+		}
+		
 		for (byte i = 0; i < 8; i++) {
 			int y = Math.round((h - h / 8 * i));
 			canvasDrawLine(w, y, w + 10, y);
