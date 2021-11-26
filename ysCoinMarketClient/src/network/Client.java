@@ -42,7 +42,7 @@ public class Client {
 	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
 	private String currentCoinId = "양디코인";
-	private byte currentCoinDifficulty = 3;
+	private byte currentCoinDifficulty = 5;
 	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
 
@@ -92,7 +92,9 @@ public class Client {
 				this.sendObject(sendMsgQueue.poll());
 				sendMsgQueue.remove(0);
 			}
-			util.sleep(10);
+			if(!util.sleep(10)) {
+				return;
+			}
 		}
 	}
 
@@ -106,8 +108,6 @@ public class Client {
 					System.out.println("null 메시지");
 					continue;
 				}
-
-//				System.out.println(objectMsg.type);
 
 				if (objectMsg.type == MessageTypeConstantNumbers.HISTORY_LIST) {
 					this.lastHistoryData = (History) objectMsg;
@@ -193,7 +193,7 @@ public class Client {
 
 	public void addBlock(String hash) {
 		System.out.println("send Request");
-		addSendObject(new MineBlockRequest(hash, null, this.currentCoinId));
+		addSendObject(new MineBlockRequest(hash, this.currentCoinId));
 	}
 
 	public TypeInfo[] getTypeInfo() {

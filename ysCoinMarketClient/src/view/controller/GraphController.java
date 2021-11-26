@@ -25,6 +25,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import network.Client;
 import util.Util;
+import util.uiUpdate.UIUpdateClass;
+import util.uiUpdate.UIUpdateThread;
 import view.userFxmlTag.ToggleSwitch;
 
 public class GraphController extends Controller {
@@ -42,20 +44,24 @@ public class GraphController extends Controller {
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
-
-		AnimationTimer timer = new AnimationTimer() {
-			@Override
-			public void handle(long timestamp) {
+		
+		Util util = new Util();
+		
+		Thread t = new Thread(()->{
+			while(util.sleep(10)) {
 				try {
-					getHistory();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+					new UIUpdateClass() {
+						@Override
+						public void update() {
+							getHistory();
+						}
+					}.start();
+				} catch (Exception e) {}
 				sendGraphRangeUpdateRequst();
 			}
-		};
-		timer.start();
-		setEvent();
+		});
+		Main.ThreadList.add(t);
+		t.start();
 	}
 
 	public void initData(Object client) {

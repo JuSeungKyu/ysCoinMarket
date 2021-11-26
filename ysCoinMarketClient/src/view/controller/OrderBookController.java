@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import application.Main;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +13,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import network.Client;
+import util.Util;
+import util.uiUpdate.UIUpdateClass;
 import view.userFxmlTag.OrderBookTable;
 
 public class OrderBookController extends Controller{
@@ -43,15 +46,21 @@ public class OrderBookController extends Controller{
 		volumnColumn.setCellValueFactory(new PropertyValueFactory<>("volume"));
 		buyPriceColumn.setCellValueFactory(new PropertyValueFactory<>("buyPrice"));
 		
-		AnimationTimer setBook = new AnimationTimer() {
-			@Override
-			public void handle(long timestamp) {
+		Util util = new Util();
+		Thread t = new Thread(()->{
+			while(util.sleep(10)) {
 				try {
-					drawTable();
+					new UIUpdateClass() {
+						@Override
+						public void update() {
+							drawTable();
+						}
+					}.start();
 				} catch (Exception e) {}
 			}
-		};
-		setBook.start();
+		});
+		Main.ThreadList.add(t);
+		t.start();
 	}
 	
 	public void drawTable() {

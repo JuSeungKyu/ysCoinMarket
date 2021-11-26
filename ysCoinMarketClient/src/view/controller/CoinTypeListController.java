@@ -4,7 +4,7 @@ import java.net.URL;
 
 import java.util.ResourceBundle;
 
-
+import application.Main;
 import format.TypeInfo;
 import format.message.CoinTypeChange;
 import javafx.animation.AnimationTimer;
@@ -16,22 +16,25 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import network.Client;
+import util.Util;
+import util.uiUpdate.UIUpdateClass;
+import util.uiUpdate.UIUpdateThread;
 import view.userFxmlTag.CoinTypeTable;
 
 public class CoinTypeListController extends Controller {
 	@FXML
 	public TableView<CoinTypeTable> viewMain;
-	
+
 	private ObservableList<CoinTypeTable> items;
-	
+
 	@FXML
 	public TableColumn<CoinTypeTable, String> nameColumn;
 	@FXML
 	public TableColumn<CoinTypeTable, Integer> changeColumn;
-	
+
 	@FXML
 	public Pane pane;
-	
+
 	private Client client;
 
 	public void initData(Object data) {
@@ -57,15 +60,21 @@ public class CoinTypeListController extends Controller {
 			client.addSendObject(new CoinTypeChange(coinId));
 		});
 		
-		AnimationTimer setType = new AnimationTimer() {
-			@Override
-			public void handle(long timestamp) {
+		Util util = new Util();
+		Thread t = new Thread(()->{
+			while(util.sleep(10)) {
 				try {
-					getTable();
+					new UIUpdateClass() {
+						@Override
+						public void update() {
+							getTable();
+						}
+					}.start();
 				} catch (Exception e) {}
 			}
-		};
-		setType.start();
+		});
+		Main.ThreadList.add(t);
+		t.start();
 	}
 
 	public boolean getTable() {
@@ -81,11 +90,5 @@ public class CoinTypeListController extends Controller {
 		}
 
 		return true;
-	}
-	
-	@FXML
-	public void rowFromTable() {
-//		viewMain.getSelectionModel().getSelectedItem()
-	
 	}
 }
