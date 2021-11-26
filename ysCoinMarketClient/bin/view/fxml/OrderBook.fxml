@@ -4,9 +4,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="500.0" maxWidth="230.0" minHeight="500.0" minWidth="230.0" prefHeight="500.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.OrderBookController">
+<AnchorPane maxHeight="330.0" maxWidth="230.0" minHeight="330.0" minWidth="230.0" prefHeight="330.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.OrderBookController">
    <children>
-      <TableView fx:id="orderBookTable" prefHeight="500.0" prefWidth="230.0">
+      <TableView fx:id="orderBookTable" prefHeight="330.0" prefWidth="230.0">
          <columns>
             <TableColumn fx:id="sellPriceColumn" maxWidth="80.0" minWidth="80.0" text="매도호가" />
             <TableColumn fx:id="volumnColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="수량" />
