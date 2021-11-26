@@ -34,5 +34,6 @@
       <Line endX="193.0" endY="678.0" layoutX="5.0" startX="193.0" />
       <Line endX="194.0" endY="668.0" layoutX="9.0" layoutY="10.0" startX="194.0" startY="168.0" />
       <Line endX="194.0" endY="668.0" layoutX="239.0" layoutY="10.0" startX="194.0" startY="168.0" />
+      <Label fx:id="coinFeeLabel" layoutX="763.0" layoutY="632.0" text="수수료 : 0%" />
    </children>
 </AnchorPane>

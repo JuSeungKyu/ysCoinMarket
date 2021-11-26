@@ -181,12 +181,15 @@ public class Client {
 				.get(util.getIndexById(this.currentRoot.getChildren(), "moneyLabel"));
 		Label coinCountLabel = (Label) this.currentRoot.getChildren()
 				.get(util.getIndexById(this.currentRoot.getChildren(), "coinCountLabel"));
+		Label coinFeeLabel = (Label) this.currentRoot.getChildren()
+				.get(util.getIndexById(this.currentRoot.getChildren(), "coinFeeLabel"));
 
 		new UIUpdateClass() {
 			@Override
 			public void update() {
 				moneyLabel.setText("사용 가능한 돈 : " + msg.money);
 				coinCountLabel.setText("사용 가능 코인 : " + msg.count);
+				coinFeeLabel.setText("수수료 : " + msg.fee + "%");
 			}
 		}.start();
 	}
