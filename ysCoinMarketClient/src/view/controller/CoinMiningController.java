@@ -106,7 +106,6 @@ public class CoinMiningController extends Controller {
 		Main.ThreadList.add(coinMiningThread);
 		coinMiningTimingThread.start();
 		coinMiningThread.start();
-
 	}
 
 	@Override
