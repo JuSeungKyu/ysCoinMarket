@@ -41,7 +41,7 @@ public class HistoryManager extends Thread {
 					}
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("가격역사 insert를 실패하였습니다");
 			}
 			
 			if (!util.sleep(10000)) {

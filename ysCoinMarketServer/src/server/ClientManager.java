@@ -157,6 +157,11 @@ public class ClientManager extends Thread {
 	}
 
 	private void sellRequest(SellRequest msg) {
+		if(msg.count < 1) {
+			sendCheckMessage("주문량이 1보다 작습니다", false);
+			return;
+		}
+		
 		UserHashControlQuery uhcq = new UserHashControlQuery();
 		System.out.println(msg.count + " " + uhcq.getUserHashCount(this.id, msg.coinname) + " "
 				+ uhcq.getUserOrderedHashCount(this.id, msg.coinname));
@@ -171,6 +176,11 @@ public class ClientManager extends Thread {
 	}
 
 	private void buyRequest(BuyRequest msg) {
+		if(msg.count < 1) {
+			sendCheckMessage("주문량이 1보다 작습니다", false);
+			return;
+		}
+		
 		long price = msg.count * msg.price;
 		
 		if (price > getMoney()) {
@@ -193,7 +203,7 @@ public class ClientManager extends Thread {
 		try {
 			this.socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(this.id + "님의 소켓이 이미 닫혀있습니다");
 		}
 		System.out.println(this.id + "님이 로그아웃 하셨습니다.");
 	}
@@ -249,6 +259,7 @@ public class ClientManager extends Thread {
 		UtilQuery uq = new UtilQuery();
 		long money1 = (long) uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
 		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
-		return money1 - (int) (money2 == null ? 0 : money2);
+		System.out.println(money2);
+		return money1 - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
 	}
 }
