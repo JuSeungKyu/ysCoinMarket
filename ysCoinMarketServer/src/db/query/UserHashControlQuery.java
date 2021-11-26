@@ -97,6 +97,6 @@ public class UserHashControlQuery {
 	
 	public boolean addBlock(String hash, String userId, String coinId) {
 		UtilQuery uq = new UtilQuery();
-		return uq.justInsert("INSERT INTO `hash`(`hash`, `user_id`, `coin_id`) VALUES ('" + hash + "''" + userId + "''" + coinId + "')");
+		return uq.justInsert("INSERT INTO `hash`(`hash`, `user_id`, `coin_id`) VALUES ('" + hash + "','" + userId + "','" + coinId + "')");
 	}
 }

@@ -51,7 +51,7 @@ public class ClientManager extends Thread {
 
 					if (msg == null)
 						break;
-
+					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest) msg);
 						continue;
