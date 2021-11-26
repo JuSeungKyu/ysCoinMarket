@@ -30,6 +30,7 @@
       </Pane>
       <Label fx:id="moneyLabel" layoutX="755.0" layoutY="590.0" text="사용 가능한 돈 : 0" />
       <Label fx:id="coinCountLabel" layoutX="755.0" layoutY="614.0" text="사용 가능 코인 : 0" />
+      <Label fx:id="coinFeeLabel" layoutX="755.0" layoutY="650.0" text="수수료 : 0%" />
       <Line endX="193.0" endY="678.0" layoutX="5.0" startX="193.0" />
       <Line endX="128.0" layoutX="307.0" layoutY="-1.0" startX="-102.0" />
       <Line endX="194.0" endY="498.0" layoutX="11.0" layoutY="-169.0" startX="194.0" startY="168.0" />
