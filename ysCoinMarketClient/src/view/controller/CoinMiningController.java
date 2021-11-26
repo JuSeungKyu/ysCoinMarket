@@ -32,66 +32,59 @@ public class CoinMiningController extends Controller {
 	private Label frequency;
 	@FXML
 	private Button closeBtn;
-	
+
 	private Util util = new Util();
 	private Client client = null;
 	private CoinInfo coin = null;
 	private boolean isReady = false;
 
-	public boolean setType(String typeStr) {
-		new UIUpdateThread() {
-			
-			@Override
-			public void update() {
-				type.setText(typeStr);
-				System.out.println(type.getText());
-			}
-		}.start();
-		
-		return true;
-	}
-	
-	public boolean setTime() {
-		long startTime = System.currentTimeMillis() + 32400000;
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-
-		Timestamp ts = new Timestamp(System.currentTimeMillis() - startTime);
-		new UIUpdateThread() {
-			
-			@Override
-			public void update() {
-				while(util.sleep(1000)) {
-					ts.setTime(System.currentTimeMillis() - startTime);
-					time.setText("경과 시간 : " + sdf.format(ts));
-					System.out.println(time.getText());
-					
-				}
-			}
-		}.start();
-		
-		return true;
-	}
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		setTime();
+
+		Thread coinMiningTimingThread = new Thread(() -> {
+
+			long startTime = System.currentTimeMillis() + 32400000;
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+			Timestamp ts = new Timestamp(System.currentTimeMillis() - startTime);
+			do {
+				new UIUpdateClass() {
+
+					@Override
+					public void update() {
+						ts.setTime(System.currentTimeMillis() - startTime);
+						time.setText("경과 시간 : " + sdf.format(ts));
+						System.out.println(time.getText());
+					}
+				}.start();
+			} while (util.sleep(1000));
+		});
+
 		System.out.println("setTime : " + time.getText());
-		
+
 		Thread coinMiningThread = new Thread(() -> {
-			
-			while(!isReady) {
+
+			while (!isReady) {
 				System.out.println("Waiting");
-				if(!util.sleep(1000)) {
+				if (!util.sleep(1000)) {
 					break;
 				}
 			}
-			
+
 			System.out.println("isReady");
-			
+
 			coin.getCoinId();
+			new UIUpdateClass() {
+
+				@Override
+				public void update() {
+					type.setText(coin.getCoinId());
+					System.out.println(type.getText());
+				}
+			}.start();
+
 			System.out.println("setType : " + type.getText());
-			
+
 			new UIUpdateClass() {
 				@Override
 				public void update() {
@@ -118,7 +111,9 @@ public class CoinMiningController extends Controller {
 			}
 		});
 
+		Main.ThreadList.add(coinMiningTimingThread);
 		Main.ThreadList.add(coinMiningThread);
+		coinMiningTimingThread.start();
 		coinMiningThread.start();
 
 	}
