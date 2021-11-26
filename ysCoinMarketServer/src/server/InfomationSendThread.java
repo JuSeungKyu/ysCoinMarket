@@ -68,7 +68,7 @@ public class InfomationSendThread implements Runnable {
 		for (int i = 0; i < Server.clientIdList.size(); i++) {
 			try {
 				ClientManager c = Server.clientMap.get(Server.clientIdList.get(i));
-				if(c.getCoinType().equals(coinId)) {
+				if(c != null && c.getCoinType().equals(coinId)) {
 					if (history.size() < c.getGraphRangeEnd()) {
 						c.setGraphRangeEnd((short) history.size());
 						c.checkGraphRange();
