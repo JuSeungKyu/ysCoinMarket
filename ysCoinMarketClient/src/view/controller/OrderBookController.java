@@ -50,12 +50,7 @@ public class OrderBookController extends Controller{
 		Thread t = new Thread(()->{
 			while(util.sleep(10)) {
 				try {
-					new UIUpdateClass() {
-						@Override
-						public void update() {
-							drawTable();
-						}
-					}.start();
+					drawTable();
 				} catch (Exception e) {}
 			}
 		});

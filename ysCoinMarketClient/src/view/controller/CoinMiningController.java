@@ -40,7 +40,6 @@ public class CoinMiningController extends Controller {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		Thread coinMiningTimingThread = new Thread(() -> {
 
 			long startTime = System.currentTimeMillis() + 32400000;

@@ -9,30 +9,32 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1042.0" styleClass="background1" stylesheets="@../../application/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.MainFxcontroller">
    <children>
-      <AnchorPane fx:id="pane1" prefHeight="678.0" prefWidth="196.0" styleClass="coinTypeTable" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="pane1" prefHeight="678.0" prefWidth="200.0" styleClass="coinTable" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane fx:id="pane2" prefHeight="450.0" prefWidth="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane fx:id="pane3" layoutX="203.0" layoutY="178.0" prefHeight="500.0" prefWidth="230.0" />
-      <Button fx:id="CoinMiningBtn" layoutX="856.0" layoutY="456.0" mnemonicParsing="false" onAction="#CoinMining" prefHeight="114.0" prefWidth="113.0" styleClass="btn2" text="채굴" />
-      <Button layoutX="230.0" layoutY="56.0" mnemonicParsing="false" onAction="#history" prefHeight="53.0" prefWidth="176.0" styleClass="btn2" text="거래내역 보기" />
-      <Button layoutX="531.0" layoutY="589.0" mnemonicParsing="false" onAction="#buy" prefHeight="31.0" prefWidth="105.0" styleClass="salebtn" text="매수" />
-      <Button layoutX="645.0" layoutY="589.0" mnemonicParsing="false" onAction="#sell" prefHeight="31.0" prefWidth="105.0" styleClass="purchasebtn" text="매도" />
-      <Pane layoutX="531.0" layoutY="446.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
+      <AnchorPane fx:id="pane3" layoutX="205.0" layoutY="-1.0" prefHeight="330.0" prefWidth="230.0" styleClass="orderHistoryTable" />
+      <Button fx:id="CoinMiningBtn" layoutX="848.0" layoutY="460.0" mnemonicParsing="false" onAction="#CoinMining" prefHeight="114.0" prefWidth="113.0" styleClass="btn2" text="채굴" />
+      <Button layoutX="232.0" layoutY="344.0" mnemonicParsing="false" onAction="#history" prefHeight="53.0" prefWidth="176.0" styleClass="btn2" text="거래내역 보기" />
+      <Button layoutX="523.0" layoutY="593.0" mnemonicParsing="false" onAction="#buy" prefHeight="31.0" prefWidth="105.0" styleClass="salebtn" text="매수" />
+      <Button layoutX="637.0" layoutY="593.0" mnemonicParsing="false" onAction="#sell" prefHeight="31.0" prefWidth="105.0" styleClass="purchasebtn" text="매도" />
+      <Pane layoutX="523.0" layoutY="450.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
          <children>
             <TextField fx:id="count" layoutY="10.0" prefHeight="45.0" prefWidth="300.0" styleClass="textfield1-textfield" />
             <Label layoutX="14.0" layoutY="-4.0" styleClass="textfield1-label" text="수량" />
          </children>
       </Pane>
-      <Pane layoutX="531.0" layoutY="520.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
+      <Pane layoutX="523.0" layoutY="524.0" prefHeight="57.0" prefWidth="300.0" styleClass="textfield1">
          <children>
             <TextField fx:id="price" layoutY="10.0" prefHeight="45.0" prefWidth="300.0" styleClass="textfield1-textfield" />
             <Label layoutX="14.0" layoutY="-4.0" styleClass="textfield1-label" text="가격" />
          </children>
       </Pane>
-      <Label fx:id="moneyLabel" layoutX="763.0" layoutY="586.0" text="사용 가능한 돈 : 0" />
-      <Label fx:id="coinCountLabel" layoutX="763.0" layoutY="610.0" text="사용 가능 코인 : 0" />
-      <Line endX="128.0" layoutX="305.0" layoutY="178.0" startX="-102.0" />
+      <Label fx:id="moneyLabel" layoutX="755.0" layoutY="590.0" text="사용 가능한 돈 : 0" />
+      <Label fx:id="coinCountLabel" layoutX="755.0" layoutY="614.0" text="사용 가능 코인 : 0" />
+      <Label fx:id="coinFeeLabel" layoutX="755.0" layoutY="650.0" text="수수료 : 0%" />
       <Line endX="193.0" endY="678.0" layoutX="5.0" startX="193.0" />
-      <Line endX="194.0" endY="668.0" layoutX="9.0" layoutY="10.0" startX="194.0" startY="168.0" />
-      <Line endX="194.0" endY="668.0" layoutX="239.0" layoutY="10.0" startX="194.0" startY="168.0" />
+      <Line endX="128.0" layoutX="307.0" layoutY="-1.0" startX="-102.0" />
+      <Line endX="194.0" endY="498.0" layoutX="11.0" layoutY="-169.0" startX="194.0" startY="168.0" />
+      <Line endX="194.0" endY="498.0" layoutX="241.0" layoutY="-169.0" startX="194.0" startY="168.0" />
+      <Line endX="128.0" layoutX="307.0" layoutY="329.0" startX="-102.0" />
    </children>
 </AnchorPane>

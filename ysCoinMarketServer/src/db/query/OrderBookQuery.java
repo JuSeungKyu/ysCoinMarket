@@ -23,7 +23,7 @@ public class OrderBookQuery {
 	private ArrayList<int[]> getSellOrder(String coinId) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
 		try {
-			String sql = "SELECT price, count FROM order_info WHERE coin_id=? AND order_type='판매' ORDER BY price LIMIT 5";
+			String sql = "SELECT price, count FROM order_info WHERE coin_id=? AND order_type='판매' ORDER BY price DESC LIMIT 5";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinId);
