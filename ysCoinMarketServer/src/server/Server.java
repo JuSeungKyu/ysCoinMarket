@@ -11,18 +11,24 @@ import db.query.UtilQuery;
 
 public class Server {
 	public static HashMap<String, ClientManager> clientMap;
-	public static HashMap<String, Integer> feeMap; 
+	public static HashMap<String, Integer> feeMap;
 	public static ArrayList<String> clientIdList;
 	public static ArrayList<String> coinTypelist;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		new JDBC("112.153.122.10", "skills09", "skills09", "0702");
 
 		clientMap = new HashMap<String, ClientManager>();
 		feeMap = new HashMap<String, Integer>();
 		clientIdList = new ArrayList<String>();
 		coinTypelist = new ArrayList<String>();
-		ServerSocket serverSocket = new ServerSocket(2657);
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(2657);
+		} catch (Exception e) {
+			System.out.println("소켓이 이미 열려있습니다.");
+			return;
+		}
 		UtilQuery utilQuery = new UtilQuery();
 
 		try {

@@ -34,7 +34,7 @@ public class UserLoginManager implements Runnable{
 				LoginRequest LoginMsg = (LoginRequest) ois.readObject();
 				
 				// 로그인 되어 있는 아이디인지 체크
-				if(Server.clientMap.get(LoginMsg.id) != null) {
+				if(LoginMsg.isLogin && Server.clientMap.get(LoginMsg.id) != null) {
 					oos.writeObject(new LoginCheckMessage("이미 같은 아이디로 로그인 하였습니다.", false));
 					continue;
 				}
@@ -67,7 +67,7 @@ public class UserLoginManager implements Runnable{
 				Server.clientIdList.add(LoginMsg.id);
 				Server.clientMap.put(LoginMsg.id, new ClientManager(LoginMsg.id, clientSocket, ois, oos));
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("유저와 통신할 수 없습니다");
 			}
 		}
 	}

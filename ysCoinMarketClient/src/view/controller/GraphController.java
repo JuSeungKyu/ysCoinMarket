@@ -105,7 +105,7 @@ public class GraphController extends Controller {
 
 		PriceInfo[] pi = history.info;
 		this.historyLength = (short) pi.length;
-
+		
 		if(this.historyLength < 1) {
 			return;
 		}

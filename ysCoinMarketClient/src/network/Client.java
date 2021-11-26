@@ -42,7 +42,7 @@ public class Client {
 	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
 	private String currentCoinId = "양디코인";
-	private byte currentCoinDifficulty = 5;
+	private byte currentCoinDifficulty = 3;
 	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
 
@@ -192,6 +192,7 @@ public class Client {
 	}
 
 	public void addBlock(String hash) {
+		System.out.println("send Request");
 		addSendObject(new MineBlockRequest(hash, null, this.currentCoinId));
 	}
 

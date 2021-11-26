@@ -51,7 +51,7 @@ public class ClientManager extends Thread {
 
 					if (msg == null)
 						break;
-
+					
 					if (msg.type == MessageTypeConstantNumbers.BUY_REQEUST) {
 						buyRequest((BuyRequest) msg);
 						continue;
@@ -203,7 +203,7 @@ public class ClientManager extends Thread {
 		try {
 			this.socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(this.id + "님의 소켓이 이미 닫혀있습니다");
 		}
 		System.out.println(this.id + "님이 로그아웃 하셨습니다.");
 	}
@@ -259,6 +259,7 @@ public class ClientManager extends Thread {
 		UtilQuery uq = new UtilQuery();
 		long money1 = (long) uq.justGetObject("SELECT money FROM users WHERE id = '" + this.id + "'");
 		Object money2 = uq.justGetObject("SELECT SUM(price * count) as price, user_id FROM `order_info` WHERE user_id='"+this.id+"' AND order_type='구매'");
-		return money1 - (int) (money2 == null ? 0 : money2);
+		System.out.println(money2);
+		return money1 - ((BigDecimal) (money2 == null ? 0 : money2)).longValue();
 	}
 }
