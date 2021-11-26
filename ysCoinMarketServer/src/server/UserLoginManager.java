@@ -33,8 +33,6 @@ public class UserLoginManager implements Runnable{
 				// 아이디 받음
 				LoginRequest LoginMsg = (LoginRequest) ois.readObject();
 				
-				System.out.println(LoginMsg.id + " " + Server.clientMap.get(LoginMsg.id));
-				
 				// 로그인 되어 있는 아이디인지 체크
 				if(Server.clientMap.get(LoginMsg.id) != null) {
 					oos.writeObject(new LoginCheckMessage("이미 같은 아이디로 로그인 하였습니다.", false));
@@ -65,6 +63,7 @@ public class UserLoginManager implements Runnable{
 				}
 				
 				// 클라이언트 저장
+				System.out.println(LoginMsg.id+"님이 로그인 하셨습니다.");
 				Server.clientIdList.add(LoginMsg.id);
 				Server.clientMap.put(LoginMsg.id, new ClientManager(LoginMsg.id, clientSocket, ois, oos));
 			} catch (Exception e) {
