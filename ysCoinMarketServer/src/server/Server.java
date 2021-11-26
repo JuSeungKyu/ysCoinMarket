@@ -11,7 +11,7 @@ import db.query.UtilQuery;
 
 public class Server {
 	public static HashMap<String, ClientManager> clientMap;
-	public static HashMap<String, Integer> feeMap;
+	public static HashMap<String, Byte> feeMap;
 	public static ArrayList<String> clientIdList;
 	public static ArrayList<String> coinTypelist;
 
@@ -19,7 +19,7 @@ public class Server {
 		new JDBC("112.153.122.10", "skills09", "skills09", "0702");
 
 		clientMap = new HashMap<String, ClientManager>();
-		feeMap = new HashMap<String, Integer>();
+		feeMap = new HashMap<String, Byte>();
 		clientIdList = new ArrayList<String>();
 		coinTypelist = new ArrayList<String>();
 		ServerSocket serverSocket = null;
@@ -35,12 +35,13 @@ public class Server {
 			ResultSet rs = utilQuery.justGetResultSet("SELECT id, fee FROM `coin_type`");
 			while (rs.next()) {
 				coinTypelist.add(rs.getString("id"));
-				feeMap.put(rs.getString("id"), rs.getInt("fee"));
+				feeMap.put(rs.getString("id"), rs.getByte("fee"));
 			}
 			rs.close();
 		} catch (Exception e) {
 			System.out.println("종목 불러오기 실패 " + e.toString());
 		}
+		
 		System.out.println("종목 : " + coinTypelist.toString());
 
 		Thread sendMessageThread = new Thread(new SendMessageThread());

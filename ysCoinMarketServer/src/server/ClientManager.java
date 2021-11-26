@@ -246,8 +246,11 @@ public class ClientManager extends Thread {
 
 	public void sendUserInfo() {
 		UserHashControlQuery uhcq = new UserHashControlQuery();
-		SendMessageThread.addMessageQueue(this, new UserInfoMsg(this.getMoney(),
-				uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType)));
+		SendMessageThread.addMessageQueue(this, new UserInfoMsg(
+				this.getMoney(),
+				uhcq.getUserHashCount(this.id, this.coinType) - uhcq.getUserOrderedHashCount(this.id, this.coinType),
+				Server.feeMap.get(this.coinType)
+			));
 	}
 
 	private long getMoney() {
