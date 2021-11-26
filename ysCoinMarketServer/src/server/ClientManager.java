@@ -157,6 +157,11 @@ public class ClientManager extends Thread {
 	}
 
 	private void sellRequest(SellRequest msg) {
+		if(msg.count < 1) {
+			sendCheckMessage("주문량이 1보다 작습니다", false);
+			return;
+		}
+		
 		UserHashControlQuery uhcq = new UserHashControlQuery();
 		System.out.println(msg.count + " " + uhcq.getUserHashCount(this.id, msg.coinname) + " "
 				+ uhcq.getUserOrderedHashCount(this.id, msg.coinname));
@@ -171,6 +176,11 @@ public class ClientManager extends Thread {
 	}
 
 	private void buyRequest(BuyRequest msg) {
+		if(msg.count < 1) {
+			sendCheckMessage("주문량이 1보다 작습니다", false);
+			return;
+		}
+		
 		long price = msg.count * msg.price;
 		
 		if (price > getMoney()) {
