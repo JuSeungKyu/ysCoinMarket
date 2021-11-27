@@ -188,7 +188,7 @@ public class Client {
 			public void update() {
 				moneyLabel.setText("사용 가능한 돈 : " + msg.money);
 				coinCountLabel.setText("사용 가능 코인 : " + msg.count);
-				coinFeeLabel.setText("수수료 : " + msg.fee + "%");
+				coinFeeLabel.setText("매수 주문 수수료 : " + msg.fee + "%");
 			}
 		}.start();
 	}

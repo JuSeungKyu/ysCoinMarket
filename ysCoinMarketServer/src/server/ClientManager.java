@@ -17,6 +17,7 @@ import format.message.SellRequest;
 import format.message.TransactionDetailsMessage;
 import format.message.UpdateGraphRange;
 import format.message.UserInfoMsg;
+import util.Util;
 import format.message.CoinTypeChange;
 import format.message.MineBlockRequest;
 import format.message.PreviousHashMessage;
@@ -184,12 +185,14 @@ public class ClientManager extends Thread {
 			return;
 		}
 
-		long price = msg.count * msg.price;
-
+		int fee = (int) (msg.count * msg.price * Server.feeMap.get(msg.coinname) * 0.01);
+		long price = (long) (msg.count * msg.price - fee);
+		
 		if (price > getMoney()) {
 			sendCheckMessage("돈이 부족합니다.", false);
 		} else {
 			new OrderQuery().buyAndSellRequest(this.id, msg.coinname, msg.price, msg.count, "구매");
+			new UtilQuery().justUpdate("UPDATE `users` SET money=money-"+fee+" WHERE id='"+this.id+"'");
 			sendCheckMessage("매수 주문 성공", true);
 		}
 		this.sendUserInfo();
