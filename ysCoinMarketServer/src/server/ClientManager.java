@@ -120,22 +120,27 @@ public class ClientManager extends Thread {
 	}
 
 	private void setGraphRange(short[] graphRange) {
-		if (this.graphRange[0] > Short.MAX_VALUE) {
+		if(this.graphRange[1] - this.graphRange[0] < 5) {
+			this.graphRange[0] -= 3;
+		}
+		
+		if (this.graphRange[0] + graphRange[0] > Short.MAX_VALUE) {
 			return;
 		}
 
 		if (this.graphRange[1] + graphRange[1] > Short.MAX_VALUE) {
 			return;
 		}
-
+		
 		short range = (short) ((this.graphRange[1] + graphRange[1]) - (this.graphRange[0] + graphRange[0]));
 
 		if (range > 100 || range < 5) {
 			return;
 		}
-
+		
 		this.graphRange[0] += graphRange[0];
 		this.graphRange[1] += graphRange[1];
+		
 
 		checkGraphRange();
 	}
@@ -240,6 +245,10 @@ public class ClientManager extends Thread {
 		return this.graphRange[1];
 	}
 
+	public void setGraphRangeStart(short size) {
+		this.graphRange[1] = size;
+	}
+	
 	public void setGraphRangeEnd(short size) {
 		this.graphRange[1] = size;
 	}

@@ -45,8 +45,6 @@ public class GraphController extends Controller {
 		System.out.println("graphStart");
 		gc = graph.getGraphicsContext2D();
 		
-		Util util = new Util();
-		
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
@@ -57,6 +55,8 @@ public class GraphController extends Controller {
 			}
 		};
 		timer.start();
+		
+		setEvent();
 	}
 
 	public void initData(Object client) {
