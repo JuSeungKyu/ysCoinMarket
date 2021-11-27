@@ -8,10 +8,10 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.controller.CoinMiningController">
    <children>
-      <Label fx:id="type" layoutX="14.0" layoutY="14.0" text="Label" />
-      <Label fx:id="time" layoutX="14.0" layoutY="29.0" text="Label" />
-      <Label fx:id="number" layoutX="14.0" layoutY="44.0" text="Label" />
-      <Label fx:id="frequency" layoutX="14.0" layoutY="59.0" text="Label" />
+      <Label fx:id="type" layoutX="14.0" layoutY="14.0" text="채굴 종목 : " />
+      <Label fx:id="time" layoutX="14.0" layoutY="29.0" text="경과 시간 : " />
+      <Label fx:id="number" layoutX="14.0" layoutY="44.0" text="채굴 횟수 :" />
+      <Label fx:id="frequency" layoutX="14.0" layoutY="59.0" text="채굴 빈도 : " />
       <TableView layoutX="14.0" layoutY="86.0" prefHeight="450.0" prefWidth="425.0">
         <columns>
           <TableColumn prefWidth="47.0" text="아이디" />

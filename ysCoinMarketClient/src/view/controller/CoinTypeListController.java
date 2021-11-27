@@ -60,21 +60,15 @@ public class CoinTypeListController extends Controller {
 			client.addSendObject(new CoinTypeChange(coinId));
 		});
 		
-		Util util = new Util();
-		Thread t = new Thread(()->{
-			while(util.sleep(10)) {
+		AnimationTimer timer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
 				try {
-					new UIUpdateClass() {
-						@Override
-						public void update() {
-							getTable();
-						}
-					}.start();
+					getTable();
 				} catch (Exception e) {}
 			}
-		});
-		Main.ThreadList.add(t);
-		t.start();
+		};
+		timer.start();
 	}
 
 	public boolean getTable() {

@@ -45,17 +45,16 @@ public class OrderBookController extends Controller{
 		sellPriceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
 		volumnColumn.setCellValueFactory(new PropertyValueFactory<>("volume"));
 		buyPriceColumn.setCellValueFactory(new PropertyValueFactory<>("buyPrice"));
-		
-		Util util = new Util();
-		Thread t = new Thread(()->{
-			while(util.sleep(10)) {
+
+		AnimationTimer timer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
 				try {
 					drawTable();
 				} catch (Exception e) {}
 			}
-		});
-		Main.ThreadList.add(t);
-		t.start();
+		};
+		timer.start();
 	}
 	
 	public void drawTable() {
