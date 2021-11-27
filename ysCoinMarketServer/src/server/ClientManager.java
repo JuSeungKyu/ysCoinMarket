@@ -85,6 +85,7 @@ public class ClientManager extends Thread {
 
 					if (msg.type == MessageTypeConstantNumbers.BLOCK_MINE_REQUEST) {
 						addNewBlock(((MineBlockRequest) msg).hash, ((MineBlockRequest) msg).coinId);
+						this.sendUserInfo();
 						continue;
 					}
 

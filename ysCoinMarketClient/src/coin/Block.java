@@ -25,7 +25,6 @@ public class Block {
     private void miningHash(int nonce, String baseHashString, int difficulty) {
         ShaHash possibleHash;
         ShaHash validHash;
-        System.out.println("Mining in progress...\n");
         while (true) {
             possibleHash = new ShaHash(baseHashString + String.valueOf(nonce));
             if (validadeHash(possibleHash, difficulty) == true) {

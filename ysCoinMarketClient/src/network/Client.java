@@ -194,7 +194,6 @@ public class Client {
 	}
 
 	public void addBlock(String hash) {
-		System.out.println("send Request");
 		addSendObject(new MineBlockRequest(hash, this.currentCoinId));
 	}
 

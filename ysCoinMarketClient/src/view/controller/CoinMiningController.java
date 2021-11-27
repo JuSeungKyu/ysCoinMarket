@@ -120,7 +120,6 @@ public class CoinMiningController extends Controller {
 	public void initData(Object data) {
 		this.client = (Client) data;
 		this.coin = new CoinInfo(this.client.getCurrentCoinId(), this.client.getCurrentCoinDifficulty());
-		System.out.println("client ready");
 		isReady = true;
 	}
 
