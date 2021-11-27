@@ -75,6 +75,10 @@ public class StageControll {
 					if(closeEvent) {
 						newStage.setOnCloseRequest(event -> {
 							pane.getChildren().get(new Util().getIndexById(pane.getChildren(), "CoinMiningBtn")).setDisable(false);
+
+							for (int i = 0; i < Main.MiningThreadList.size(); i++) {
+								Main.MiningThreadList.get(i).interrupt();
+							}
 						});
 					}
 					

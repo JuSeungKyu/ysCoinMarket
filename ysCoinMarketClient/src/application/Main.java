@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class Main extends Application {
 	public static ArrayList<Thread> ThreadList = new ArrayList<Thread>();
+	public static ArrayList<Thread> MiningThreadList = new ArrayList<Thread>();
 	public static Socket socket = null;
 	@Override
 	public void start(Stage primaryStage) {

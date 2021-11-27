@@ -46,7 +46,11 @@ public class CoinMiningController extends Controller {
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
 			Timestamp ts = new Timestamp(System.currentTimeMillis() - startTime);
-			do {
+			while(true) {
+				if (!util.sleep(1000)) {
+					return;
+				}
+				
 				new UIUpdateClass() {
 
 					@Override
@@ -55,7 +59,7 @@ public class CoinMiningController extends Controller {
 						time.setText("경과 시간 : " + sdf.format(ts));
 					}
 				}.start();
-			} while (util.sleep(1000));
+			}
 		});
 
 
@@ -63,7 +67,7 @@ public class CoinMiningController extends Controller {
 
 			while (!isReady) {
 				if (!util.sleep(1000)) {
-					break;
+					return;
 				}
 			}
 
@@ -89,6 +93,11 @@ public class CoinMiningController extends Controller {
 			Block previousBlock = new Block(PreviousHash, coin.getCoinDifficulty());
 
 			while (true) {
+				
+				if (!util.sleep(10)) {
+					return;
+				}
+				
 				Block block = new Block(previousBlock.getValidHashString(), coin.getCoinDifficulty());
 				previousBlock = block;
 				new UIUpdateClass() {
@@ -100,9 +109,9 @@ public class CoinMiningController extends Controller {
 				client.addBlock(block.getPrevHashString());
 			}
 		});
-
-		Main.ThreadList.add(coinMiningTimingThread);
-		Main.ThreadList.add(coinMiningThread);
+		
+		Main.MiningThreadList.add(coinMiningTimingThread);
+		Main.MiningThreadList.add(coinMiningThread);
 		coinMiningTimingThread.start();
 		coinMiningThread.start();
 	}
