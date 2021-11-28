@@ -29,8 +29,6 @@ public class CoinMiningController extends Controller {
 	@FXML
 	private Label number;
 	@FXML
-	private Label frequency;
-	@FXML
 	private Button closeBtn;
 
 	private Util util = new Util();
