@@ -16,11 +16,11 @@ public class OrderQuery {
 		int orderCount = ((BigDecimal) uq.justGetObject("SELECT IFNULL(sum(count), 0) FROM order_info WHERE order_type = '"+ (type.equals("구매") ? "판매" : "구매")
 				+"' AND coin_id = '" + coinId + "' AND price" + (type.equals("구매") ? "<" : ">") + "=" + price)).intValue();
 		
-		long orderInfoId = (long) uq.justGetObject("SELECT IFNULL(MAX(id), 0) FROM `order_info`");
+		long orderInfoId = (long) uq.justGetObject("SELECT IFNULL(MAX(id), 0)+1 FROM `order_info`");
 		
 		UserHashControlQuery uhcq = new UserHashControlQuery();
 		
-		setTransactionDetails(uq, userId, coinId, count, Math.min(count, orderCount), price, type, orderInfoId);
+		setTransactionDetails(uq, userId, coinId, count, 0, price, type, orderInfoId);
 		
 		if(orderCount == 0) {
 			addRequest(userId, price, count, type, coinId);

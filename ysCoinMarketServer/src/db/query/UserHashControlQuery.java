@@ -26,10 +26,10 @@ public class UserHashControlQuery {
 		UtilQuery uq = new UtilQuery();
 		ResultSet rs = null;
 		if (type.equals("구매")) {
-			rs = uq.justGetResultSet("SELECT order_time, user_id, count, id FROM order_info WHERE price<=" + price
+			rs = uq.justGetResultSet("SELECT order_time, user_id, count, id, price FROM order_info WHERE price<=" + price
 					+ " AND order_type='판매' ORDER BY price DESC, order_time DESC");
 		} else {
-			rs = uq.justGetResultSet("SELECT order_time, user_id, count, id FROM order_info WHERE price>=" + price
+			rs = uq.justGetResultSet("SELECT order_time, user_id, count, id, price FROM order_info WHERE price>=" + price
 					+ " AND order_type='구매' ORDER BY price DESC, order_time DESC");
 		}
 		
@@ -37,18 +37,23 @@ public class UserHashControlQuery {
 			while (rs.next() && count > 0) {
 				String buyer = "";
 				String seller = "";
+				int buyerOrderId = 0;
+				int sellerOrderId = 0;
 				
 				if(type.equals("구매")) {
 					buyer = userId;
 					seller = rs.getString("user_id");
+					buyerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+price+" AND user_id='"+buyer+"' AND coin_id='"+coinId+"' AND order_type='구매' ORDER BY order_time DESC LIMIT 1");
+					sellerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+rs.getInt("price")+" AND user_id='"+seller+"' AND coin_id='"+coinId+"' AND order_type='판매' ORDER BY order_time DESC LIMIT 1");
 				} else {
 					buyer = rs.getString("user_id");
 					seller = userId;
+					buyerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+rs.getInt("price")+" AND user_id='"+buyer+"' AND coin_id='"+coinId+"' AND order_type='구매' ORDER BY order_time DESC LIMIT 1");
+					sellerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+price+" AND user_id='"+seller+"' AND coin_id='"+coinId+"' AND order_type='판매' ORDER BY order_time DESC LIMIT 1");
 				}
-				System.out.println(buyer + " " + seller + " 코인 교환");
+				System.out.println(buyer + " " + seller + " 코인 "+rs.getInt("count")+"개 교환");
 
-				int buyerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+price+" AND user_id='"+buyer+"' AND coin_id='"+coinId+"' AND order_type='구매' ORDER BY order_time DESC LIMIT 1");
-				int sellerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+price+" AND user_id='"+seller+"' AND coin_id='"+coinId+"' AND order_type='판매' ORDER BY order_time DESC LIMIT 1");
+				
 				
 				if (rs.getInt("count") > count) {
 					uq.justUpdate("UPDATE hash SET user_id='" + buyer + "' WHERE user_id='" + seller
@@ -68,6 +73,9 @@ public class UserHashControlQuery {
 				if(c != null) {
 					c.sendUserInfo();
 				}
+				
+				System.out.println(buyerOrderId + " " + sellerOrderId);
+				
 				updateTransactionDetails(uq, rs.getInt("count"), buyerOrderId);
 				updateTransactionDetails(uq, rs.getInt("count"), sellerOrderId);
 				count -= rs.getInt("count");
