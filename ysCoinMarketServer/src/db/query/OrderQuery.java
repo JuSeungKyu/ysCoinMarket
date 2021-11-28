@@ -19,6 +19,9 @@ public class OrderQuery {
 		long orderInfoId = (long) uq.justGetObject("SELECT IFNULL(MAX(id), 0) FROM `order_info`");
 		
 		UserHashControlQuery uhcq = new UserHashControlQuery();
+		
+		setTransactionDetails(uq, userId, coinId, count, Math.min(count, orderCount), price, type, orderInfoId);
+		
 		if(orderCount == 0) {
 			addRequest(userId, price, count, type, coinId);
 		} else if(orderCount < count){
@@ -27,10 +30,10 @@ public class OrderQuery {
 			new HistoryQuery().CoinHistoryUpdate(coinId, price);
 		} else if(orderCount >= count){
 			uhcq.hashOwnerTransfer(coinId, userId, price, count, type, orderInfoId);
+			addRequest(userId, price, 0, type, coinId);
 			new HistoryQuery().CoinHistoryUpdate(coinId, price);
 		}
 		
-		setTransactionDetails(uq, userId, coinId, count, Math.min(count, orderCount), price, type, orderInfoId);
 	}
 	
 	public void addRequest(String userId, int price, int count, String type, String coinId) {

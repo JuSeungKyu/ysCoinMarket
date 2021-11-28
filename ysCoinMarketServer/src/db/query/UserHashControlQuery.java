@@ -45,7 +45,10 @@ public class UserHashControlQuery {
 					buyer = rs.getString("user_id");
 					seller = userId;
 				}
-				System.out.println(buyer + " " + seller);
+				System.out.println(buyer + " " + seller + " 코인 교환");
+
+				int buyerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+price+" AND user_id='"+buyer+"' AND coin_id='"+coinId+"' AND order_type='구매' ORDER BY order_time DESC LIMIT 1");
+				int sellerOrderId = (int) uq.justGetObject("SELECT id FROM `order_info` WHERE price="+price+" AND user_id='"+seller+"' AND coin_id='"+coinId+"' AND order_type='판매' ORDER BY order_time DESC LIMIT 1");
 				
 				if (rs.getInt("count") > count) {
 					uq.justUpdate("UPDATE hash SET user_id='" + buyer + "' WHERE user_id='" + seller
@@ -65,9 +68,8 @@ public class UserHashControlQuery {
 				if(c != null) {
 					c.sendUserInfo();
 				}
-				
-				updateTransactionDetails(uq, count, orderInfoId);
-				updateTransactionDetails(uq, count, rs.getInt("id"));
+				updateTransactionDetails(uq, rs.getInt("count"), buyerOrderId);
+				updateTransactionDetails(uq, rs.getInt("count"), sellerOrderId);
 				count -= rs.getInt("count");
 			}
 		} catch (Exception e) {

@@ -14,7 +14,7 @@ public class OrderBookQuery {
 
 	public ArrayList<int[]> getOrderInfo(String coinId) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
-		
+
 		list.addAll(getSellOrder(coinId));
 		list.addAll(getBuyOrder(coinId));
 
@@ -24,7 +24,7 @@ public class OrderBookQuery {
 	private ArrayList<int[]> getSellOrder(String coinId) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
 		try {
-			String sql = "SELECT price, SUM(count) FROM order_info WHERE coin_id=? AND order_type='판매' GROUP BY price ORDER BY price LIMIT 5";
+			String sql = "SELECT price, SUM(count) FROM order_info WHERE coin_id=? AND order_type='판매' AND count!=0 GROUP BY price ORDER BY price LIMIT 5";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinId);
@@ -38,8 +38,8 @@ public class OrderBookQuery {
 				int[] info = { 0, 0, 0 };
 				list.add(info);
 			}
-			Collections.reverse(list);
 
+			Collections.reverse(list);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return getNullList((byte) 5);
@@ -47,11 +47,11 @@ public class OrderBookQuery {
 
 		return list;
 	}
-	
+
 	private ArrayList<int[]> getBuyOrder(String coinId) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
 		try {
-			String sql = "SELECT SUM(count), price FROM order_info WHERE coin_id=? AND order_type='구매' GROUP BY price ORDER BY price DESC LIMIT 5";
+			String sql = "SELECT SUM(count), price FROM order_info WHERE coin_id=? AND order_type='구매' AND count!=0 GROUP BY price ORDER BY price DESC LIMIT 5";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinId);
@@ -73,14 +73,14 @@ public class OrderBookQuery {
 
 		return list;
 	}
-	
+
 	private ArrayList<int[]> getNullList(byte size) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
-		
-		for(byte i = 0; i < size; i++) {
-			list.add(new int[] {0,0,0});
+
+		for (byte i = 0; i < size; i++) {
+			list.add(new int[] { 0, 0, 0 });
 		}
-		
+
 		return list;
 	}
 }
