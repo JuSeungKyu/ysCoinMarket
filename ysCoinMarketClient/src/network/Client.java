@@ -41,7 +41,7 @@ public class Client {
 	private AnchorPane currentRoot;
 	private ArrayList<TransactionDetailsInfo> transactionDetailsInfo = null;
 
-	private String currentCoinId = "양디코인";
+	protected String currentCoinId = "양디코인";
 	private byte currentCoinDifficulty = 3;
 	private String hash = null;
 	private TypeInfo[] typeInfoList = new TypeInfo[0];
@@ -200,12 +200,6 @@ public class Client {
 	public TypeInfo[] getTypeInfo() {
 		return this.typeInfoList;
 	}
-
-	public void changeCoinType(String coinId) {
-		this.currentCoinId = coinId;
-		coinTypeChange();
-	}
-
 	public void changeGraphRange(short[] range) {
 		sendObject(new UpdateGraphRange(range));
 	}
@@ -275,6 +269,16 @@ public class Client {
 
 	public void setCurrentCoinId(String currentCoinId) {
 		this.currentCoinId = currentCoinId;
+		
+		Label coinTypeLabel = (Label) this.currentRoot.getChildren()
+				.get(util.getIndexById(this.currentRoot.getChildren(), "coinTypeLabel"));
+		
+		new UIUpdateClass() {
+			@Override
+			public void update() {
+				coinTypeLabel.setText("현재 종목 : " + currentCoinId);
+			}
+		}.start();
 	}
 
 	public String getCurrentCoinId() {
