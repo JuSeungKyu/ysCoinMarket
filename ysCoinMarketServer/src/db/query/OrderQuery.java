@@ -25,12 +25,12 @@ public class OrderQuery {
 		if(orderCount == 0) {
 			addRequest(userId, price, count, type, coinId);
 		} else if(orderCount < count){
-			uhcq.hashOwnerTransfer(coinId, userId, price, orderCount, type, orderInfoId);
 			addRequest(userId, price, count-orderCount, type, coinId);
+			uhcq.hashOwnerTransfer(coinId, userId, price, orderCount, type, orderInfoId);
 			new HistoryQuery().CoinHistoryUpdate(coinId, price);
 		} else if(orderCount >= count){
-			uhcq.hashOwnerTransfer(coinId, userId, price, count, type, orderInfoId);
 			addRequest(userId, price, 0, type, coinId);
+			uhcq.hashOwnerTransfer(coinId, userId, price, count, type, orderInfoId);
 			new HistoryQuery().CoinHistoryUpdate(coinId, price);
 		}
 		
