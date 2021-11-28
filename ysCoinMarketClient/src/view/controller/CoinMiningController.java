@@ -10,15 +10,11 @@ import format.CoinInfo;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import network.Client;
 import util.Util;
 import util.uiUpdate.UIUpdateClass;
-import util.uiUpdate.UIUpdateThread;
 
 public class CoinMiningController extends Controller {
 
@@ -28,8 +24,6 @@ public class CoinMiningController extends Controller {
 	private Label time;
 	@FXML
 	private Label number;
-	@FXML
-	private Button closeBtn;
 
 	private Util util = new Util();
 	private Client client = null;
