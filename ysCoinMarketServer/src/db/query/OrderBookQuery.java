@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import db.JDBC;
 import format.PriceInfo;
@@ -23,7 +24,7 @@ public class OrderBookQuery {
 	private ArrayList<int[]> getSellOrder(String coinId) {
 		ArrayList<int[]> list = new ArrayList<int[]>();
 		try {
-			String sql = "SELECT price, SUM(count) FROM order_info WHERE coin_id=? AND order_type='판매' GROUP BY price ORDER BY price DESC LIMIT 5";
+			String sql = "SELECT price, SUM(count) FROM order_info WHERE coin_id=? AND order_type='판매' GROUP BY price ORDER BY price LIMIT 5";
 
 			PreparedStatement pstmt = JDBC.con.prepareStatement(sql);
 			pstmt.setString(1, coinId);
@@ -35,8 +36,9 @@ public class OrderBookQuery {
 
 			while (list.size() < 5) {
 				int[] info = { 0, 0, 0 };
-				list.add(0, info);
+				list.add(info);
 			}
+			Collections.reverse(list);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
